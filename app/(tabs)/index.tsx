@@ -34,7 +34,7 @@ export default function HomeScreen() {
             alignItems: "center",
           }}
         >
-          {patients?.map(({ _id, triageColor }) => <Text key={_id}>{triageColor}</Text>)}
+          {patients?.map(({ _id, triageColor }) => <Text key={_id} style={{ color: 'white' }}>{triageColor}</Text>)}
         </View>
 
         <ThemedText>
