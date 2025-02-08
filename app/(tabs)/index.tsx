@@ -7,12 +7,15 @@ import { ThemedView } from '@/components/ThemedView';
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useRouter } from 'expo-router';
+import { useOCR } from '@/hooks/useOCR';
 
 
 export default function HomeScreen() {
   // CONVEX GET ALLFUNC
   const patients = useQuery(api.patients.getAll);
-  const router = useRouter();
+  // const router = useRouter();
+  const { pickImageCamera } = useOCR();
+
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -40,7 +43,7 @@ export default function HomeScreen() {
         </View>
         <Button 
         title="Open Camera" 
-        onPress={() => router.push('/camera')} 
+        onPress={pickImageCamera} 
       />
         <ThemedText>
           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
