@@ -1,4 +1,4 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
+import { Image, StyleSheet, Platform, View, Text, Button } from 'react-native';
 
 import { HelloWave } from '@/components/HelloWave';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
@@ -6,11 +6,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { api } from "@/convex/_generated/api";
 import { useQuery } from "convex/react";
+import { useRouter } from 'expo-router';
 
 
 export default function HomeScreen() {
   // CONVEX GET ALLFUNC
   const patients = useQuery(api.patients.getAll);
+  const router = useRouter();
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -36,7 +38,10 @@ export default function HomeScreen() {
         >
           {patients?.map(({ _id, triageColor }) => <Text key={_id} style={{ color: 'white' }}>{triageColor}</Text>)}
         </View>
-
+        <Button 
+        title="Open Camera" 
+        onPress={() => router.push('/camera')} 
+      />
         <ThemedText>
           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
           Press{' '}
