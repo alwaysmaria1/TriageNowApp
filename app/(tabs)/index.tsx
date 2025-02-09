@@ -13,7 +13,7 @@ import { useOCR } from '@/hooks/useOCR';
 export default function HomeScreen() {
   // CONVEX GET ALLFUNC
   const patients = useQuery(api.patients.getAll);
-  // const router = useRouter();
+  const router = useRouter();
   const { pickImageCamera } = useOCR();
 
   return (
@@ -45,6 +45,10 @@ export default function HomeScreen() {
         title="Open Camera" 
         onPress={pickImageCamera} 
       />
+              <Button
+          title="MICA PAGE"
+          onPress={() => router.push('/(tabs)/mica')}
+        />
         <ThemedText>
           Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
           Press{' '}
