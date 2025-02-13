@@ -33,6 +33,7 @@ export const useOCR = () => {
 
     // Function to perform OCR on an image
     const performOCR = (file: any) => {
+        console.log('beginning of performOCR')
         let myHeaders = new Headers();
         myHeaders.append("apikey", "CTgSFiBHenGEBFAC5RQpaxAntktMS6Xm");
         myHeaders.append("Content-Type", "multipart/form-data");
@@ -50,7 +51,8 @@ export const useOCR = () => {
                 setExtractedText(result["all_text"]);
             })
             .catch((error) => console.log("error", error));
-
+        
+        console.log('api call complete')
         console.log(extractedText)
     };
 
