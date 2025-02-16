@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity } from 'react-native';
 import { useState, useMemo } from 'react';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { ThemedText } from '@/components/ThemedText';
@@ -25,6 +25,10 @@ export default function TriageHomeScreen() {
       case 'expectant': return '#4A4A4A';  // Black
       default: return '#FFFFFF';
     }
+  };
+
+  const clearSearch = () => {
+    setSearchQuery('');
   };
 
   // Calculate counts for each category
@@ -68,12 +72,13 @@ export default function TriageHomeScreen() {
           placeholderTextColor="#808080"
         />
         {searchQuery !== '' && (
-          <IconSymbol
-            name="xmark.circle.fill"
-            size={20}
-            color="#808080"
-            onPress={() => setSearchQuery('')}
-          />
+          <TouchableOpacity onPress={clearSearch} style={styles.clearButton}>
+            <IconSymbol
+                name="xmark.circle.fill"
+                size={20}
+                color="#808080"
+            />
+        </TouchableOpacity>
         )}
       </ThemedView>
 
@@ -197,7 +202,7 @@ const styles = StyleSheet.create({
   },
   statusIndicator: {
     width: 60,
-    height: 8,
+    height: 20,
     borderRadius: 4,
     marginHorizontal: 12,
   },
