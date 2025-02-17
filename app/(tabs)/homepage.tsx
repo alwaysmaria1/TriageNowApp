@@ -8,14 +8,15 @@ import { TextInput } from 'react-native';
 
 export default function TriageHomeScreen() {
   const [searchQuery, setSearchQuery] = useState('');
-  const [patients] = useState([
-    { id: '10387', status: 'immediate', complete: true },
-    { id: '10388', status: 'delayed', complete: true },
-    { id: '10389', status: 'expectant', complete: true },
-    { id: '10390', status: 'minor', complete: true },
-    { id: '10391', status: 'immediate', complete: true },
-    { id: '10392', status: 'minor', complete: true },
-  ]);
+  const [patients] = useState([]);
+//   const [patients] = useState([
+//     { id: '10387', status: 'immediate', complete: true },
+//     { id: '10388', status: 'delayed', complete: true },
+//     { id: '10389', status: 'expectant', complete: true },
+//     { id: '10390', status: 'minor', complete: true },
+//     { id: '10391', status: 'immediate', complete: true },
+//     { id: '10392', status: 'minor', complete: true },
+//   ]);
 
   const getStatusColor = (status) => {
     switch (status) {
@@ -174,7 +175,7 @@ const styles = StyleSheet.create({
   },
   categoryCount: {
     color: '#FFFFFF',
-    fontSize: 32,
+    fontSize: 23,
     fontWeight: 'bold',
   },
   categoryLabel: {
