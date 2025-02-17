@@ -1,23 +1,24 @@
 import { ConvexError, v } from "convex/values";
 import { query, mutation } from "./_generated/server";
 import { CreatePatientDTO } from "./create-patient.dto";
-import { FindOnePatientDTO } from "./find-patient-query.dto";
+import { FindPatientsDTO } from "./find-patient-query.dto";
 import { EditPatientDTO } from "./edit-patient.dto";
 
 export const getAll = query({
-  args: {},
+  args: FindPatientsDTO,
   handler: async (ctx) => {
     return ctx.db.query("patients").collect();
   },
   // Future: filter by zone, triageStatus, patientStatus, recency
+  // based on requirements of incident commander
 });
 
 export const getOne = query({
-  args: FindOnePatientDTO,
+  args: {barcodeID: v.string()},
   handler: async (ctx, args) => {
     const patient = await ctx.db
       .query("patients")
-      .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeId))
+      .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeID))
       .first();
 
     if (!patient) {
@@ -86,7 +87,8 @@ export const update = mutation({
         lastUpdated: new Date().toISOString(),
       });
 
-    return patient;
+      const updatedPatient = await ctx.db.get(patient._id);
+      return updatedPatient;
   },
 });
 
@@ -109,6 +111,6 @@ export const remove = mutation({
       // Use the patient's _id to delete the record
       await ctx.db.delete(patient._id);
 
-      return `Patient ${args.barcodeID} asuccessfully deleted`;
+      return `Patient ${args.barcodeID} successfully deleted`;
   },
 });
