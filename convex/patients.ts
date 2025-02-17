@@ -9,7 +9,7 @@ export const getAll = query({
   handler: async (ctx) => {
     return ctx.db.query("patients").collect();
   },
-  // filter by zone, triageStatus, patientStatus, recency
+  // Future: filter by zone, triageStatus, patientStatus, recency
 });
 
 export const getOne = query({
@@ -91,6 +91,24 @@ export const update = mutation({
 });
 
 export const remove = mutation({
-  args: {},
-  handler: async (ctx, args) => {},
+  args: {barcodeID: v.string()},
+  handler: async (ctx, args) => {
+    // Find the patient by barcodeID
+    const patient = await ctx.db
+      .query("patients")
+      .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeID))
+      .first();
+  
+      if (!patient) {
+        throw new ConvexError({
+          code: 404,
+          message: "Patient not found",
+        });
+      }
+
+      // Use the patient's _id to delete the record
+      await ctx.db.delete(patient._id);
+
+      return `Patient ${args.barcodeID} asuccessfully deleted`;
+  },
 });
