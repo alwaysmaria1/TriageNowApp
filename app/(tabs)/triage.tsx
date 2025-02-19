@@ -260,11 +260,13 @@ export default function TabThreeScreen() {
           )}
         </View>
       )}
+      {/*
       <Button
                     onPress={() => console.log("Submission")}
                     title="Doesn't obey commands"
                     variant="grey"
                   />
+      */}
     </ParallaxScrollView>
   );
 }
