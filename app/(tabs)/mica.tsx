@@ -1,4 +1,4 @@
-import { StyleSheet, Button, SafeAreaView, Image } from 'react-native';
+import { StyleSheet, Button, SafeAreaView, Image, Text } from 'react-native';
 import { useQuery } from 'convex/react';
 import { api } from '@/convex/_generated/api';
 import { useLocalSearchParams, useRouter } from 'expo-router';
@@ -12,8 +12,7 @@ export default function PatientScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      {/* A button to navigate back to the previous screen */}
-      <Button title="Go Back" onPress={() => router.back()} />
+      
     {/* TODO: insert actual logo */}
       <SafeAreaView>
         <Image 
@@ -25,33 +24,42 @@ export default function PatientScreen() {
 
     {/* Patient ID
     TODO: replace ID number placeholder */}
-      <SafeAreaView style={styles.ptID}>
-        <ThemedText type="title">Patient 10387</ThemedText>
+      <SafeAreaView style={styles.header}>
+        <ThemedText style={styles.ptTitle}>Patient 10387</ThemedText>
+        <SafeAreaView style={styles.priority}>
+          {/* TODO: make this go to triage page */}
+          <SafeAreaView style={styles.priorityBadge}>
+            <Button color= "#fff" title="MINOR" onPress={() => router.back()} />
+          </SafeAreaView>
+          <Text style={styles.lastUpdate}>Last update 16:26</Text>
+        </SafeAreaView>
       </SafeAreaView>
+      
 
     {/* Care continuum Status */}
-      <SafeAreaView style={styles.careStatus}>
-        <ThemedText>Triage Status</ThemedText>
+      <SafeAreaView style={styles.careStatusContainer}>
+        <ThemedText style={styles.careStatusLabel} >Status: </ThemedText>
+        <ThemedText style={styles.careStatusValue}> TRIAGE COMPLETE</ThemedText>
       </SafeAreaView>
 
     {/* Patient demographics section 
     TODO: add in demographics info 
     TODO: figure out how to input*/}
-      <SafeAreaView style={styles.patientDemographics}>
-      <ThemedText>Patient Demographics</ThemedText>
-        <ThemedText>ID:</ThemedText>
-        <ThemedText>Name: </ThemedText>
-        <ThemedText>Triage Color: </ThemedText>
-
-        
+      <SafeAreaView style={styles.section}>
+        <ThemedText style={styles.sectionTitle}>Patient Demographics</ThemedText>
+        <SafeAreaView style={styles.addInfoButton}>
+          <Button color= "#555" title="CLICK TO RECORD DEMOGRAPHICS" onPress={() => router.back()} />
+        </SafeAreaView>
       </SafeAreaView>
 
     {/* patient care notes  
     TODO: list notes added
     TODO: allow edit/add notes */}
-      <SafeAreaView style={styles.patientCareNotes}>
-        <ThemedText>Patient Care Notes:</ThemedText>
-
+      <SafeAreaView style={styles.section}>
+        <ThemedText style={styles.sectionTitle}>Patient Care Notes:</ThemedText>
+        <SafeAreaView style={styles.addInfoButton}>
+          <Button color= "#555" title="CLICK TO RECORD PATIENT CARE NOTES" onPress={() => router.back()} />
+        </SafeAreaView>
       </SafeAreaView>
     </ThemedView>
   );
@@ -60,9 +68,10 @@ export default function PatientScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    // justifyContent: 'center',
+    padding: 20,
+    backgroundColor: "#fff",
     flex: 1,
-    padding: 16,
-    justifyContent: 'center',
   },
 
   logo: {
@@ -71,52 +80,81 @@ const styles = StyleSheet.create({
     marginTop: 20,  
   },
 
-  ptID: {
-    padding: 16,
-    marginTop: 0,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    textAlign: 'left',
+  header: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  ptTitle: {
+    fontSize: 30,
+    fontWeight: "bold",
+    lineHeight: 34,
   },
 
   priority: {
-    padding: 16,
-    marginTop: 10,
+    paddingVertical: 5,
+    paddingHorizontal: 15,
     borderRadius: 5,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    backgroundColor: 'grey',
   },
 
-
-  careStatus: {
-    padding: 16,
-    marginTop: 10,
+  priorityBadge: {
+    backgroundColor: "green",
+    paddingVertical: 5,
+    paddingHorizontal: 15,
     borderRadius: 5,
-    alignItems: 'flex-start',
-    justifyContent: 'center',
-    backgroundColor: 'grey',
+  },
+  priorityText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
 
-  patientDemographics: {
-    flex: 1,
-    padding: 16,
-    margin: 3,
-    alignItems: 'flex-start',
-    backgroundColor: '#ededed',
-    borderRadius: 3,
-    borderWidth: 1, 
-    borderColor: 'grey',
+  lastUpdate: {
+    fontSize: 12,
+    color: "gray",
+    marginTop: 5,
   },
 
-  patientCareNotes: {
-    flex: 1,
-    padding: 16,
-    margin: 3,
-    alignItems: 'flex-start',
-    backgroundColor: '#ededed',
-    borderRadius: 3,
-    borderWidth: 1, 
-    borderColor: 'grey',
+  careStatusContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#D3D3D3",
+    padding: 10,
+    borderRadius: 5,
+    marginTop: 10,
   },
+  careStatusLabel: {
+    fontWeight: "bold",
+    padding:6,
+  },
+  careStatusValue: {
+    fontSize: 14,
+  },
+
+  section: {
+    padding: 15,
+    marginTop: 5,
+    alignItems: 'flex-start',
+    backgroundColor: '#d3d3d3',
+    borderRadius: 5,
+    minHeight: '20%',
+  },
+
+  sectionTitle: {
+    fontWeight: "bold",
+    marginBottom: 2,
+    padding: 4,
+  },
+
+  addInfoButton: {
+    backgroundColor: "#E0E0E0",
+    marginBottom: 10,
+    marginStart: 10,
+    marginEnd: 10,
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",  
+    alignSelf: "stretch",
+    },
+
 });
