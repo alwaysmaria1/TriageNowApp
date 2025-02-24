@@ -9,8 +9,6 @@ import { useQuery } from "convex/react";
 
 
 export default function HomeScreen() {
-  // CONVEX GET ALLFUNC
-  const patients = useQuery(api.patients.getAll);
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
@@ -34,7 +32,7 @@ export default function HomeScreen() {
             alignItems: "center",
           }}
         >
-          {patients?.map(({ _id, triageColor }) => <Text key={_id} style={{ color: 'white' }}>{triageColor}</Text>)}
+          {/* {patients?.map(({ _id, triageColor }) => <Text key={_id} style={{ color: 'white' }}>{triageColor}</Text>)} */}
         </View>
 
         <ThemedText>
