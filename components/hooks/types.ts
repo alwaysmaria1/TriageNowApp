@@ -1,0 +1,57 @@
+// patient.types.ts
+
+// Define the available patient statuses
+export type PatientStatus =
+  | "Triage In-Progress"
+  | "Triage Complete"
+  | "Treatment In-Progress"
+  | "Treatment Complete"
+  | "Transport In-Progress"
+  | "Transport Complete";
+
+// Define the available triage statuses
+export type TriageStatus = "Minor" | "Delayed" | "Immediate" | "Expectant";
+
+// Type for creating a patient record
+export interface CreatePatientDTO {
+  barcodeID: string;
+  // Optional fields: If not provided, the server may fill in default values.
+  address?: string;
+  allergies?: string;
+  dateOfBirth?: string;
+  name?: string;
+  patientCareNotes?: string;
+  phoneNumber?: string;
+  sex?: string;
+  // Required fields per the DTO
+  lastUpdated: string; // ISO string, e.g., from new Date().toISOString()
+  patientStatus: PatientStatus;
+  triageStatus: TriageStatus;
+  zone: string;
+}
+
+// Type for editing an existing patient record.
+// This mirrors the create type, so you can reuse or extend as needed.
+export interface EditPatientDTO {
+  barcodeID: string;
+  address?: string;
+  allergies?: string;
+  dateOfBirth?: string;
+  name?: string;
+  patientCareNotes?: string;
+  phoneNumber?: string;
+  sex?: string;
+  lastUpdated: string;
+  patientStatus: PatientStatus;
+  triageStatus: TriageStatus;
+  zone: string;
+}
+
+// Type for finding patients based on optional criteria.
+// Adjust the fields as needed based on your query requirements.
+export interface FindPatientsDTO {
+  zone?: string;
+  triageStatus?: string; // Optionally, you could use TriageStatus if you want to restrict values.
+  patientStats?: string;
+  recency?: string;
+}
