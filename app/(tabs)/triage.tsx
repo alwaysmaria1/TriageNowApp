@@ -5,13 +5,13 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedButton as Button } from '@/components/ThemedButton';
 import * as ImagePicker from 'expo-image-picker';
-import { completeTriage, DecisionTreeState } from '@/components/lib/triage-tree';
+import { completeTriage, DecisionTreeState } from '@/components/triage/triage-tree';
 import { useMutationPatient } from '@/components/hooks/use-mutation-patient';
-import { CreatePatientDTO, TriageStatus } from "@/components/hooks/types";
+import { CreatePatientDTO, TriageStatus } from "@/components/lib/types";
 import styles from "@/components/lib/styles";
 
 export default function TabThreeScreen() {
-  // Decision tree state values:
+  // Decision tree state values
   const [ableToWalk, setAbleToWalk] = useState<boolean | null>(null);
   const [initialSpontaneousBreathing, setInitialSpontaneousBreathing] = useState<boolean | null>(null);
   const [secondSpontaneousBreathing, setSecondSpontaneousBreathing] = useState<boolean | null>(null);
@@ -29,6 +29,8 @@ export default function TabThreeScreen() {
   const [activeTriage, setActiveTriage] = useState(false);
   const [isCreatingPatient, setIsCreatingPatient] = useState(false);
   const [image, setImage] = useState("");
+
+  const randomBarcodeID = Math.floor(Math.random() * 9000) + 1000;
 
   const { create: createPatient } = useMutationPatient();
 
@@ -53,14 +55,16 @@ export default function TabThreeScreen() {
   ) => {
     setIsCreatingPatient(true);
     const newPatientData: CreatePatientDTO = {
-      barcodeID: "1036", // Replace with your unique patient identifier.
+      barcodeID: randomBarcodeID.toString(), // Replace with your unique patient identifier.
       lastUpdated: new Date().toISOString(),
-      patientStatus: "Triage In-Progress",
+      patientStatus: "Triage Complete",
       triageStatus: overrideColor,
-      zone: "Zone A", // Adjust as needed.
+      zone: "Zone 3", // Adjust as needed.
     };
-    const result = await createPatient(newPatientData);
+
+    const result = await createPatient(newPatientData); // Call hook to add patient to DB
     setIsCreatingPatient(false);
+
     if (result) {
       console.log("Patient created (override) with ID:", result);
     } else {

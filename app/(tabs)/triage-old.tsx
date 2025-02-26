@@ -6,7 +6,7 @@ import { useState } from 'react';
 import { ThemedButton as Button } from '@/components/ThemedButton';
 
 import * as ImagePicker from 'expo-image-picker';
-import { completeTriage, DecisionTreeState } from '@/components/lib/triage-tree';
+import { completeTriage, DecisionTreeState } from '@/components/triage/triage-tree';
 import { useMutationPatient } from '@/components/hooks/use-mutation-patient';
 
 export default function TabThreeScreen() {

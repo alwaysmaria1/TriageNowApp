@@ -1,88 +1,72 @@
-import { Image, StyleSheet, Platform, View, Text } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
+import { useQueryPatients } from '@/components/hooks/use-query-patients';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { api } from "@/convex/_generated/api";
-import { useQuery } from "convex/react";
-
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { StyleSheet } from 'react-native';
+import Patients from '@/components/home/patients';
+import PatientStatusCount from '@/components/home/patientStatusCount';
+import SearchBar from '@/components/home/searchbar';
 
 export default function HomeScreen() {
-  return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        {/* THIS IS CONVEX IMPORT */}
-        <View
-          style={{
-            flex: 1,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          {/* {patients?.map(({ _id, triageColor }) => <Text key={_id} style={{ color: 'white' }}>{triageColor}</Text>)} */}
-        </View>
 
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
-  );
+    const { patients } = useQueryPatients();
+
+    return (
+        <ParallaxScrollView
+            headerBackgroundColor={{ light: '#F5F5F5', dark: '#353636' }}
+            headerImage={
+                <IconSymbol
+                size={310}
+                color="#808080"
+                name="cross.case.fill"
+                style={styles.headerImage}
+                />
+            }>
+            <ThemedView style={styles.titleContainer}>
+                <ThemedText type="title">Zone 3 Triage</ThemedText>
+            </ThemedView>
+            <SearchBar patientList={patients}/>
+            <PatientStatusCount patientList={patients}/>
+            <Patients patientList={patients}/>
+        </ParallaxScrollView>
+    );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
+    headerImage: {
+        bottom: -90,
+        left: -35,
+        position: 'absolute',
+    },
+    titleContainer: {
+        flexDirection: 'row',
+        gap: 8,
+        marginBottom: 16,
+        paddingHorizontal: 16,
+    },
+    patientList: {
+        flex: 1,
+        padding: 16,
+        gap: 8,
+    },
+    listHeader: {
+        marginBottom: 8,
+    },
+    patientCard: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: 'rgba(255, 255, 255, 0.1)',
+        padding: 16,
+        borderRadius: 8,
+    },
+    statusIndicator: {
+        width: 60,
+        height: 20,
+        borderRadius: 4,
+        marginHorizontal: 12,
+    },
+    patientId: {
+        flex: 1,
+    },
 });

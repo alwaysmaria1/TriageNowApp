@@ -36,21 +36,22 @@ export const create = mutation({
   args: CreatePatientDTO,
   handler: async (ctx, args) => {
     const patientId = await ctx.db.insert("patients", {
-      barcodeID: args.barcodeID, // Input required
+      barcodeID: args.barcodeID, // Required
       name: args.name ?? "Missing info",
       dateOfBirth: args.dateOfBirth ?? "Missing info",
       sex: args.sex ?? "Missing info",
       address: args.address ?? "Missing info",
       phoneNumber: args.phoneNumber ?? "Missing info",
       allergies: args.allergies ?? "Missing info",
-      zone: args.zone, // Input required
-      triageStatus: args.triageStatus, // Input required
+      zone: args.zone, // Required
+      triageStatus: args.triageStatus, // Required
       patientCareNotes: args.patientCareNotes ?? "Missing info",
-      patientStatus: "Triage In-Progress", // Input required
+      patientStatus: "Triage Complete", // Required
       lastUpdated: new Date().toISOString(),
     });
 
-    return patientId;
+    const patient = await ctx.db.get(patientId);
+    return patient;
   },
 });
   
@@ -73,17 +74,17 @@ export const update = mutation({
 
       // Use the patient's _id to patch the record
       await ctx.db.patch(patient._id, {
-        barcodeID: args.barcodeID, // Input required
+        barcodeID: args.barcodeID, // Required
         name: args.name ?? "Missing info",
         dateOfBirth: args.dateOfBirth ?? "Missing info",
         sex: args.sex ?? "Missing info",
         address: args.address ?? "Missing info",
         phoneNumber: args.phoneNumber ?? "Missing info",
         allergies: args.allergies ?? "Missing info",
-        zone: args.zone, // Input required
-        triageStatus: args.triageStatus, // Input required
+        zone: args.zone, // Required
+        triageStatus: args.triageStatus, // Required
         patientCareNotes: args.patientCareNotes ?? "Missing info",
-        patientStatus: "Triage In-Progress", // Input required
+        patientStatus: "Triage Complete", // Required
         lastUpdated: new Date().toISOString(),
       });
 

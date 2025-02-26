@@ -32,7 +32,7 @@ const patientSchema = {
 // export type PatientType = Infer<typeof patientSchemaObject>;
 
 export default defineSchema({
-  // Made barcode ID the primary key
+  // barcode ID is the primary key
   patients: defineTable(patientSchema).index("by_barcodeID", ["barcodeID"]),
 });
 

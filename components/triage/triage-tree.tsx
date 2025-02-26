@@ -74,7 +74,7 @@ export async function completeTriage(
   const newPatientData = {
     barcodeID,
     lastUpdated: new Date().toISOString(),
-    patientStatus: "Triage In-Progress",
+    patientStatus: "Triage Complete",
     triageStatus: triageColor,
     zone,
     // Include any other patient data as needed.
