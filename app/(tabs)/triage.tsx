@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ActivityIndicator } from "react-native";
+import { View, ActivityIndicator, StyleSheet } from "react-native";
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -8,7 +8,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { completeTriage, DecisionTreeState } from '@/components/triage/triage-tree';
 import { useMutationPatient } from '@/components/hooks/use-mutation-patient';
 import { CreatePatientDTO, TriageStatus } from "@/components/lib/types";
-import styles from "@/components/lib/styles";
+// import styles from "@/components/lib/styles";
 
 export default function TabThreeScreen() {
   // Decision tree state values
@@ -82,8 +82,8 @@ export default function TabThreeScreen() {
         <View style={styles.fullWidthButton}>
           <Button
             onPress={() => {
-              setActiveTriage(true);
               openCamera();
+              setActiveTriage(true);
             }}
             title="Click to begin triage"
             variant="grey"
@@ -151,7 +151,7 @@ export default function TabThreeScreen() {
                   handleOverrideTriage("Minor");
                 }}
                 title="Yes"
-                variant="minor"
+                variant="grey"
               />
             </View>
             <View style={styles.buttonContainer}>
@@ -343,3 +343,52 @@ export default function TabThreeScreen() {
     </ParallaxScrollView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  titleContainer: {
+    marginBottom: 16,
+    alignItems: 'center',
+  },
+  questionText: {
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  buttonRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  buttonContainer: {
+    flex: 1,
+    marginHorizontal: 5,
+  },
+  fullWidthButton: {
+    marginVertical: 10,
+    marginHorizontal: 5,
+  },
+  button: {
+    flex: 1,
+    marginHorizontal: 4,
+    paddingVertical: 12,
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  overrideLabel: {
+    marginBottom: 16,
+  },
+  overrideRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 24,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 16,
+  },
+});
