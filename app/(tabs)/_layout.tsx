@@ -34,7 +34,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="triage"
+        name="triage-3"
         options={{
           title: 'Triage',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
