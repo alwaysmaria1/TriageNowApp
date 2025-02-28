@@ -179,6 +179,7 @@ export default function TabThreeScreen() {
                       console.log("Spontaneous breathing: Yes");
                       setInitialSpontaneousBreathing(true);
                       setShowRespiratoryRateQuestion(true);
+                      // setShowSecondBreathingQuestion(false);
                     }}
                     title="Yes"
                     variant="grey"
