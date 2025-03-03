@@ -22,7 +22,7 @@ export default function IncidentCommandDashboard() {
   const [sortField, setSortField] = useState(null);
 
   // Calculate patient counts by priority
-  const priorityCounts = patients.reduce((counts, patient) => {
+  const priorityCounts = patients.reduce<Record<string, number>>((counts, patient) => {
     const priority = patient.priority;
     counts[priority] = (counts[priority] || 0) + 1;
     return counts;
