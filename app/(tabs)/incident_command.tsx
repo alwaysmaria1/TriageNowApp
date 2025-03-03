@@ -156,7 +156,7 @@ export default function IncidentCommandDashboard() {
       <ScrollView horizontal style={styles.priorityCardsContainer}>
         {renderPriorityCard('IMMEDIATE', priorityCounts['IMMEDIATE'], priorityColors.IMMEDIATE)}
         {renderPriorityCard('DELAYED', priorityCounts['DELAYED'], priorityColors.DELAYED)}
-        {renderPriorityCard('MINOR', priorityCounts['MINOR'] || 2, priorityColors.MINOR)}
+        {renderPriorityCard('MINOR', priorityCounts['MINOR'], priorityColors.MINOR)}
         {renderPriorityCard('EXPECTANT', priorityCounts['EXPECTANT'], priorityColors.EXPECTANT)}
       </ScrollView>
 
