@@ -21,7 +21,7 @@ export function useMutationPatient() {
         addPatient(newPatient);
       }
 
-      alert(`Patient created successfully!\nTriage status: ${patient.triageStatus}`);
+      // alert(`Patient created successfully!\nTriage status: ${patient.triageStatus}`);
       return newPatient;
 
     } catch (error) {

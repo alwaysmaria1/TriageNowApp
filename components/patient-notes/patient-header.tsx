@@ -1,26 +1,33 @@
+import { Patient } from '@/components/lib/types';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { getStatusColor } from '../lib/utils';
 
-export default function TriageHeader() {
+export default function TriageHeader({ patient }: { patient: Patient }) {
   return (
     <View style={styles.container}>
       {/* Top Row */}
       <View style={styles.topRow}>
         {/* Left: Patient Number */}
-        <Text style={styles.patientText}>Patient 10386</Text>
+        <Text style={styles.patientText}>Patient {patient.barcodeID}</Text>
 
-        {/* Right: IMMEDIATE button + Last update */}
+        {/* Right: Triage status button + Last update */}
         <View style={styles.rightColumn}>
-          <TouchableOpacity style={styles.immediateButton}>
-            <Text style={styles.immediateButtonText}>IMMEDIATE</Text>
+        <TouchableOpacity
+            style={[
+              styles.immediateButton,
+              { backgroundColor: getStatusColor(patient.triageStatus) },
+            ]}
+          >
+            <Text style={styles.immediateButtonText}>{patient.triageStatus}</Text>
           </TouchableOpacity>
-          <Text style={styles.lastUpdateText}>Last update 16:26</Text>
+          <Text style={styles.lastUpdateText}>Last update {patient.lastUpdated}</Text>
         </View>
       </View>
 
-      {/* Second Row: Status Button */}
+      {/* Second Row: Overall Status Button */}
       <TouchableOpacity style={styles.statusButton}>
-        <Text style={styles.statusButtonText}>Status: TRIAGE COMPLETE</Text>
+        <Text style={styles.statusButtonText}>Status: {patient.patientStatus}</Text>
       </TouchableOpacity>
     </View>
   );

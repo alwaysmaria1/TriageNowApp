@@ -1,16 +1,21 @@
-import ParallaxScrollView from '@/components/ParallaxScrollView';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import TriageHeader from '../header';
+import TriageHeader from '../components/patient-notes/patient-header';
+import { usePatientByBarcode } from '@/components/hooks/use-query-patient';
+import { useLocalSearchParams } from 'expo-router';
 
-const TriageNowScreen = () => {
+
+export default function TriageNowScreen () {
+  const { barcodeID } = useLocalSearchParams<{ barcodeID: string }>();
+  const { patient } = usePatientByBarcode(barcodeID);
+
+  if (!patient) {
+    return <Text>Loading patient data...</Text>;
+  }
   return (
-    <ParallaxScrollView
-          headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-          headerImage={<></>}
-    >
+    <>
     <View style={styles.container}>
-      <TriageHeader></TriageHeader>
+      <TriageHeader patient={patient}></TriageHeader>
       
       {/* Demographics Section */}
       <TouchableOpacity style={styles.card}>
@@ -32,7 +37,7 @@ const TriageNowScreen = () => {
         </TouchableOpacity>
       </View>
     </View>
-    </ParallaxScrollView>
+    </>
   );
 };
 
@@ -99,4 +104,3 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TriageNowScreen;

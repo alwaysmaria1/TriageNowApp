@@ -1,44 +1,43 @@
 
-import { StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { Patient } from "../lib/types";
 import { ThemedView } from "../ThemedView";
+import { useRouter } from "expo-router";
+import { getStatusColor } from "../lib/utils";
 
 export default function Patients({ patientList }: { patientList: Patient[] }) {
-
-    const getStatusColor = (status: string) => {
-        switch (status) {
-          case 'Immediate': return '#FF6B6B';  // Red
-          case 'Delayed': return '#FFD93D';    // Yellow
-          case 'Minor': return '#6BCB77';      // Green
-          case 'Expectant': return '#4A4A4A';  // Black
-          default: return '#FFFFFF';
-        }
-    };
+    const router = useRouter();
 
     return (
-        <>
-            <ThemedView style={styles.patientList}>
-                <ThemedText type="defaultSemiBold" style={styles.listHeader}>
-                    Patients ({patientList.length})
+        <ThemedView style={styles.patientList}>
+          <ThemedText type="defaultSemiBold" style={styles.listHeader}>
+            Patients ({patientList.length})
+          </ThemedText>
+          {patientList.map((patient) => (
+            <TouchableOpacity
+              key={patient.barcodeID}
+              onPress={() =>
+                router.push(`/patient-notes?barcodeID=${patient.barcodeID}`)
+              }
+            >
+              <ThemedView style={styles.patientCard}>
+                <ThemedText type="defaultSemiBold" style={styles.patientId}>
+                  Patient {patient.barcodeID}
                 </ThemedText>
-                {patientList.map((patient) => (
-                <ThemedView key={patient.barcodeID} style={styles.patientCard}>
-                    <ThemedText type="defaultSemiBold" style={styles.patientId}>
-                        Patient {patient.barcodeID}
-                    </ThemedText>
-                    <ThemedView 
-                    style={[
-                        styles.statusIndicator, 
-                        { backgroundColor: getStatusColor(patient.triageStatus) }
-                    ]} 
-                    />
-                    <ThemedText>{patient.patientStatus}</ThemedText>
-                </ThemedView>
-                ))}
-            </ThemedView>
-        </>
-    );
+                <ThemedView
+                  style={[
+                    styles.statusIndicator,
+                    { backgroundColor: getStatusColor(patient.triageStatus) },
+                  ]}
+                />
+                <ThemedText>{patient.patientStatus}</ThemedText>
+              </ThemedView>
+            </TouchableOpacity>
+          ))}
+        </ThemedView>
+      );
+    
 };
 
 const styles = StyleSheet.create({

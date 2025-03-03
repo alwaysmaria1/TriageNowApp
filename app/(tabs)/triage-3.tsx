@@ -10,8 +10,11 @@ import { CreatePatientDTO, TriageStatus } from "@/components/lib/types";
 import Question from "@/components/triage/question";
 import { useTriageLogic } from "@/components/hooks/use-triage-logic";
 import Questions from "@/components/triage/questions";
+import { useRouter } from "expo-router";
 
 export default function TabThreeScreen() {
+  // router needed to link to patient notes page  
+  const router = useRouter();
     // States to capture user input
     const [ableToWalk, setAbleToWalk] = useState<string | null>(null);
     const [firstSpontaneousBreathing, setFirstSpontaneousBreathing] = useState<string | null>(null);
@@ -65,28 +68,59 @@ export default function TabThreeScreen() {
         }
     };
 
-    const handleTriage = async (
-        overrideColor: TriageStatus
-    ) => {
+    // New state to hold the pending triage selection.
+      const [pendingTriage, setPendingTriage] = useState<TriageStatus | null>(null);
+    
+
+     // Instead of immediately processing, store the selection.
+      const handleTriage = (color: TriageStatus) => {
+        setPendingTriage(color);
+      };
+    
+      // Confirm submission function – sends the patient data.
+      const confirmTriage = async () => {
+        if (!pendingTriage) return;
         setIsCreatingPatient(true);
         const newPatientData: CreatePatientDTO = {
-            barcodeID: randomBarcodeID.toString(),
-            lastUpdated: new Date().toISOString(),
-            patientStatus: "Triage Complete",
-            triageStatus: overrideColor,
-            zone: "Zone 3",
+          barcodeID: randomBarcodeID.toString(),
+          lastUpdated: new Date().toISOString(),
+          patientStatus: "Triage Complete",
+          triageStatus: pendingTriage,
+          zone: "Zone 3",
         };
-
-        // Add patient to database by calling 'createPatient' hook
+    
         const result = await createPatient(newPatientData);
         setIsCreatingPatient(false);
-
         if (result) {
-            console.log("Patient created (override) with ID:", result);
+          console.log("Patient created with ID:", result);
+          resetTriage();
+          // Optionally, reset all states after successful submission.
+          setPendingTriage(null);
+          router.push(`/patient-notes?barcodeID=${result.barcodeID}`)
+
         } else {
-            console.log("Patient creation failed.");
+          console.log("Patient creation failed.");
         }
-    };
+      };
+    
+      // Reset function to clear all answers and states.
+      const resetTriage = () => {
+        setAbleToWalk(null);
+        setFirstSpontaneousBreathing(null);
+        setSecondSpontaneousBreathing(null);
+        setRespiratoryRate(null);
+        setPerfusion(null);
+        setMentalStatus(null);
+    
+        setShowFirstBreathingQuestion(false);
+        setShowSecondBreathingQuestion(false);
+        setShowRespiratoryRateQuestion(false);
+        setShowPerfusionQuestion(false);
+        setShowMentalStatusQuestion(false);
+    
+        setActiveTriage(false);
+        setPendingTriage(null);
+      };
 
     return (
         <ParallaxScrollView
@@ -176,6 +210,18 @@ export default function TabThreeScreen() {
                 showMentalStatusQuestion={showMentalStatusQuestion}
             />
 
+            {/* CONFIRMATION & RESET SECTION */}
+                      {pendingTriage && (
+                        <View style={styles.confirmSection}>
+                          <ThemedText type="subtitle">
+                            Your triage status is: {" "}
+                            <ThemedText type="title">{pendingTriage}</ThemedText>
+                          </ThemedText>
+                          <Button title="Submit" variant="grey" onPress={confirmTriage} />
+                          <Button title="Reset" variant="grey" onPress={resetTriage} style={styles.resetButton} />
+                        </View>
+                      )}
+
             {isCreatingPatient && (
                 <ActivityIndicator size="large" color="#0000ff" />
             )}
@@ -221,5 +267,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginBottom: 16,
+  },
+  confirmSection: {
+    marginTop: 20,
+  },
+  resetButton: {
+    marginTop: 10,
   },
 });
