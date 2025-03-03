@@ -50,7 +50,7 @@ export default function Questions({
         questionText: "Able to Walk?",
         options: [
             { title: "Yes", value: "Yes", onPress: () => handleTriage("Minor") },
-            { title: "No", value: "No", onPress: () => {} },
+            { title: "No", value: "No", onPress: () => handleTriage(null) },
         ],
         stateKey: ableToWalk,
         setState: setAbleToWalk,
@@ -59,8 +59,8 @@ export default function Questions({
         show: showFirstBreathingQuestion,
         questionText: "Spontaneous Breathing?",
         options: [
-            { title: "Yes", value: "Yes", onPress: () => {} },
-            { title: "No", value: "No", onPress: () => {} },
+            { title: "Yes", value: "Yes", onPress: () => handleTriage(null) },
+            { title: "No", value: "No", onPress: () => handleTriage(null) },
         ],
         stateKey: firstSpontaneousBreathing,
         setState: setFirstSpontaneousBreathing,
@@ -70,7 +70,7 @@ export default function Questions({
         specialText: "POSITION THE PATIENT'S AIRWAY",
         questionText: "Spontaneous Breathing?",
         options: [
-            { title: "Yes", value: "Yes", onPress: () => {} },
+            { title: "Yes", value: "Yes", onPress: () => handleTriage(null) },
             { title: "No", value: "No", onPress: () => handleTriage("Expectant") },
         ],
         stateKey: secondSpontaneousBreathing,
@@ -81,7 +81,7 @@ export default function Questions({
         questionText: "Respiratory Rate?",
         options: [
             { title: ">30", value: ">30", onPress: () => handleTriage("Immediate") },
-            { title: "<30", value: "<30", onPress: () => {} },
+            { title: "<30", value: "<30", onPress: () => handleTriage(null) },
         ],
         stateKey: respiratoryRate,
         setState: setRespiratoryRate,
@@ -90,7 +90,7 @@ export default function Questions({
         show: showPerfusionQuestion,
         questionText: `Perfusion\n(Radial Pulse?)`,
         options: [
-            { title: "Present", value: "Present", onPress: () => {} },
+            { title: "Present", value: "Present", onPress: () => handleTriage(null) },
             { title: "Absent", value: "Absent", onPress: () => handleTriage("Immediate") },
         ],
         stateKey: perfusion,

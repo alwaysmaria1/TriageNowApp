@@ -39,8 +39,13 @@ export function useTriageLogic(
   useEffect(() => {
     if (firstSpontaneousBreathing === "Yes") {
         setShowRespiratoryRateQuestion(true);
+        setRespiratoryRate(null);
         setShowSecondBreathingQuestion(false);
         setSecondSpontaneousBreathing(null);
+        setShowPerfusionQuestion(false);
+        setPerfusion(null);
+        setShowMentalStatusQuestion(false);
+        setMentalStatus(null);
     } else if (firstSpontaneousBreathing === "No") {
         setShowSecondBreathingQuestion(true);
         setShowRespiratoryRateQuestion(false);
