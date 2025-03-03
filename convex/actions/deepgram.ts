@@ -5,9 +5,8 @@ import { action } from "../_generated/server";
 import { createClient } from "@deepgram/sdk";
 import { Buffer } from 'buffer';
 
-
 export const transcribeFile = action({
-  args: { fileData: v.string()},
+  args: { fileData: v.string() },
   handler: async (_, { fileData }) => {
     const deepgram = createClient(process.env.DEEPGRAM_API_KEY);
 

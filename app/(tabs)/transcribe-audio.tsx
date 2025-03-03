@@ -1,40 +1,77 @@
 import React from "react";
-import { Button, Text, View, StyleSheet } from "react-native";
-import { useAction } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { Button, View, StyleSheet } from "react-native";
 import { ThemedText } from "@/components/ThemedText";
+import ParallaxScrollView from "@/components/ParallaxScrollView";
+import { Asset } from "expo-asset";
 
 const { createClient } = require("@deepgram/sdk");
-const fs = require("fs");
+// const fileUri = require("../../assets/test.m4a");
+// const fs = require("fs");
+// import RNFS from "react-native-fs";
+
+import * as FileSystem from 'expo-file-system';
 
 export default function TranscribeScreen() {
-  const transcribe = useAction(api.actions.deepgram.transcribeFile);
+  // const transcribe = useAction(api.actions.deepgram.transcribeFile);
   const [result, setResult] = React.useState<string | null>(null);
+
+  // Assumption: Audio file will be uploading in assets folder
+  const getFileUri = async () => {
+    const asset = Asset.fromModule(require("../../assets/test.m4a"));
+    await asset.downloadAsync(); // Ensure the file is available
+    return asset.localUri;
+  };
 
   const handleTranscription = async () => {
     try {
-      const apiResponse = await transcribe({ fileData: "test.m4a" });
-      const transcript = apiResponse.results.channels[0]?.alternatives[0]?.transcript
-      if (transcript) {
-        setResult(transcript);
-      }
+        // Connect to Deepgram via API key
+        const deepgram = createClient("2aa91dbf90ed5c7d8a6fc9d560631c34486d40f9"); // replace key with process.env.DEEPGRAM_API_KEY
+
+        // const file = RNFS.readFile("../test.m4a", "base64")
+        // const fileUri = FileSystem.documentDirectory + "test.m4a";
+
+        const fileUri = await getFileUri();
+        // console.log("File URI:", fileUri);
+
+        if (fileUri) {
+
+            const base64String = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 });
+            let binaryData = new Uint8Array(atob(base64String).split('').map(char => char.charCodeAt(0)));
+            // console.log("Base64 Data (First 100 chars):", file.substring(0, 100));
+
+            const { result, error } = await deepgram.listen.prerecorded.transcribeFile(
+                binaryData,
+                {
+                    model: "nova-3",
+                    smart_format: true,
+                }
+            );
+            const transcript = result.results.channels[0]?.alternatives[0]?.transcript
+            if (transcript) {
+                setResult(transcript);
+            }
+        }
     } catch (error) {
       console.error("Error transcribing:", error);
     }
   };
 
-  return (
+    return (
+        <ParallaxScrollView
+            headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
+            headerImage={<></>}
+        >
+        <View style={styles.fullWidthButton}>
+            <Button
+                onPress={handleTranscription}
+                title="Transcribe Audio"
+            />
+            {result && <ThemedText type="subtitle">{result}</ThemedText>}
+        </View>
+        </ParallaxScrollView>
+    );
+}
 
-    <View style={styles.fullWidthButton}>
-    <Button
-        onPress={handleTranscription}
-        title="Transcribe Audio"
-    />
-    {result && <ThemedText type="subtitle">{result}</ThemedText>}
-    </View>
-    
-  );
-};
 
 const styles = StyleSheet.create({
     container: {
