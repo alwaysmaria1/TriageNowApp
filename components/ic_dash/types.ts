@@ -12,5 +12,6 @@ export  interface ColorScheme {
     bg: string;
     text: string;
     value: string;
+    badgebg: string;
   }
   

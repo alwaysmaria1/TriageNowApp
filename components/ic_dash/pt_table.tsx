@@ -106,7 +106,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
           <View style={styles.cell}>
             <View style={[
               styles.priorityBadge, 
-              { backgroundColor: priorityColors[pt.priority]?.value || '#ccc' }
+              { backgroundColor: priorityColors[pt.priority]?.badgebg || '#ccc' }
             ]}>
               <Text style={styles.priorityBadgeText}>{pt.priority}</Text>
             </View>
@@ -115,7 +115,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
             <Text>{pt.status}</Text>
           </View>
           <View style={styles.cell}>
-            <Text>{pt.zone}</Text>
+            <Text>     {pt.zone}</Text>
           </View>
           <View style={styles.cell}>
             <Text>{pt.zoneLeader}</Text>
@@ -190,6 +190,6 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
         fontSize: 12,
       },
     
-});
+  });
 
 export default PatientTable;
