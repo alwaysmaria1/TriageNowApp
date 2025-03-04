@@ -34,18 +34,21 @@ export default function IncidentCommandDashboard() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.header}>
-        <ThemedView style={styles.header}>
-          <ThemedText style={styles.title}>TriageNow</ThemedText>
-          <ThemedText style={styles.subtitle}>Incident Command Dashboard</ThemedText>
-        </ThemedView>
+      <ThemedText style={styles.title}>TriageNow</ThemedText>
 
-        <ScrollView horizontal style={styles.priorityCardsContainer}>
+      <ThemedView style={styles.topHalf}>
+        {/* <ThemedView style={styles.header}> */}
+          <ThemedText style={styles.subtitle}>Incident Command Dashboard</ThemedText>
+        {/* </ThemedView> */}
+
+      <ThemedView style={styles.priorityCardsContainer}>
+        <ScrollView horizontal >
           {renderPriorityCard('IMMEDIATE', priorityCounts['IMMEDIATE'], priorityColors.IMMEDIATE)}
           {renderPriorityCard('DELAYED', priorityCounts['DELAYED'], priorityColors.DELAYED)}
           {renderPriorityCard('MINOR', priorityCounts['MINOR'], priorityColors.MINOR)}
           {renderPriorityCard('EXPECTANT', priorityCounts['EXPECTANT'], priorityColors.EXPECTANT)}
         </ScrollView>
+      </ThemedView>
       </ThemedView>
       <ThemedView style={styles.mainBody}>
 
@@ -70,21 +73,35 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   header: {
-    marginBottom: 16,
+  
+  },
+  topHalf: {
+    flexDirection: 'row',
+    flex: 0.4,
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    width: '100%',
   },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 2,
+    marginTop: 10,
+    paddingLeft: 2,
   },
   subtitle: {
     fontSize: 28,
     fontWeight: 'bold',
-    marginBottom: 0,
+    marginTop: 30
+    ,
   },
   priorityCardsContainer: {
+    // marginBottom: 24,
+    // flexShrink: 0,
+    // flex: 0.5,
     flexDirection: 'row',
-    marginBottom: 24,
+    justifyContent: 'flex-end', // Aligns cards to the right
+    alignItems: 'center', // Ensures proper vertical alignment
   },
   priorityCard: {
     width: 120,
