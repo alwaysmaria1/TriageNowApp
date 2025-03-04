@@ -6,8 +6,24 @@ import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 
+// create patient type
+interface Patient {
+  id: string;
+  priority: string;
+  status: string;
+  zone: string;
+  zoneLeader: string;
+  [key: string]: string; // Allow dynamic access for sorting 
+}
+
+interface ColorScheme {
+  bg: string;
+  text: string;
+  value: string;
+}
+
 // Mock data for demonstration
-const initialPatients = [
+const initialPatients: Patient[] = [
   { id: '10386', priority: 'IMMEDIATE', status: 'Triage Complete', zone: '3', zoneLeader: 'Kamila Wong' },
   { id: '10387', priority: 'DELAYED', status: 'Triage Complete', zone: '3', zoneLeader: 'Kamila Wong' },
   { id: '10388', priority: 'DELAYED', status: 'Triage Complete', zone: '1', zoneLeader: 'Maria Herne' },
@@ -17,9 +33,9 @@ const initialPatients = [
 ];
 
 export default function IncidentCommandDashboard() {
-  const [patients, setPatients] = useState(initialPatients);
-  const [sortDirection, setSortDirection] = useState(null);
-  const [sortField, setSortField] = useState(null);
+  const [patients, setPatients] =  useState<Patient[]>(initialPatients);
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sortField, setSortField] = useState<keyof Patient | null>(null);
 
   // Calculate patient counts by priority
   const priorityCounts = patients.reduce<Record<string, number>>((counts, patient) => {
@@ -29,7 +45,7 @@ export default function IncidentCommandDashboard() {
   }, {});
 
   // Define priority colors
-  const priorityColors = {
+  const priorityColors: Record<string, ColorScheme>= {
     IMMEDIATE: { bg: '#F8D7DA', text: '#DC3545', value: '#DC3545' },
     DELAYED: { bg: '#FFF3CD', text: '#856404', value: '#FFDC00' },
     MINOR: { bg: '#D4EDDA', text: '#28A745', value: '#28A745' },
@@ -37,8 +53,8 @@ export default function IncidentCommandDashboard() {
   };
 
   // Sort function
-  const sortPatients = (field) => {
-    let newDirection = 'asc';
+  const sortPatients = (field: keyof Patient) => {
+    let newDirection: 'asc' | 'desc' = 'asc';
     if (sortField === field && sortDirection === 'asc') {
       newDirection = 'desc';
     }
@@ -64,7 +80,7 @@ export default function IncidentCommandDashboard() {
   };
 
   // Render priority status card
-  const renderPriorityCard = (title, count = 0, colorScheme) => (
+  const renderPriorityCard = (title: string, count = 0, colorScheme: ColorScheme) => (
     <View style={[styles.priorityCard, { backgroundColor: colorScheme.bg }]}>
       <Text style={[styles.priorityCount, { color: colorScheme.value }]}>{count || 0}</Text>
       <Text style={[styles.priorityLabel, { color: colorScheme.text }]}>{title}</Text>
@@ -116,27 +132,27 @@ export default function IncidentCommandDashboard() {
   );
 
   // Render table row
-  const renderRow = ({ item }) => (
+  const renderRow = (pt: Patient) => (
     <View style={styles.tableRow}>
       <View style={styles.cell}>
-        <Text>{item.id}</Text>
+        <Text>{pt.id}</Text>
       </View>
       <View style={styles.cell}>
         <View style={[
           styles.priorityBadge, 
-          { backgroundColor: priorityColors[item.priority]?.value || '#ccc' }
+          { backgroundColor: priorityColors[pt.priority]?.value || '#ccc' }
         ]}>
-          <Text style={styles.priorityBadgeText}>{item.priority}</Text>
+          <Text style={styles.priorityBadgeText}>{pt.priority}</Text>
         </View>
       </View>
       <View style={styles.cell}>
-        <Text>{item.status}</Text>
+        <Text>{pt.status}</Text>
       </View>
       <View style={styles.cell}>
-        <Text>{item.zone}</Text>
+        <Text>{pt.zone}</Text>
       </View>
       <View style={styles.cell}>
-        <Text>{item.zoneLeader}</Text>
+        <Text>{pt.zoneLeader}</Text>
       </View>
       <View style={styles.actionsCell}>
         <TouchableOpacity style={styles.actionButton}>
@@ -164,7 +180,7 @@ export default function IncidentCommandDashboard() {
         {renderHeader()}
         <FlatList
           data={patients}
-          renderItem={renderRow}
+          renderItem={({ item }: { item: Patient }) => renderRow(item)} 
           keyExtractor={item => item.id}
           scrollEnabled={true}
         />
