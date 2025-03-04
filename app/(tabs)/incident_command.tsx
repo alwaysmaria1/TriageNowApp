@@ -36,6 +36,7 @@ export default function IncidentCommandDashboard() {
   const [patients, setPatients] =  useState<Patient[]>(initialPatients);
   const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
   const [sortField, setSortField] = useState<keyof Patient | null>(null);
+  const [openZone, setOpenZone] = useState<string | null>(null);
 
   // Calculate patient counts by priority
   const priorityCounts = patients.reduce<Record<string, number>>((counts, patient) => {
@@ -47,9 +48,16 @@ export default function IncidentCommandDashboard() {
   // Define priority colors
   const priorityColors: Record<string, ColorScheme>= {
     IMMEDIATE: { bg: '#F8D7DA', text: '#DC3545', value: '#DC3545' },
-    DELAYED: { bg: '#FFF3CD', text: '#856404', value: '#FFDC00' },
+    DELAYED: { bg: '#FFF3CD', text: '#634b02', value: '#FFDC00' },
     MINOR: { bg: '#D4EDDA', text: '#28A745', value: '#28A745' },
     EXPECTANT: { bg: '#E2E3E5', text: '#1B1E21', value: '#6C757D' },
+  };
+
+  const zoneStaff: Record<string, string []>= {
+    'Zone 1': ['person1'],
+    'Zone 2': ['person2','person3','person4'],
+    'Zone 3': ['person5','person6'],
+    'Zone 4': ['person7', 'person8', 'person9', 'person10'],
   };
 
   // Sort function
@@ -162,6 +170,11 @@ export default function IncidentCommandDashboard() {
     </View>
   );
 
+   // Toggle function to expand or collapse the zone list
+   const toggleZone = (zone: string) => {
+    setOpenZone(openZone === zone ? null : zone); // Toggle the clicked zone's state
+  };
+
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.header}>
@@ -176,14 +189,39 @@ export default function IncidentCommandDashboard() {
         {renderPriorityCard('EXPECTANT', priorityCounts['EXPECTANT'], priorityColors.EXPECTANT)}
       </ScrollView>
 
-      <ThemedView style={styles.tableContainer}>
-        {renderHeader()}
-        <FlatList
-          data={patients}
-          renderItem={({ item }: { item: Patient }) => renderRow(item)} 
-          keyExtractor={item => item.id}
-          scrollEnabled={true}
-        />
+      <ThemedView style={styles.mainBody}>
+        <ThemedView style={styles.tableContainer}>
+          {renderHeader()}
+          <FlatList
+            data={patients}
+            renderItem={({ item }: { item: Patient }) => renderRow(item)} 
+            keyExtractor={item => item.id}
+            scrollEnabled={true}
+          />
+        </ThemedView>
+        <ThemedView style={styles.staffList}>
+          {Object.entries(zoneStaff).map(([zone, staff]) => (
+          <View key={zone} style={styles.zoneContainer}>
+            <TouchableOpacity
+              style={styles.zoneTitle}
+              onPress={() => toggleZone(zone)} // Toggle visibility of the staff list
+            >
+              <Text style={styles.zoneText}>{zone}</Text>
+            </TouchableOpacity>
+
+            {/* Render staff list if this zone is open */}
+            {openZone === zone && (
+              <View style={styles.staffList}>
+                {staff.map((person, index) => (
+                  <Text key={index} style={styles.staffText}>
+                    {person}
+                  </Text>
+                ))}
+              </View>
+            )}
+          </View>
+        ))}
+        </ThemedView>
       </ThemedView>
     </ThemedView>
   );
@@ -200,6 +238,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 24,
     fontWeight: 'bold',
+    marginBottom: 16,
   },
   subtitle: {
     fontSize: 28,
@@ -231,6 +270,9 @@ const styles = StyleSheet.create({
   priorityLabel: {
     fontSize: 14,
     textAlign: 'center',
+  },
+  mainBody: {
+    flexDirection: 'row',
   },
   tableContainer: {
     flex: 1,
@@ -285,5 +327,30 @@ const styles = StyleSheet.create({
   },
   actionButton: {
     padding: 4,
+  },
+
+  stafflist: {
+    backgroundColor: 'e8e8e8',
+    flex: 1,
+  },
+  zoneContainer: {
+    marginBottom: 20,
+  },
+  zoneTitle: {
+    padding: 10,
+    backgroundColor: '#f1f1f1',
+    borderRadius: 5,
+    marginBottom: 5,
+  },
+  zoneText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  staffList: {
+    marginLeft: 20,
+    paddingTop: 5,
+  },
+  staffText: {
+    fontSize: 16,
   },
 });
