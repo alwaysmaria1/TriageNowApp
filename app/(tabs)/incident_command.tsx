@@ -5,37 +5,14 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { Patient, ColorScheme } from '@/components/ic_dash/types';
+import  PatientTable  from '@/components/ic_dash/pt_table';
+import  { priorityColors, initialPatients }  from '@/components/ic_dash/constants'
 
-// create patient type
-interface Patient {
-  id: string;
-  priority: string;
-  status: string;
-  zone: string;
-  zoneLeader: string;
-  [key: string]: string; // Allow dynamic access for sorting 
-}
 
-interface ColorScheme {
-  bg: string;
-  text: string;
-  value: string;
-}
-
-// Mock data for demonstration
-const initialPatients: Patient[] = [
-  { id: '10386', priority: 'IMMEDIATE', status: 'Triage Complete', zone: '3', zoneLeader: 'Kamila Wong' },
-  { id: '10387', priority: 'DELAYED', status: 'Triage Complete', zone: '3', zoneLeader: 'Kamila Wong' },
-  { id: '10388', priority: 'DELAYED', status: 'Triage Complete', zone: '1', zoneLeader: 'Maria Herne' },
-  { id: '10389', priority: 'IMMEDIATE', status: 'Triage Complete', zone: '2', zoneLeader: 'Meghana Karthic' },
-  { id: '10390', priority: 'IMMEDIATE', status: 'Triage Complete', zone: '1', zoneLeader: 'Maria Herne' },
-  { id: '10391', priority: 'EXPECTANT', status: 'Triage Complete', zone: '2', zoneLeader: 'Kamila Wong' },
-];
 
 export default function IncidentCommandDashboard() {
   const [patients, setPatients] =  useState<Patient[]>(initialPatients);
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-  const [sortField, setSortField] = useState<keyof Patient | null>(null);
   const [openZone, setOpenZone] = useState<string | null>(null);
 
   // Calculate patient counts by priority
@@ -45,13 +22,6 @@ export default function IncidentCommandDashboard() {
     return counts;
   }, {});
 
-  // Define priority colors
-  const priorityColors: Record<string, ColorScheme>= {
-    IMMEDIATE: { bg: '#F8D7DA', text: '#DC3545', value: '#DC3545' },
-    DELAYED: { bg: '#FFF3CD', text: '#634b02', value: '#FFDC00' },
-    MINOR: { bg: '#D4EDDA', text: '#28A745', value: '#28A745' },
-    EXPECTANT: { bg: '#E2E3E5', text: '#1B1E21', value: '#6C757D' },
-  };
 
   const zoneStaff: Record<string, string []>= {
     'Zone 1': ['person1'],
@@ -60,113 +30,12 @@ export default function IncidentCommandDashboard() {
     'Zone 4': ['person7', 'person8', 'person9', 'person10'],
   };
 
-  // Sort function
-  const sortPatients = (field: keyof Patient) => {
-    let newDirection: 'asc' | 'desc' = 'asc';
-    if (sortField === field && sortDirection === 'asc') {
-      newDirection = 'desc';
-    }
-
-    setSortDirection(newDirection);
-    setSortField(field);
-
-    const sortedPatients = [...patients].sort((a, b) => {
-      // Handle numeric sorting for patient ID and zone
-      if (field === 'id' || field === 'zone') {
-        return newDirection === 'asc' 
-          ? parseInt(a[field]) - parseInt(b[field])
-          : parseInt(b[field]) - parseInt(a[field]);
-      }
-      
-      // String sorting for other fields
-      return newDirection === 'asc'
-        ? a[field].localeCompare(b[field])
-        : b[field].localeCompare(a[field]);
-    });
-
-    setPatients(sortedPatients);
-  };
 
   // Render priority status card
   const renderPriorityCard = (title: string, count = 0, colorScheme: ColorScheme) => (
     <View style={[styles.priorityCard, { backgroundColor: colorScheme.bg }]}>
       <Text style={[styles.priorityCount, { color: colorScheme.value }]}>{count || 0}</Text>
       <Text style={[styles.priorityLabel, { color: colorScheme.text }]}>{title}</Text>
-    </View>
-  );
-
-  // Render table header
-  const renderHeader = () => (
-    <View style={styles.tableHeader}>
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('id')}>
-        <ThemedText style={styles.headerText}>Patient</ThemedText>
-        {sortField === 'id' && (
-          <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
-        )}
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('priority')}>
-        <ThemedText style={styles.headerText}>Priority</ThemedText>
-        {sortField === 'priority' && (
-          <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
-        )}
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('status')}>
-        <ThemedText style={styles.headerText}>Status</ThemedText>
-        {sortField === 'status' && (
-          <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
-        )}
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('zone')}>
-        <ThemedText style={styles.headerText}>Zone</ThemedText>
-        {sortField === 'zone' && (
-          <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
-        )}
-      </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('zoneLeader')}>
-        <ThemedText style={styles.headerText}>Zone Leader</ThemedText>
-        {sortField === 'zoneLeader' && (
-          <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
-        )}
-      </TouchableOpacity>
-      
-      <View style={styles.actionsCell}>
-        <ThemedText style={styles.headerText}></ThemedText>
-      </View>
-    </View>
-  );
-
-  // Render table row
-  const renderRow = (pt: Patient) => (
-    <View style={styles.tableRow}>
-      <View style={styles.cell}>
-        <Text>{pt.id}</Text>
-      </View>
-      <View style={styles.cell}>
-        <View style={[
-          styles.priorityBadge, 
-          { backgroundColor: priorityColors[pt.priority]?.value || '#ccc' }
-        ]}>
-          <Text style={styles.priorityBadgeText}>{pt.priority}</Text>
-        </View>
-      </View>
-      <View style={styles.cell}>
-        <Text>{pt.status}</Text>
-      </View>
-      <View style={styles.cell}>
-        <Text>{pt.zone}</Text>
-      </View>
-      <View style={styles.cell}>
-        <Text>{pt.zoneLeader}</Text>
-      </View>
-      <View style={styles.actionsCell}>
-        <TouchableOpacity style={styles.actionButton}>
-          <Text>•••</Text>
-        </TouchableOpacity>
-      </View>
     </View>
   );
 
@@ -190,15 +59,13 @@ export default function IncidentCommandDashboard() {
       </ScrollView>
 
       <ThemedView style={styles.mainBody}>
+
+        {/* patient table in left column */}
         <ThemedView style={styles.tableContainer}>
-          {renderHeader()}
-          <FlatList
-            data={patients}
-            renderItem={({ item }: { item: Patient }) => renderRow(item)} 
-            keyExtractor={item => item.id}
-            scrollEnabled={true}
-          />
+          <PatientTable patients={initialPatients} />       
         </ThemedView>
+
+        {/* staff list by zone in right column */}
         <ThemedView style={styles.staffList}>
           {Object.entries(zoneStaff).map(([zone, staff]) => (
           <View key={zone} style={styles.zoneContainer}>
@@ -280,53 +147,6 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     borderRadius: 8,
     overflow: 'hidden',
-  },
-  tableHeader: {
-    flexDirection: 'row',
-    backgroundColor: '#f5f5f5',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  tableRow: {
-    flexDirection: 'row',
-    paddingVertical: 12,
-    paddingHorizontal: 8,
-    borderBottomWidth: 1,
-    borderBottomColor: '#e0e0e0',
-  },
-  headerCell: {
-    flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  headerText: {
-    fontWeight: 'bold',
-    marginRight: 4,
-  },
-  cell: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  actionsCell: {
-    width: 40,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  priorityBadge: {
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 4,
-    alignSelf: 'flex-start',
-  },
-  priorityBadgeText: {
-    color: 'white',
-    fontWeight: 'bold',
-    fontSize: 12,
-  },
-  actionButton: {
-    padding: 4,
   },
 
   stafflist: {
