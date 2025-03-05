@@ -25,7 +25,7 @@ export default function TranscribeScreen() {
   const handleTranscription = async () => {
     try {
         // Connect to Deepgram via API key
-        const deepgram = createClient("2aa91dbf90ed5c7d8a6fc9d560631c34486d40f9"); // replace key with process.env.DEEPGRAM_API_KEY
+        const deepgram = createClient("08621a45e6cd4e762e30eee3953bbb970874dca7"); // replace key with process.env.DEEPGRAM_API_KEY
 
         // const file = RNFS.readFile("../test.m4a", "base64")
         // const fileUri = FileSystem.documentDirectory + "test.m4a";

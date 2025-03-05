@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { Audio, Recording, Sound } from 'expo-av';
+import { useMutationFiles } from '@/components/hooks/use-mutation-audio-file';
+import { Asset } from "expo-asset";
 
 // Manually defined constants
 const AUDIO_ENCODER_AAC = 3;
@@ -16,7 +18,7 @@ const recordingOptions = {
     bitRate: 128000,
   },
   ios: {
-    extension: '.caf',
+    extension: '.m4a',
     audioQuality: IOS_AUDIO_QUALITY_HIGH,
     sampleRate: 44100,
     numberOfChannels: 2,
@@ -33,6 +35,9 @@ export default function RecordAudioScreen() {
   const [sound, setSound] = useState<Sound | null>(null);
   const [isRecording, setIsRecording] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
+
+  //Import the hook and extract the "add" function for processing audio.
+  const { add: processAudio } = useMutationFiles();
 
   // Starts audio recording
   const startRecording = async () => {
@@ -109,6 +114,33 @@ export default function RecordAudioScreen() {
     }
   };
 
+  // Function to upload the recording using the hook
+  const handleUploadRecording = async () => {
+    if (!recordedURI) {
+      alert("No recording available to upload");
+      return;
+    }
+    try {
+      // Provide a valid barcode ID for your use case.
+      const barcodeID = "123456"; 
+    // TESTING WITH ASSET FILE -- WORKS END to END
+        //   const asset = Asset.fromModule(require("../../assets/test.m4a"));
+        //   await asset.downloadAsync();
+            
+        //   // Get the local URI from the asset.
+        //   const fileUri = asset.localUri;
+      const fileId = await processAudio({ fileUri: recordedURI, barcodeID });
+      if (fileId) {
+        alert("Audio processed and uploaded successfully.");
+      } else {
+        alert("Audio processing failed.");
+      }
+    } catch (error) {
+      console.error("Upload error", error);
+      alert("Error uploading audio");
+    }
+  };
+
   // Cleanup sound resource on unmount
   useEffect(() => {
     return sound
@@ -133,6 +165,12 @@ export default function RecordAudioScreen() {
         onPress={isPlaying ? stopPlayback : playRecording}
         disabled={!recordedURI}
       />
+      {recordedURI && (
+        <Button
+          title="Upload Recording"
+          onPress={handleUploadRecording}
+        />
+      )}
     </View>
   );
 }

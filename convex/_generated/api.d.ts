@@ -14,6 +14,7 @@ import type {
   FunctionReference,
 } from "convex/server";
 import type * as actions_deepgram from "../actions/deepgram.js";
+import type * as files from "../files.js";
 import type * as patients from "../patients.js";
 
 /**
@@ -26,6 +27,7 @@ import type * as patients from "../patients.js";
  */
 declare const fullApi: ApiFromModules<{
   "actions/deepgram": typeof actions_deepgram;
+  files: typeof files;
   patients: typeof patients;
 }>;
 export declare const api: FilterApi<
