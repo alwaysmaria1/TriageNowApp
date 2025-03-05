@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ActivityIndicator, StyleSheet, ScrollView } from "react-native";
+import { View, ActivityIndicator, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -218,10 +218,15 @@ export default function TabThreeScreen() {
                             <ThemedText type="title">{pendingTriage}</ThemedText>
                           </ThemedText>
                           <Button title="Submit" variant="grey" onPress={confirmTriage} />
-                          <Button title="Reset" variant="grey" onPress={resetTriage} style={styles.resetButton} />
+            
                         </View>
                       )}
 
+
+            {/*<Button title="Reset" variant="grey" onPress={resetTriage} style={styles.resetButton} />*/}
+            <TouchableOpacity onPress={resetTriage} style={styles.resetButton2}>
+              <ThemedText type="defaultSemiBold">Start Over</ThemedText>
+            </TouchableOpacity>
             {isCreatingPatient && (
                 <ActivityIndicator size="large" color="#0000ff" />
             )}
@@ -272,6 +277,21 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   resetButton: {
-    marginTop: 10,
+    marginTop: 100,
+    marginHorizontal: 10,
+    backgroundColor: "#818181",
+    textDecorationColor: "#ffffff"
+  },
+  resetButton2: {
+    backgroundColor: 'grey',
+    padding: 10,
+    borderRadius: 8,
+    alignItems: 'center',
+    marginTop: 100,
+    marginHorizontal: 11,
+  },
+  resetButtonText: {
+    color: 'white',
+    fontSize: 16,
   },
 });

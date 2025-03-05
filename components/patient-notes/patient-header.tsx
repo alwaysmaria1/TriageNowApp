@@ -2,14 +2,30 @@ import { Patient } from '@/components/lib/types';
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { getStatusColor } from '../lib/utils';
+import { ThemedText } from '../ThemedText';
+
+
 
 export default function TriageHeader({ patient }: { patient: Patient }) {
+
+  const formatDate = (isoString: any) => {
+    const date = new Date(isoString);
+    return date.toLocaleString("en-US", {
+        month: "2-digit",
+        day: "2-digit",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true, // Use 24-hour format; set to true for AM/PM
+    }).replace(",", ""); // Remove extra comma
+};
+
   return (
     <View style={styles.container}>
       {/* Top Row */}
       <View style={styles.topRow}>
         {/* Left: Patient Number */}
-        <Text style={styles.patientText}>Patient {patient.barcodeID}</Text>
+        <Text type="subtitle" style={styles.patientText}>Patient {patient.barcodeID}</Text>
 
         {/* Right: Triage status button + Last update */}
         <View style={styles.rightColumn}>
@@ -21,7 +37,7 @@ export default function TriageHeader({ patient }: { patient: Patient }) {
           >
             <Text style={styles.immediateButtonText}>{patient.triageStatus}</Text>
           </TouchableOpacity>
-          <Text style={styles.lastUpdateText}>Last update {patient.lastUpdated}</Text>
+          <Text style={styles.lastUpdateText}>Last update: {formatDate(patient.lastUpdated)}</Text>
         </View>
       </View>
 
@@ -36,7 +52,7 @@ export default function TriageHeader({ patient }: { patient: Patient }) {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    backgroundColor: '#fff',
+    // backgroundColor: '#fff',
   },
   topRow: {
     flexDirection: 'row',
@@ -49,7 +65,9 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
   rightColumn: {
-    alignItems: 'flex-end',
+    alignItems: 'flex-start',
+    maxWidth: '25%',
+    flexShrink: 1, 
   },
   immediateButton: {
     backgroundColor: 'red',
@@ -57,6 +75,8 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderRadius: 4,
     marginBottom: 4,
+    alignSelf: 'flex-start',  // Prevents stretching too far
+    maxWidth: '100%',  
   },
   immediateButtonText: {
     color: '#fff',
