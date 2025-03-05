@@ -5,20 +5,20 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Patient, ColorScheme } from '@/components/lib/types';
+import { PatientIC, ColorScheme } from '@/components/lib/types';
 import  { priorityColors }  from '@/components/ic_dash/constants'
 
 
 
 interface Props {
-    patients: Patient[];
+    patients: PatientIC[];
   }
       
 
 const PatientTable: React.FC<Props> = ({ patients }) => {
       const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-      const [sortField, setSortField] = useState<keyof Patient | null>(null);
-      const [sortedPatients, setSortedPatients] = useState<Patient []>(patients);
+      const [sortField, setSortField] = useState<keyof PatientIC | null>(null);
+      const [sortedPatients, setSortedPatients] = useState<PatientIC []>(patients);
 
       useEffect(() => {
         setSortedPatients(patients); // Ensure table updates if `patients` prop changes
@@ -26,7 +26,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
     
 
      // Sort function
-      const sortPatients = (field: keyof Patient) => {
+      const sortPatients = (field: keyof PatientIC) => {
         let newDirection: 'asc' | 'desc' = 'asc';
         if (sortField === field && sortDirection === 'asc') {
           newDirection = 'desc';
@@ -97,7 +97,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
   );
 
     // Render table row
-    const  renderRow = (pt: Patient) => {
+    const  renderRow = (pt: PatientIC) => {
         return (
         <View style={styles.tableRow}>
           <View style={styles.cell}>
@@ -133,7 +133,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
             {renderHeader()}
             <FlatList
                 data={patients}
-                renderItem={({ item }: { item: Patient }) => renderRow(item)} 
+                renderItem={({ item }: { item: PatientIC }) => renderRow(item)} 
                 keyExtractor={item => item.id}
                 scrollEnabled={true}
             />

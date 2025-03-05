@@ -78,7 +78,7 @@ export interface FindPatientsDTO {
   recency?: string;
 }
 // create patient type
-export interface Patient {
+export interface PatientIC {
     id: string;
     priority: string;
     status: string;

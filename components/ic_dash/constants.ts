@@ -1,4 +1,4 @@
-import { Patient, ColorScheme } from '@/components/lib/types';
+import { PatientIC, ColorScheme } from '@/components/lib/types';
 
 
 // Define priority colors
@@ -10,7 +10,7 @@ export const priorityColors: Record<string, ColorScheme>= {
 };
 
 // Mock data for demonstration
-export const initialPatients: Patient[] = [
+export const initialPatients: PatientIC[] = [
   { id: '10386', priority: 'IMMEDIATE', status: 'Triage Complete', zone: '3', zoneLeader: 'Kamila Wong' },
   { id: '10387', priority: 'DELAYED', status: 'Triage Complete', zone: '3', zoneLeader: 'Kamila Wong' },
   { id: '10388', priority: 'DELAYED', status: 'Triage Complete', zone: '1', zoneLeader: 'Maria Herne' },

@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Patient, ColorScheme } from '@/components/lib/types';
+import { PatientIC, ColorScheme } from '@/components/lib/types';
 import  PatientTable  from '@/components/ic_dash/pt_table';
 import  StaffList  from '@/components/ic_dash/staff_list';
 
@@ -14,7 +14,7 @@ import  { priorityColors, initialPatients, zoneStaff }  from '@/components/ic_da
 
 
 export default function IncidentCommandDashboard() {
-  const [patients, setPatients] =  useState<Patient[]>(initialPatients);
+  const [patients, setPatients] =  useState<PatientIC[]>(initialPatients);
 
   // Calculate patient counts by priority
   const priorityCounts = patients.reduce<Record<string, number>>((counts, patient) => {
