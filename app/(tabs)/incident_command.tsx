@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Patient, ColorScheme } from '@/components/ic_dash/types';
+import { Patient, ColorScheme } from '@/components/lib/types';
 import  PatientTable  from '@/components/ic_dash/pt_table';
 import  StaffList  from '@/components/ic_dash/staff_list';
 

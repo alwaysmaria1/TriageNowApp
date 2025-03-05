@@ -1,4 +1,4 @@
-import { Patient, ColorScheme } from '@/components/ic_dash/types';
+import { Patient, ColorScheme } from '@/components/lib/types';
 
 
 // Define priority colors

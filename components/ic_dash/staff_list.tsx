@@ -5,7 +5,7 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Patient, ColorScheme } from '@/components/ic_dash/types';
+import { Patient, ColorScheme } from '@/components/lib/types';
 import  { priorityColors }  from '@/components/ic_dash/constants'
 
 interface Props {
