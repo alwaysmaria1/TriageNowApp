@@ -34,6 +34,8 @@ export function useMutationFiles() {
     fileMeta: { fileUri: string; barcodeID: string }
   ): Promise<string | null> => {
     try {
+    
+        // STORAGE OF FILE URL TO CONVEX BEGINS HERE !!!
       const { fileUri, barcodeID } = fileMeta;
         if (!fileUri) {
             throw new Error("File URI is null");
@@ -54,22 +56,23 @@ export function useMutationFiles() {
         storageId: storageId as Id<"_storage">,
       });
 
-      // Set status to pending for current audio upload
-      await updateFileStatus({ fileId: audioId, status: "pending" });
+      // TRANSCRIPTION VOICE TO TEXT BEGINS HERE !!!!
+    //   // Set status to pending for current audio upload
+    //   await updateFileStatus({ fileId: audioId, status: "pending" });
       
-      // Pass the public URL into the transcribeAudio action.
-      const transcriptionResult = await transcribeAudio({
-        fileData: url,
-      });
+    //   // Pass the public URL into the transcribeAudio action.
+    //   const transcriptionResult = await transcribeAudio({
+    //     fileData: url,
+    //   });
       
-      // saves the transcription in the db associated with audio
-      await updateFileText({
-        fileId: audioId,
-        transcription: transcriptionResult || "NOTHING SAVED",
-      });
-      await updateFileStatus({ fileId: audioId, status: "processed" });
+    //   // saves the transcription in the db associated with audio
+    //   await updateFileText({
+    //     fileId: audioId,
+    //     transcription: transcriptionResult || "NOTHING SAVED",
+    //   });
+    //   await updateFileStatus({ fileId: audioId, status: "processed" });
 
-      return audioId;
+    return "testing current file storage";
     } catch (error) {
       alert((error as Error).message || "Please try again later");
       return null;
