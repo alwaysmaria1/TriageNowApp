@@ -5,20 +5,20 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { PatientIC, ColorScheme } from '@/components/lib/types';
+import { Patient, ColorScheme } from '@/components/lib/types';
 import  PatientTable  from '@/components/ic_dash/pt_table';
 import  StaffList  from '@/components/ic_dash/staff_list';
 
-import  { priorityColors, initialPatients, zoneStaff }  from '@/components/ic_dash/constants'
+import  { triageStatusColors, initialPatients, zoneStaff }  from '@/components/ic_dash/constants'
 
 
 
 export default function IncidentCommandDashboard() {
-  const [patients, setPatients] =  useState<PatientIC[]>(initialPatients);
+  const [patients, setPatients] =  useState<Patient[]>(initialPatients);
 
   // Calculate patient counts by priority
   const priorityCounts = patients.reduce<Record<string, number>>((counts, patient) => {
-    const priority = patient.priority;
+    const priority = patient.triageStatus;
     counts[priority] = (counts[priority] || 0) + 1;
     return counts;
   }, {});
@@ -43,10 +43,10 @@ export default function IncidentCommandDashboard() {
 
       <ThemedView style={styles.priorityCardsContainer}>
         <ScrollView horizontal >
-          {renderPriorityCard('IMMEDIATE', priorityCounts['IMMEDIATE'], priorityColors.IMMEDIATE)}
-          {renderPriorityCard('DELAYED', priorityCounts['DELAYED'], priorityColors.DELAYED)}
-          {renderPriorityCard('MINOR', priorityCounts['MINOR'], priorityColors.MINOR)}
-          {renderPriorityCard('EXPECTANT', priorityCounts['EXPECTANT'], priorityColors.EXPECTANT)}
+          {renderPriorityCard('IMMEDIATE', priorityCounts['IMMEDIATE'], triageStatusColors.IMMEDIATE)}
+          {renderPriorityCard('DELAYED', priorityCounts['DELAYED'], triageStatusColors.DELAYED)}
+          {renderPriorityCard('MINOR', priorityCounts['MINOR'], triageStatusColors.MINOR)}
+          {renderPriorityCard('EXPECTANT', priorityCounts['EXPECTANT'], triageStatusColors.EXPECTANT)}
         </ScrollView>
       </ThemedView>
       </ThemedView>

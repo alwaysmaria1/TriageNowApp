@@ -29,8 +29,8 @@ export type Patient = {
   sex?: string;
   // Required fields per the DTO
   lastUpdated: string; // ISO string, e.g., from new Date().toISOString()
-  patientStatus: PatientStatus;
-  triageStatus: TriageStatus;
+  patientStatus: PatientStatus; // position in continuum of care
+  triageStatus: TriageStatus; //immediate, delayed, minor, expectant
   zone: string;
 
 }

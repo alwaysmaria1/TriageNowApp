@@ -5,17 +5,18 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { PatientIC, ColorScheme } from '@/components/lib/types';
-import  { priorityColors }  from '@/components/ic_dash/constants'
+import { Patient, ColorScheme } from '@/components/lib/types';
+import  { triageStatusColors }  from '@/components/ic_dash/constants'
 
 
 
 interface Props {
-    patients: PatientIC[];
+    patients: Patient[];
   }
       
 
 const PatientTable: React.FC<Props> = ({ patients }) => {
+  // TODO: fix sort 
       const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
       const [sortField, setSortField] = useState<keyof PatientIC | null>(null);
       const [sortedPatients, setSortedPatients] = useState<PatientIC []>(patients);
@@ -26,6 +27,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
     
 
      // Sort function
+     // TODO: fix sort
       const sortPatients = (field: keyof PatientIC) => {
         let newDirection: 'asc' | 'desc' = 'asc';
         if (sortField === field && sortDirection === 'asc') {
@@ -106,7 +108,7 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
           <View style={styles.cell}>
             <View style={[
               styles.priorityBadge, 
-              { backgroundColor: priorityColors[pt.priority]?.badgebg || '#ccc' }
+              { backgroundColor: triageStatusColors[pt.priority]?.badgebg || '#ccc' }
             ]}>
               <Text style={styles.priorityBadgeText}>{pt.priority}</Text>
             </View>
