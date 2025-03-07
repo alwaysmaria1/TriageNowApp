@@ -7,73 +7,84 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Patient, ColorScheme } from '@/components/lib/types';
 import  { triageStatusColors }  from '@/components/ic_dash/constants'
+import { useQueryPatients } from '../hooks/use-query-patients';
 
 
 
 interface Props {
-    patients: Patient[];
-  }
+  // patients: Patient[];
+}
       
 
-const PatientTable: React.FC<Props> = ({ patients }) => {
+export default function PatientTable() {
   // TODO: fix sort 
       const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-      const [sortField, setSortField] = useState<keyof PatientIC | null>(null);
-      const [sortedPatients, setSortedPatients] = useState<PatientIC []>(patients);
+      const [sortField, setSortField] = useState<"_id" | "patientStatus" | "triageStatus" | "zone">("_id");
+      const [sortedPatients, setSortedPatients] = useState<Patient []>();
 
-      useEffect(() => {
-        setSortedPatients(patients); // Ensure table updates if `patients` prop changes
-      }, [patients]);
-    
+      // useEffect(() => {
+      //   setSortedPatients(patients); // Ensure table updates if `patients` prop changes
+      // }, [patients]);
 
-     // Sort function
-     // TODO: fix sort
-      const sortPatients = (field: keyof PatientIC) => {
+      const { patients } = useQueryPatients(sortField, sortDirection);
+
+      // useEffect(() => {
+      //   //call api for new sorted list
+      //   //set sorted patients witj result
+      //   const { patients } = useQueryPatients(sortField, sortDirection);
+      //   setSortedPatients( patients );
+      // }, [sortField, sortDirection]);
+
+    //  // Sort function
+    //  // TODO: fix sort
+      const sortPatients = (field: "_id" | "patientStatus" | "triageStatus" | "zone") => {
         let newDirection: 'asc' | 'desc' = 'asc';
         if (sortField === field && sortDirection === 'asc') {
           newDirection = 'desc';
         }
-    
         setSortDirection(newDirection);
         setSortField(field);
+      }
+    //     setSortDirection(newDirection);
+    //     setSortField(field);
     
-        const sorted = [...patients].sort((a, b) => {
-          // Handle numeric sorting for patient ID and zone
-          if (field === 'id' || field === 'zone') {
-            return newDirection === 'asc' 
-              ? parseInt(a[field].toString()) - parseInt(b[field].toString())
-              : parseInt(b[field].toString()) - parseInt(a[field].toString());
-          }
+    //     const sorted = [...patients].sort((a, b) => {
+    //       // Handle numeric sorting for patient ID and zone
+    //       if (field === '_id' || field === 'zone') {
+    //         return newDirection === 'asc' 
+    //           ? parseInt(a[field].toString()) - parseInt(b[field].toString())
+    //           : parseInt(b[field].toString()) - parseInt(a[field].toString());
+    //       }
           
-          // String sorting for other fields
-          return newDirection === 'asc'
-            ? a[field].toString().localeCompare(b[field].toString())
-            : b[field].toString().localeCompare(a[field].toString());
-        });
+    //       // String sorting for other fields
+    //       return newDirection === 'asc'
+    //         ? a[field].toString().localeCompare(b[field].toString())
+    //         : b[field].toString().localeCompare(a[field].toString());
+    //     });
     
-        setSortedPatients(sorted);
-      };
+    //     setSortedPatients(sorted);
+    //   };
 
      // Render table header
    const renderHeader = () => (
     <View style={styles.tableHeader}>
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('id')}>
+      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('_id')}>
         <ThemedText style={styles.headerText}>Patient</ThemedText>
-        {sortField === 'id' && (
+        {sortField === '_id' && (
           <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
         )}
       </TouchableOpacity>
       
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('priority')}>
+      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('triageStatus')}>
         <ThemedText style={styles.headerText}>Priority</ThemedText>
-        {sortField === 'priority' && (
+        {sortField === 'triageStatus' && (
           <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
         )}
       </TouchableOpacity>
       
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('status')}>
+      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('patientStatus')}>
         <ThemedText style={styles.headerText}>Status</ThemedText>
-        {sortField === 'status' && (
+        {sortField === 'patientStatus' && (
           <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
         )}
       </TouchableOpacity>
@@ -85,12 +96,12 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
         )}
       </TouchableOpacity>
       
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('zoneLeader')}>
+      {/* <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('zoneLeader')}>
         <ThemedText style={styles.headerText}>Zone Leader</ThemedText>
         {sortField === 'zoneLeader' && (
           <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
         )}
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       
       <View style={styles.actionsCell}>
         <ThemedText style={styles.headerText}></ThemedText>
@@ -99,28 +110,25 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
   );
 
     // Render table row
-    const  renderRow = (pt: PatientIC) => {
+    const  renderRow = (pt: Patient) => {
         return (
         <View style={styles.tableRow}>
           <View style={styles.cell}>
-            <Text>{pt.id}</Text>
+            <Text>{pt._id}</Text>
           </View>
           <View style={styles.cell}>
             <View style={[
               styles.priorityBadge, 
-              { backgroundColor: triageStatusColors[pt.priority]?.badgebg || '#ccc' }
+              { backgroundColor: triageStatusColors[pt.triageStatus]?.badgebg || '#ccc' }
             ]}>
-              <Text style={styles.priorityBadgeText}>{pt.priority}</Text>
+              <Text style={styles.priorityBadgeText}>{pt.triageStatus}</Text>
             </View>
           </View>
           <View style={styles.cell}>
-            <Text>{pt.status}</Text>
+            <Text>{pt.patientStatus}</Text>
           </View>
           <View style={styles.cell}>
             <Text>     {pt.zone}</Text>
-          </View>
-          <View style={styles.cell}>
-            <Text>{pt.zoneLeader}</Text>
           </View>
           <View style={styles.actionsCell}>
             <TouchableOpacity style={styles.actionButton}>
@@ -134,9 +142,9 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
         <>
             {renderHeader()}
             <FlatList
-                data={patients}
-                renderItem={({ item }: { item: PatientIC }) => renderRow(item)} 
-                keyExtractor={item => item.id}
+                data={sortedPatients}
+                renderItem={({ item }: { item: Patient }) => renderRow(item)} 
+                keyExtractor={item => item._id}
                 scrollEnabled={true}
             />
         </>
@@ -193,5 +201,3 @@ const PatientTable: React.FC<Props> = ({ patients }) => {
       },
     
   });
-
-export default PatientTable;

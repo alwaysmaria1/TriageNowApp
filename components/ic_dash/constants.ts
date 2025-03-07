@@ -5,9 +5,9 @@ import { Id } from "convex/_generated/dataModel";
 // Define triageStatus colors
 export const triageStatusColors: Record<string, ColorScheme>= {
     Immediate: { bg: '#F8D7DA', text: '#DC3545', value: '#DC3545', badgebg: '#DC3545' },
-    DELAYED: { bg: '#FFF3CD', text: '#856404', value: '#d48506', badgebg: '#f5d405' },
-    MINOR: { bg: '#D4EDDA', text: '#28A745', value: '#28A745', badgebg: '#28A745' },
-    EXPECTANT: { bg: '#E2E3E5', text: '#1B1E21', value: '#6C757D', badgebg: '#000000' },
+    Delayed: { bg: '#FFF3CD', text: '#856404', value: '#d48506', badgebg: '#f5d405' },
+    Minor: { bg: '#D4EDDA', text: '#28A745', value: '#28A745', badgebg: '#28A745' },
+    Expectant: { bg: '#E2E3E5', text: '#1B1E21', value: '#6C757D', badgebg: '#000000' },
 };
 
 // Mock data of Patient (to replace PatientIC) for demonstration

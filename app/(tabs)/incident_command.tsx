@@ -43,10 +43,10 @@ export default function IncidentCommandDashboard() {
 
       <ThemedView style={styles.priorityCardsContainer}>
         <ScrollView horizontal >
-          {renderPriorityCard('IMMEDIATE', priorityCounts['IMMEDIATE'], triageStatusColors.IMMEDIATE)}
-          {renderPriorityCard('DELAYED', priorityCounts['DELAYED'], triageStatusColors.DELAYED)}
-          {renderPriorityCard('MINOR', priorityCounts['MINOR'], triageStatusColors.MINOR)}
-          {renderPriorityCard('EXPECTANT', priorityCounts['EXPECTANT'], triageStatusColors.EXPECTANT)}
+          {renderPriorityCard('IMMEDIATE', priorityCounts['Immediate'], triageStatusColors.Immediate)}
+          {renderPriorityCard('DELAYED', priorityCounts['Delayed'], triageStatusColors.Delayed)}
+          {renderPriorityCard('MINOR', priorityCounts['Minor'], triageStatusColors.Minor)}
+          {renderPriorityCard('EXPECTANT', priorityCounts['Expectant'], triageStatusColors.Expectant)}
         </ScrollView>
       </ThemedView>
       </ThemedView>
@@ -54,7 +54,8 @@ export default function IncidentCommandDashboard() {
 
         {/* patient table in left column */}
         <ThemedView style={styles.tableContainer}>
-          <PatientTable patients={initialPatients} />       
+          {/* <PatientTable patients={initialPatients} />        */}
+          <PatientTable />       
         </ThemedView>
 
         {/* staff list by zone in right column */}

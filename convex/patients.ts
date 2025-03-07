@@ -5,10 +5,79 @@ import { FindPatientsDTO } from "./find-patient-query.dto";
 import { EditPatientDTO } from "./edit-patient.dto";
 
 export const getAll = query({
-  args: FindPatientsDTO,
-  handler: async (ctx) => {
-    return ctx.db.query("patients").collect();
-  },
+  // args: FindPatientsDTO,
+  args: v.object({
+    sortDirection: v.optional(v.string()),
+    sortField: v.optional(v.string()),
+  }),
+  handler: async (ctx, args) => {
+    // return ctx.db.query("patients").collect();
+    let query = ctx.db.query("patients");
+    
+     // Define the custom sort order for triageStatus
+     const triageStatusOrder = ["Immediate", "Delayed", "Minor", "Expectant"];
+
+     // Define the custom sort order for patientStatus
+     const patientStatusOrder = ["Triage Complete", "Treatment Started", "Transport Requested", "Transport Complete"];
+
+
+    // Collect data first (no sorting here)
+    const patients = await query.collect();
+    // Store sorted patients in a variable
+    let sortedPatients = patients;
+
+
+    // Sort the collected data manually if sortField and sortDirection are provided
+    if (args.sortField) {
+        switch (args.sortField) {
+          
+          case "triageStatus":
+            sortedPatients.sort((a, b) => {
+              const aIndex = triageStatusOrder.indexOf(a.triageStatus);
+              const bIndex = triageStatusOrder.indexOf(b.triageStatus);
+  
+              // Compare based on the index in the triageStatusOrder array (ascending)
+              return aIndex - bIndex; // Ascending order (Immediate -> Expectant)
+            });            
+            break;
+  
+          case "patientStatus":
+            sortedPatients.sort((a, b) => {
+              const aIndex = patientStatusOrder.indexOf(a.patientStatus);
+              const bIndex = patientStatusOrder.indexOf(b.patientStatus);
+  
+              // Compare based on the index in the triageStatusOrder array (ascending)
+              return aIndex - bIndex; // Ascending order (Triage Complete -> Transport Complete)
+            });            
+            break;
+            
+          case "zone":
+            sortedPatients.sort((a, b) => {
+              
+              return parseInt(a['zone'].toString()) - parseInt(b['zone'].toString())
+            });
+            break;
+          
+  
+          case "_id":
+            // TODO: handle clicking to make new direction?            
+            sortedPatients.sort((a, b) => {
+              
+              // Compare based on the index in the triageStatusOrder array (ascending)
+              return parseInt(a['_id'].toString()) - parseInt(b['_id'].toString())
+            });
+            break;
+          default:
+            break;
+        }
+        if (args.sortDirection === 'desc') {
+          sortedPatients.reverse();
+        }
+    }
+    
+    
+    return sortedPatients; 
+  }
   // Future: filter by zone, triageStatus, patientStatus, recency
   // based on requirements of incident commander
 });

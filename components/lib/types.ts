@@ -86,6 +86,8 @@ export interface FindPatientsDTO {
   triageStatus?: string; // Optionally, you could use TriageStatus if you want to restrict values.
   patientStats?: string;
   recency?: string;
+  sortField?: string;
+  sortDirection?: string;
 }
 
 export  interface ColorScheme {

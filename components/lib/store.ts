@@ -4,16 +4,16 @@ import { immer } from "zustand/middleware/immer";
 
 type State = {
     patients: Patient[];
-    setPatients: (patients: Patient[]) => void;
 }
 
 type Action = {
     addPatient: (patient: Patient) => void;
+    setPatients: (patients: Patient[]) => void;
 }
 
 const initialState: State = {
     patients: [],
-    setPatients: () => {},
+    // setPatients: () => {},
 }
 
 export const useStore = create<State & Action>()(
