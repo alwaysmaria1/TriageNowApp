@@ -32,6 +32,16 @@ export type Patient = {
   patientStatus: PatientStatus;
   triageStatus: TriageStatus;
   zone: string;
+
+}
+// create patient type
+export interface PatientIC {
+  id: string;
+  priority: string;
+  status: string;
+  zone: string;
+  zoneLeader: string;
+  [key: string]: string; // Allow dynamic access for sorting 
 }
 
 // Type for creating a patient record
@@ -77,15 +87,6 @@ export interface FindPatientsDTO {
   patientStats?: string;
   recency?: string;
 }
-// create patient type
-export interface PatientIC {
-    id: string;
-    priority: string;
-    status: string;
-    zone: string;
-    zoneLeader: string;
-    [key: string]: string; // Allow dynamic access for sorting 
-  }
 
 export  interface ColorScheme {
     bg: string;

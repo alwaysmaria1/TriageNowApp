@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'flex-start',
     width: '100%',
+    marginBottom: 30,
   },
   title: {
     fontSize: 24,
@@ -127,6 +128,8 @@ const styles = StyleSheet.create({
   },
   mainBody: {
     flexDirection: 'row',
+    alignItems: 'flex-start',
+    marginTop: 30,
   },
   tableContainer: {
     flex: 1,
@@ -134,6 +137,7 @@ const styles = StyleSheet.create({
     borderColor: '#e0e0e0',
     borderRadius: 8,
     overflow: 'hidden',
+    
   },
   staffList: {
     backgroundColor: 'e8e8e8',
