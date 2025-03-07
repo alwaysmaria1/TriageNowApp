@@ -34,5 +34,11 @@ const patientSchema = {
 export default defineSchema({
   // barcode ID is the primary key
   patients: defineTable(patientSchema).index("by_barcodeID", ["barcodeID"]),
+
+  // inserting new users table:
+  users: defineTable({
+    role: v.string(),
+    zone: v.optional(v.string()),
+  }),
 });
 
