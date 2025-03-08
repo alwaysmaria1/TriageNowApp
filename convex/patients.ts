@@ -5,11 +5,11 @@ import { FindPatientsDTO } from "./find-patient-query.dto";
 import { EditPatientDTO } from "./edit-patient.dto";
 
 export const getAll = query({
-  // args: FindPatientsDTO,
-  args: v.object({
-    sortDirection: v.optional(v.string()),
-    sortField: v.optional(v.string()),
-  }),
+  args: FindPatientsDTO,
+  // args: v.object({
+  //   sortDirection: v.optional(v.string()),
+  //   sortField: v.optional(v.string()),
+  // }),
   handler: async (ctx, args) => {
     // return ctx.db.query("patients").collect();
     let query = ctx.db.query("patients");
@@ -59,8 +59,7 @@ export const getAll = query({
             break;
           
   
-          case "_id":
-            // TODO: handle clicking to make new direction?            
+          case "barcodeID":
             sortedPatients.sort((a, b) => {
               
               // Compare based on the index in the triageStatusOrder array (ascending)

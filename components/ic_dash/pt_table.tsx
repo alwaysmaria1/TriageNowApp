@@ -9,35 +9,27 @@ import { Patient, ColorScheme } from '@/components/lib/types';
 import  { triageStatusColors }  from '@/components/ic_dash/constants'
 import { useQueryPatients } from '../hooks/use-query-patients';
 
-
-
-interface Props {
-  // patients: Patient[];
-}
       
 
 export default function PatientTable() {
-  // TODO: fix sort 
-      const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
-      const [sortField, setSortField] = useState<"_id" | "patientStatus" | "triageStatus" | "zone">("_id");
-      const [sortedPatients, setSortedPatients] = useState<Patient []>();
+  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc');
+  const [sortField, setSortField] = useState<"barcodeID" | "patientStatus" | "triageStatus" | "zone">("barcodeID");
+  const [sortedPatients, setSortedPatients] = useState<Patient []>();
 
-      // useEffect(() => {
-      //   setSortedPatients(patients); // Ensure table updates if `patients` prop changes
-      // }, [patients]);
 
-      const { patients } = useQueryPatients(sortField, sortDirection);
+  const { patients } = useQueryPatients(sortField, sortDirection);
 
-      // useEffect(() => {
-      //   //call api for new sorted list
-      //   //set sorted patients witj result
-      //   const { patients } = useQueryPatients(sortField, sortDirection);
-      //   setSortedPatients( patients );
-      // }, [sortField, sortDirection]);
 
-    //  // Sort function
-    //  // TODO: fix sort
-      const sortPatients = (field: "_id" | "patientStatus" | "triageStatus" | "zone") => {
+  // useEffect(() => {
+  //   //set sorted patients with result
+  //   if (patients) {
+  //     setSortedPatients( patients );
+  //   }
+
+  // }, [sortedPatients, setSortedPatients]);
+
+     // Sort function
+      const sortPatients = (field: "barcodeID" | "patientStatus" | "triageStatus" | "zone") => {
         let newDirection: 'asc' | 'desc' = 'asc';
         if (sortField === field && sortDirection === 'asc') {
           newDirection = 'desc';
@@ -45,32 +37,14 @@ export default function PatientTable() {
         setSortDirection(newDirection);
         setSortField(field);
       }
-    //     setSortDirection(newDirection);
-    //     setSortField(field);
-    
-    //     const sorted = [...patients].sort((a, b) => {
-    //       // Handle numeric sorting for patient ID and zone
-    //       if (field === '_id' || field === 'zone') {
-    //         return newDirection === 'asc' 
-    //           ? parseInt(a[field].toString()) - parseInt(b[field].toString())
-    //           : parseInt(b[field].toString()) - parseInt(a[field].toString());
-    //       }
-          
-    //       // String sorting for other fields
-    //       return newDirection === 'asc'
-    //         ? a[field].toString().localeCompare(b[field].toString())
-    //         : b[field].toString().localeCompare(a[field].toString());
-    //     });
-    
-    //     setSortedPatients(sorted);
-    //   };
+
 
      // Render table header
    const renderHeader = () => (
     <View style={styles.tableHeader}>
-      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('_id')}>
+      <TouchableOpacity style={styles.headerCell} onPress={() => sortPatients('barcodeID')}>
         <ThemedText style={styles.headerText}>Patient</ThemedText>
-        {sortField === '_id' && (
+        {sortField === 'barcodeID' && (
           <Text>{sortDirection === 'asc' ? '↓' : '↑'}</Text>
         )}
       </TouchableOpacity>
@@ -114,12 +88,12 @@ export default function PatientTable() {
         return (
         <View style={styles.tableRow}>
           <View style={styles.cell}>
-            <Text>{pt._id}</Text>
+            <Text>{pt.barcodeID}</Text>
           </View>
           <View style={styles.cell}>
             <View style={[
               styles.priorityBadge, 
-              { backgroundColor: triageStatusColors[pt.triageStatus]?.badgebg || '#ccc' }
+              pt.triageStatus?{ backgroundColor: triageStatusColors[pt.triageStatus]?.badgebg || '#ccc' } :{}
             ]}>
               <Text style={styles.priorityBadgeText}>{pt.triageStatus}</Text>
             </View>
@@ -142,11 +116,12 @@ export default function PatientTable() {
         <>
             {renderHeader()}
             <FlatList
-                data={sortedPatients}
+                data={patients}
                 renderItem={({ item }: { item: Patient }) => renderRow(item)} 
                 keyExtractor={item => item._id}
                 scrollEnabled={true}
             />
+
         </>
     );
 };

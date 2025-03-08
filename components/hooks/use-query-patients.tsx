@@ -5,6 +5,7 @@ import { useEffect } from "react";
 import { FindPatientsDTO } from "../lib/types";
 
 export function useQueryPatients(sortField?: string, sortDirection?: 'asc' | 'desc') {
+  // console.log("hello2")
   const patients = useStore((state) => state.patients);
   const setPatients = useStore((state) => state.setPatients);
 
@@ -22,8 +23,8 @@ export function useQueryPatients(sortField?: string, sortDirection?: 'asc' | 'de
   }
   useEffect(() => {
     loadPatients();
-  }, []);
-  // }, [fetchedPatients, setPatients]);
+  // }, []);
+  }, [fetchedPatients, setPatients]);
 
   return { patients };
 }
