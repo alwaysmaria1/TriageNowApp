@@ -22,29 +22,30 @@ export default function TriageHeader({ patient }: { patient: Patient }) {
 
   return (
     <View style={styles.container}>
-      {/* Top Row */}
       <View style={styles.topRow}>
-        {/* Left: Patient Number */}
-        <Text type="subtitle" style={styles.patientText}>Patient {patient.barcodeID}</Text>
-
-        {/* Right: Triage status button + Last update */}
-        <View style={styles.rightColumn}>
-        <TouchableOpacity
-            style={[
-              styles.immediateButton,
-              { backgroundColor: getStatusColor(patient.triageStatus) },
-            ]}
-          >
-            <Text style={styles.immediateButtonText}>{patient.triageStatus}</Text>
-          </TouchableOpacity>
-          <Text style={styles.lastUpdateText}>Last update: {formatDate(patient.lastUpdated)}</Text>
-        </View>
+        <ThemedText type="title">Patient {patient.barcodeID}</ThemedText>
       </View>
 
-      {/* Second Row: Overall Status Button */}
-      <TouchableOpacity style={styles.statusButton}>
-        <Text style={styles.statusButtonText}>Status: {patient.patientStatus}</Text>
-      </TouchableOpacity>
+      {/* Triage Status + Last Updated */}
+      <View style={styles.topRow}>
+        <TouchableOpacity
+          style={[
+            styles.statusButton,
+            { backgroundColor: patient.triageStatus ? getStatusColor(patient.triageStatus) : 'gray' },
+          ]}
+        >
+        <Text style={styles.triageStatusText}>{patient.triageStatus}</Text>
+        </TouchableOpacity>
+        <Text style={styles.lastUpdateText}>{formatDate(patient.lastUpdated)}</Text>
+      </View>
+
+      {/* Patient Status + Last Updated - need to create a different last updated field for patient status*/}
+      <View style={styles.topRow}>
+        <TouchableOpacity style={styles.statusButton}>
+          <Text style={styles.patientStatusText}>{patient.patientStatus}</Text>
+        </TouchableOpacity>
+        <Text style={styles.lastUpdateText}>{formatDate(patient.lastUpdated)}</Text>
+      </View>
     </View>
   );
 }
@@ -52,11 +53,9 @@ export default function TriageHeader({ patient }: { patient: Patient }) {
 const styles = StyleSheet.create({
   container: {
     padding: 16,
-    // backgroundColor: '#fff',
   },
   topRow: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
     alignItems: 'flex-start',
     marginBottom: 16,
   },
@@ -69,31 +68,32 @@ const styles = StyleSheet.create({
     maxWidth: '25%',
     flexShrink: 1, 
   },
-  immediateButton: {
-    backgroundColor: 'red',
+
+  // Triage + Patient Status Buttons
+  statusButton: {
     paddingHorizontal: 12,
     paddingVertical: 6,
     borderRadius: 4,
     marginBottom: 4,
-    alignSelf: 'flex-start',  // Prevents stretching too far
     maxWidth: '100%',  
+    backgroundColor: '#8deaff',
+    alignSelf: 'flex-start' // if you want it to size itself, or 'stretch' to fill
   },
-  immediateButtonText: {
+  triageStatusText: {
     color: '#fff',
     fontWeight: 'bold',
+    fontSize: 18
   },
-  lastUpdateText: {
-    fontSize: 12,
-    color: '#666',
-  },
-  statusButton: {
-    backgroundColor: '#ccc',
-    padding: 10,
-    borderRadius: 4,
-    alignSelf: 'flex-start', // if you want it to size itself, or 'stretch' to fill
-  },
-  statusButtonText: {
-    fontSize: 16,
+  patientStatusText: {
+    fontSize: 18,
     fontWeight: '600',
+  },
+
+  // Last Updated Text
+  lastUpdateText: {
+    fontSize: 15,
+    color: '#666',
+    paddingLeft: 10,
+    paddingTop: 6
   },
 });

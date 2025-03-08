@@ -11,6 +11,7 @@ import Question from "@/components/triage/question";
 import { useTriageLogic } from "@/components/hooks/use-triage-logic";
 import Questions from "@/components/triage/questions";
 import { useRouter } from "expo-router";
+import { IconSymbol } from "@/components/ui/IconSymbol";
 
 export default function TabThreeScreen() {
   // router needed to link to patient notes page  
@@ -125,7 +126,14 @@ export default function TabThreeScreen() {
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
-            headerImage={<></>}
+            headerImage={
+              <IconSymbol
+              size={310}
+              color="#808080"
+              name="cross.case.fill"
+              style={styles.headerImage}
+              />
+          }
         >
         {/* INITIAL TRIAGE SCREEN */}
         {!activeTriage && (
@@ -293,5 +301,10 @@ const styles = StyleSheet.create({
   resetButtonText: {
     color: 'white',
     fontSize: 16,
+  },
+  headerImage: {
+    bottom: -90,
+    left: -35,
+    position: 'absolute',
   },
 });
