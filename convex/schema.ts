@@ -28,11 +28,20 @@ const patientSchema = {
   zone: v.string(),
 };
 
-// const patientSchemaObject = v.object(patientSchema);
-// export type PatientType = Infer<typeof patientSchemaObject>;
+const audioFile = {
+  barcodeID: v.string(),
+  storageId: v.id("_storage"),
+  url: v.string(),
+  status: v.union(
+    v.literal("pending"),
+    v.literal("processed"),
+    v.literal("error")
+  ),
+  transcription: v.optional(v.string()),
+};
 
 export default defineSchema({
-  // barcode ID is the primary key
   patients: defineTable(patientSchema).index("by_barcodeID", ["barcodeID"]),
+  audioFiles: defineTable(audioFile).index("by_barcodeID", ["barcodeID"]),
 });
 
