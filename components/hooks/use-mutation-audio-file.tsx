@@ -18,7 +18,7 @@ export function useMutationFiles() {
       const uploadResponse = await FileSystem.uploadAsync(postUrl, fileUri, {
         httpMethod: "POST",
         uploadType: FileSystem.FileSystemUploadType.BINARY_CONTENT,
-        headers: { "Content-Type": "audio/m4a" },
+        headers: { "Content-Type": "audio/mp4" },
       });
   
       // Parse the response body if needed.

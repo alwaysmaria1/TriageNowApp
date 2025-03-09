@@ -3,6 +3,7 @@ import { View, Text, Button, StyleSheet } from 'react-native';
 import { Audio, Recording, Sound } from 'expo-av';
 import { useMutationFiles } from '@/components/hooks/use-mutation-audio-file';
 import { Asset } from "expo-asset";
+import { IOSOutputFormat } from 'expo-av/build/Audio';
 
 // Manually defined constants
 const AUDIO_ENCODER_AAC = 3;
@@ -19,6 +20,7 @@ const recordingOptions = {
   },
   ios: {
     extension: '.m4a',
+    outputFormat: IOSOutputFormat.MPEG4AAC,
     audioQuality: IOS_AUDIO_QUALITY_HIGH,
     sampleRate: 44100,
     numberOfChannels: 2,
