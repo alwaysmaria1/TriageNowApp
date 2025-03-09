@@ -9,6 +9,7 @@ export function useMutationFiles() {
   const updateFileText = useMutation(api.files.updateAudioTranscription);
   const updateFileStatus = useMutation(api.files.updateAudioStatus);
   const transcribeAudio = useAction(api.actions.deepgram.transcribeFile);
+  const formatTranscription = useAction(api.actions.)
 
   // Helper function that takes in a local uri and a postURL - which in theory uploads the file to 
   // the remote URL so its easier to send to convex file storage
@@ -71,6 +72,9 @@ export function useMutationFiles() {
     //     transcription: transcriptionResult || "NOTHING SAVED",
     //   });
     //   await updateFileStatus({ fileId: audioId, status: "processed" });
+
+    // calls mistral to format the transcription accordingly
+
 
     return "testing current file storage";
     } catch (error) {

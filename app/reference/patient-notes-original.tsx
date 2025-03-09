@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import TriageHeader from '../components/patient-notes/patient-header';
+import TriageHeader from '../../components/patient-notes/patient-header';
 import { usePatientByBarcode } from '@/components/hooks/use-query-patient';
 import { useLocalSearchParams } from 'expo-router';
 

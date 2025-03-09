@@ -6,6 +6,9 @@ import { useLocalSearchParams } from 'expo-router';
 import { ThemedView } from '@/components/ThemedView';
 import { ThemedText } from '@/components/ThemedText';
 import { ChevronDown, ChevronUp } from 'lucide-react-native';
+import PatientForm from '@/components/patient-notes/patient-form';
+import { z } from 'zod';
+import { patientFormSchema, PatientFormSchemaType } from '@/components/patient-notes/patient-form-config';
 
 
 export default function TriageNowScreen () {
@@ -14,6 +17,22 @@ export default function TriageNowScreen () {
   const [isDemographicsExpanded, setIsDemographicsExpanded] = useState(false);
   const [isContactInfoExpanded, setIsContactInfoExpanded] = useState(false);
   const [isPatientNotesExpanded, setIsPatientNotesExpanded] = useState(false);
+
+
+  //TODO: CLEAN UP FORM CODE
+  const handleSubmit = async (values: z.infer<typeof patientFormSchema>) => {
+    console.log("PagePage: handleSubmit called with values:", values);
+    try {
+      console.log(values);
+      console.log("PagePage: File created successfully");
+    } catch (error) {
+      console.error("PagePage: Error creating file:", error);
+    }
+  };
+
+  const handleCancel = () => {
+    // do nothing!
+  };
 
   if (!patient) {
     return <Text>Loading patient data...</Text>;
@@ -26,6 +45,11 @@ export default function TriageNowScreen () {
     <View style={styles.container}>
 
       <TriageHeader patient={patient}></TriageHeader>
+      <PatientForm
+        onSubmit={handleSubmit}
+        onCancel={handleCancel}
+        submitLabel="Patient Notes Update"
+      />
 
       {/* Demographic Header */}
       <ThemedView style={styles.sectionContainer}>
