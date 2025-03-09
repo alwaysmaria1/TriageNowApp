@@ -91,6 +91,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginTop: 30,
+    // TODO: stop content from moving when zone menus open
   },
   tableContainer: {
     flex: 1,

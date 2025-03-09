@@ -5,8 +5,9 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
-import { Patient, ColorScheme } from '@/components/lib/types';
-import  { priorityColors }  from '@/components/ic_dash/constants'
+import { User, ColorScheme } from '@/components/lib/types';
+// import  { priorityColors }  from '@/components/ic_dash/constants'
+import { useQueryUsers } from '../hooks/use-query-users';
 
 interface Props {
     zoneStaff: Record<string, string []>
@@ -18,6 +19,19 @@ const StaffList: React.FC<Props> = ({zoneStaff}) => {
    const toggleZone = (zone: string) => {
     setOpenZone(openZone === zone ? null : zone); // Toggle the clicked zone's state
     };
+
+  const allStaff = useQueryUsers();
+
+  // allStaff.forEach((user: User) => {
+  //   switch (user.userZone){
+  //     case "1":
+  //       //add to array in record Zone 1
+  //     case "2":
+        
+  //   }
+  // });
+
+  // const staffByZone = [allStaff.filter((user: User[]) => user.userZone === "2")]
 
   return(
     <ThemedView>

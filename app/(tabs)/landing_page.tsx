@@ -22,7 +22,7 @@ export default function LoginPage() {
       const userId = await createUser({ 
         role, 
         // Zone would be assigned later for Triage Team members
-        zone: role === 'Incident Commander' ? 'Command' : undefined 
+        userZone: role === 'Incident Commander' ? 'Command' : '2' 
       });
       
       console.log(`User created with ID: ${userId}, role: ${role}`);

@@ -97,3 +97,14 @@ export  interface ColorScheme {
     badgebg: string;
   }
   
+
+  export type User = {
+    _id: Id<"users">;
+    _creationTime: number;
+    userID?: string;
+    userZone?: string;
+  }
+
+  export interface FindUsersDTO {
+      userZone?: string;
+  };

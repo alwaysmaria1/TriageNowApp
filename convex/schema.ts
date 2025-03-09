@@ -38,7 +38,7 @@ export default defineSchema({
   // inserting new users table:
   users: defineTable({
     role: v.string(),
-    zone: v.optional(v.string()),
+    userZone: v.optional(v.string()),
   }),
 });
 

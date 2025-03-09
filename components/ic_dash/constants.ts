@@ -33,4 +33,5 @@ export const zoneStaff: Record<string, string []>= {
     'Zone 2': ['person2','person3','person4'],
     'Zone 3': ['person5','person6'],
     'Zone 4': ['person7', 'person8', 'person9', 'person10'],
+    'all' : ['person1', 'person2', 'person3'],
   };
