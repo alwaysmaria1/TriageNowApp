@@ -100,11 +100,14 @@ export  interface ColorScheme {
 
   export type User = {
     _id: Id<"users">;
+    // TODO create fields
+    //  -- name
+    //  -- role
     _creationTime: number;
     userID?: string;
     userZone?: string;
   }
 
-  export interface FindUsersDTO {
-      userZone?: string;
-  };
+  // export interface FindUsersDTO {
+  //     userZone?: string;
+  // };

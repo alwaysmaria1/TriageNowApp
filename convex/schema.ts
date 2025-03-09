@@ -28,6 +28,13 @@ const patientSchema = {
   zone: v.string(),
 };
 
+const userSchema = {
+  userID: v.string(),
+  name: v.string(),
+  role: v.string(),
+  userZone: v.optional(v.string()),
+}
+
 // const patientSchemaObject = v.object(patientSchema);
 // export type PatientType = Infer<typeof patientSchemaObject>;
 
@@ -36,9 +43,6 @@ export default defineSchema({
   patients: defineTable(patientSchema).index("by_barcodeID", ["barcodeID"]),
 
   // inserting new users table:
-  users: defineTable({
-    role: v.string(),
-    userZone: v.optional(v.string()),
-  }),
+  users: defineTable(userSchema).index("by_userID", ["userID"]),
 });
 

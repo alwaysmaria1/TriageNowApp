@@ -2,8 +2,7 @@ import { api } from "../../convex/_generated/api";
 import { useQuery } from "convex/react";
 import { useStore } from "../lib/store";
 import { useEffect } from "react";
-import { FindUsersDTO } from "../lib/types";
-import { FindPatientsDTO } from "@/convex/find-patient-query.dto";
+// import { FindUsersDTO } from "../lib/types";
 
 // export function useQueryUsers() {
 //   // console.log("hello2")
@@ -28,28 +27,30 @@ import { FindPatientsDTO } from "@/convex/find-patient-query.dto";
 //   return { users };
 // }
 
-export function useQueryUsers(userZone? : string) {
+export function useQueryUsers() {
     // console.log("hello2")
     const users = useStore((state) => state.users);
     const setUsers = useStore((state) => state.setUsers);
   
-    const args: FindUsersDTO = {
-        userZone,
-    };
+    // const args: FindUsersDTO = {
+    //     userZone,
+    // };
   
 
-    if (args.userZone) {
-        const fetchedUsers = useQuery(api.users.getAll, {userZone : args.userZone}); 
+    // if (args.userZone) {
+        const fetchedUsers = useQuery(api.users.getAll,{}); 
         // console.log(fetchedPatients)
         const loadUsers = async () => {
-        if (fetchedUsers) {
-            setUsers(fetchedUsers);
+            if (fetchedUsers) {
+                setUsers(fetchedUsers);
+            }
         }
-        }
+        // // const zone = "Zone 1";
+        // console.log(zone.substring(zone.indexOf(" ") + 1));
         useEffect(() => {
-        loadUsers();
+            loadUsers();
         }, [fetchedUsers, setUsers]);
-    }    
+    // }    
   
     return { users };
   }

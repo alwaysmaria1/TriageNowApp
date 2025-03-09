@@ -1,19 +1,13 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
-import { FindUsersDTO } from "./find-user-query.dto";
+import { CreateUserDTO } from "./create-user.dto";
 
 
 
 export const createUser = mutation({
-  args: {
-    role: v.string(),
-    userZone: v.string(),
-  },
+  args: CreateUserDTO,
   handler: async (ctx, args) => {
-    const userId = await ctx.db.insert("users", {
-      role: args.role,
-      userZone: args.userZone,
-    });
+    const userId = await ctx.db.insert("users", args);
     
     return userId;
   },
@@ -21,20 +15,20 @@ export const createUser = mutation({
 
 export const getAll = query({
 
-  args: FindUsersDTO,
+  // args: FindUsersDTO,
 
-  handler: async (ctx, args) => {
-    
-    let query = ctx.db.query("users");
+  handler: async (ctx) => {
+    return ctx.db.query("users").collect();
+    // let query = ctx.db.query("users");
    
 
-    if (args.userZone) {
-      query = query.filter((q) => q.eq("userZone", args.userZone));
-    }
+    // // if (args.userZone) {
+    // //   query = query.filter((q) => q.eq("userZone", args.userZone));
+    // // }
 
-    const users = await query.collect();
-    // let zoneUsers = users;
-    return users;
+    // const users = await query.collect();
+    // // let zoneUsers = users;
+    // return users;
 
   }
 

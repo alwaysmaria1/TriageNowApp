@@ -14,13 +14,21 @@ interface Props {
 }
 const StaffList: React.FC<Props> = ({zoneStaff}) => {
     const [openZone, setOpenZone] = useState<string | null>(null);
+    const [selectedZone, setSelectedZone] = useState("All");
+
 
 // Toggle function to expand or collapse the zone list
-   const toggleZone = (zone: string) => {
-    setOpenZone(openZone === zone ? null : zone); // Toggle the clicked zone's state
-    };
+  const toggleZone = (zone: string) => {
+  setOpenZone(openZone === zone ? null : zone); // Toggle the clicked zone's state
+  };
 
   const allStaff = useQueryUsers();
+
+  const zones = ["All", "Zone 1", "Zone 2", "Zone 3", "Zone 4"];
+
+  const filteredStaff = selectedZone === "All" 
+    ? allStaff.users 
+    : allStaff.users.filter(user=> user.userZone === selectedZone);
 
   // allStaff.forEach((user: User) => {
   //   switch (user.userZone){
@@ -34,29 +42,49 @@ const StaffList: React.FC<Props> = ({zoneStaff}) => {
   // const staffByZone = [allStaff.filter((user: User[]) => user.userZone === "2")]
 
   return(
-    <ThemedView>
-      {Object.entries(zoneStaff).map(([zone, staff]) => (
-          <View key={zone} style={styles.zoneContainer}>
-            <TouchableOpacity
-              style={styles.zoneTitle}
-              onPress={() => toggleZone(zone)} // Toggle visibility of the staff list
-            >
-              <Text style={styles.zoneText}>{zone}</Text>
-            </TouchableOpacity>
+    // <ThemedView>
+    //   {Object.entries(zoneStaff).map(([zone, staff]) => (
+    //       <View key={zone} style={styles.zoneContainer}>
+    //         <TouchableOpacity
+    //           style={styles.zoneTitle}
+    //           onPress={() => toggleZone(zone)} // Toggle visibility of the staff list
+    //         >
+    //           <Text style={styles.zoneText}>{zone}</Text>
+    //         </TouchableOpacity>
 
-            {/* Render staff list if this zone is open */}
-            {openZone === zone && (
-              <View>
-                {staff.map((person, index) => (
-                  <Text key={index} style={styles.staffText}>
-                    {person}
-                  </Text>
-                ))}
-              </View>
-            )}
-          </View>
-        ))}
-    </ThemedView>    
+    //         {/* Render staff list if this zone is open */}
+    //         {openZone === zone && (
+    //           <View>
+    //             {staff.map((person, index) => (
+    //               <Text key={index} style={styles.staffText}>
+    //                 {person}
+    //               </Text>
+    //             ))}
+    //           </View>
+    //         )}
+    //       </View>
+    //     ))}
+    // </ThemedView>    
+    <ThemedView>
+      <Text style= {styles.header}>Current Staff</Text>
+      <ThemedView>
+        {zones.map(zone => (
+          <TouchableOpacity 
+            key={zone.substring(zone.indexOf(" ") + 1)} 
+            style={[styles.filterButton, selectedZone === zone.substring(zone.indexOf(" ") + 1) && styles.selectedButton]}
+            onPress={() => setSelectedZone(zone.substring(zone.indexOf(" ") + 1))}
+          >
+            <Text style={styles.filterText}>{zone}</Text>
+          </TouchableOpacity>
+          ))}
+      </ThemedView>
+      {/* Staff List */}
+      <FlatList
+        data={filteredStaff}
+        keyExtractor={(item) => item._id}
+        renderItem={({ item }) => <Text style={styles.staffText}>{item._id}</Text>}
+      />
+    </ThemedView>
     );
 };
 
@@ -77,7 +105,15 @@ const styles = StyleSheet.create({
  
   staffText: {
     fontSize: 16,
+    marginBottom: 5 
   },
+  container: { flex: 1, padding: 20, backgroundColor: "#f0f0f0" },
+  header: { fontSize: 24, fontWeight: "bold", marginBottom: 10 },
+  filterContainer: { flexDirection: "row", marginBottom: 10 },
+  filterButton: { padding: 8, marginRight: 5, backgroundColor: "#ddd", borderRadius: 5 },
+  selectedButton: { backgroundColor: "#333" },
+  filterText: { fontSize: 16, color: "#000" },
+
 
 });
 
