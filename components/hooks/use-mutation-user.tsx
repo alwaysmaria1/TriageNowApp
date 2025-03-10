@@ -3,7 +3,6 @@ import { useMutation } from "convex/react";
 import { Id } from "convex/_generated/dataModel";
 import { CreateUserDTO, EditPatientDTO, User } from "../lib/types";
 import { useStore } from "../lib/store";
-import { useUserbyID } from "./use-query-user";
 
 export function useMutationUser() {
   const createMutation = useMutation(api.users.createUser);
@@ -16,19 +15,14 @@ export function useMutationUser() {
   ): Promise<User | null> => {
 
     try {
-      const newUserID = await createMutation(user);
+      const createdUser = await createMutation(user);
 
-      if (!newUserID){
-        return null;
-      }
-
-      const newUser = useUserbyID(newUserID);
       
-      if (newUser) {
-        addUser(newUser);
+      if (createdUser) {
+        addUser(createdUser);
       }
 
-      return newUser;
+      return createdUser;
 
     } catch (error) {
       alert((error as Error).message || "Please try again later");
@@ -62,7 +56,7 @@ export function useMutationUser() {
 //   };
 
   return {
-    create: createUser,
+    useCreateUser: createUser,
     // update: updateUser,
     // remove: removeUser,
   };

@@ -9,7 +9,8 @@ export const createUser = mutation({
   handler: async (ctx, args) => {
     const userId = await ctx.db.insert("users", args);
     
-    return userId;
+    const createdUser = await ctx.db.get(userId);
+    return createdUser;
   },
 });
 

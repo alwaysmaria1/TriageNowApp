@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { useMutation } from 'convex/react';
+import { useMutationUser } from '@/components/hooks/use-mutation-user';
 import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { api } from '@/convex/_generated/api';
-import { CreateUserDTO } from '@/convex/create-user.dto';
+// import { api } from '@/convex/_generated/api';
+import { CreateUserDTO } from '@/components/lib/types';
 
 export default function LoginPage() {
   const router = useRouter();
-  const createUser = useMutation(api.users.createUser);
+  const { useCreateUser } = useMutationUser();
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -19,16 +19,14 @@ export default function LoginPage() {
     setIsLoading(true);
     
     try {
-      // Create user in database
-      let user = CreateUserDTO
-      const userId = await createUser({ 
-        // role, 
-        // // Zone would be assigned later for Triage Team members
-        // userZone: role === 'Incident Commander' ? 'Command' : '2' 
-        user
-      });
-      
-      console.log(`User created with ID: ${userId}, role: ${role}`);
+      // TODO: fix dummy data
+      const createUserDto: CreateUserDTO = {
+        userID: "dummyID",
+        name: "goosegoosecaboose",
+        role: role === 'Incident Commander' ? 'Incident Commander' : 'Triage',
+        userZone: "1",
+      }
+      const createdUser = await useCreateUser(createUserDto);
       
       // Navigate to the appropriate screen based on role
       if (role === 'Incident Commander') {
