@@ -32,7 +32,7 @@ const userSchema = {
   userID: v.string(),
   name: v.string(),
   role: v.string(),
-  userZone: v.optional(v.string()),
+  userZone: v.string(),
 }
 
 // const patientSchemaObject = v.object(patientSchema);

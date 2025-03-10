@@ -6,6 +6,7 @@ import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { api } from '@/convex/_generated/api';
+import { CreateUserDTO } from '@/convex/create-user.dto';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -19,10 +20,12 @@ export default function LoginPage() {
     
     try {
       // Create user in database
+      let user = CreateUserDTO
       const userId = await createUser({ 
-        role, 
-        // Zone would be assigned later for Triage Team members
-        userZone: role === 'Incident Commander' ? 'Command' : '2' 
+        // role, 
+        // // Zone would be assigned later for Triage Team members
+        // userZone: role === 'Incident Commander' ? 'Command' : '2' 
+        user
       });
       
       console.log(`User created with ID: ${userId}, role: ${role}`);
@@ -106,6 +109,7 @@ const styles = StyleSheet.create({
     fontSize: 36,
     fontWeight: 'bold',
     marginBottom: 8,
+    lineHeight: 40,
   },
   subtitle: {
     fontSize: 24,

@@ -22,7 +22,7 @@ export const CreatePatientDTO = {
       v.literal("Minor"),
       v.literal("Delayed"),
       v.literal("Immediate"),
-      v.literal("Expectant")
+      v.literal("Expectant"),
     ),
     zone: v.string(),
 };

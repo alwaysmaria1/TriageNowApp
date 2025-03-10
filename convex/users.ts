@@ -1,5 +1,5 @@
 import { query, mutation } from "./_generated/server";
-import { v } from "convex/values";
+import { ConvexError, v } from "convex/values";
 import { CreateUserDTO } from "./create-user.dto";
 
 
@@ -32,4 +32,23 @@ export const getAll = query({
 
   }
 
+});
+
+export const getOne = query({
+  args: {userID: v.string()},
+  handler: async (ctx, args) => {
+    const user = await ctx.db
+      .query("users")
+      .withIndex("by_userID", (q) => q.eq("userID", args.userID))
+      .first();
+
+    if (!user) {
+      throw new ConvexError({
+        code: 404,
+        message: "User not found",
+      });
+    }
+
+    return user;
+  },
 });
