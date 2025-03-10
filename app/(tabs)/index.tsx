@@ -1,72 +1,157 @@
-import { useQueryPatients } from '@/components/hooks/use-query-patients';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import React, { useState } from 'react';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { useMutationUser } from '@/components/hooks/use-mutation-user';
+import { useRouter } from 'expo-router';
+
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
-import { StyleSheet } from 'react-native';
-import Patients from '@/components/home/patients';
-import PatientStatusCount from '@/components/home/patientStatusCount';
-import SearchBar from '@/components/home/searchbar';
+// import { api } from '@/convex/_generated/api';
+import { CreateUserDTO } from '@/components/lib/types';
 
-export default function HomeScreen() {
+export default function LoginPage() {
+  const router = useRouter();
+  const { useCreateUser } = useMutationUser();
+  const [selectedRole, setSelectedRole] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
-    const { patients } = useQueryPatients();
+  const handleRoleSelection = async (role: string) => {
+    setSelectedRole(role);
+    setIsLoading(true);
+    
+    try {
+      // TODO: fix dummy data
+      const createUserDto: CreateUserDTO = {
+        userID: "dummyID",
+        name: "goosegoosecaboose",
+        role: role === 'Incident Commander' ? 'Incident Commander' : 'Triage',
+        userZone: "1",
+      }
+      const createdUser = await useCreateUser(createUserDto);
+      
+      // Navigate to the appropriate screen based on role
+      if (role === 'Incident Commander') {
+        router.push('/incident_command');
+      } else {
+        // Navigate directly to triage-3 page
+        router.push('/triage-home');
+      }
+    } catch (error) {
+      console.error('Error creating user:', error);
+      setIsLoading(false);
+    }
+  };
 
-    return (
-        <ParallaxScrollView
-            headerBackgroundColor={{ light: '#F5F5F5', dark: '#353636' }}
-            headerImage={
-                <IconSymbol
-                size={310}
-                color="#808080"
-                name="cross.case.fill"
-                style={styles.headerImage}
-                />
-            }>
-            <ThemedView style={styles.titleContainer}>
-                <ThemedText type="title">Zone 3 Triage</ThemedText>
-            </ThemedView>
-            <SearchBar patientList={patients}/>
-            <PatientStatusCount patientList={patients}/>
-            <Patients patientList={patients}/>
-        </ParallaxScrollView>
-    );
+  return (
+    <ThemedView style={styles.container}>
+      <ThemedView style={styles.header}>
+        <ThemedText style={styles.title}>TriageNow</ThemedText>
+        <ThemedText style={styles.subtitle}>Select Your Role</ThemedText>
+      </ThemedView>
+
+      <ThemedView style={styles.buttonContainer}>
+        <TouchableOpacity
+          style={[
+            styles.roleButton,
+            selectedRole === 'Incident Commander' && styles.selectedButton,
+            isLoading && selectedRole === 'Incident Commander' && styles.loadingButton
+          ]}
+          onPress={() => handleRoleSelection('Incident Commander')}
+          disabled={isLoading}
+        >
+          <ThemedView style={styles.buttonContent}>
+            <ThemedText style={styles.buttonText}>Incident Commander</ThemedText>
+            <ThemedText style={styles.description}>
+              Oversee the entire incident response and coordinate resources
+            </ThemedText>
+          </ThemedView>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={[
+            styles.roleButton,
+            selectedRole === 'Triage Team' && styles.selectedButton,
+            isLoading && selectedRole === 'Triage Team' && styles.loadingButton
+          ]}
+          onPress={() => handleRoleSelection('Triage Team')}
+          disabled={isLoading}
+        >
+          <ThemedView style={styles.buttonContent}>
+            <ThemedText style={styles.buttonText}>Triage Team</ThemedText>
+            <ThemedText style={styles.description}>
+              Assess patients and assign priority levels at the scene
+            </ThemedText>
+          </ThemedView>
+        </TouchableOpacity>
+      </ThemedView>
+
+      {isLoading && (
+        <ThemedText style={styles.loadingText}>
+          Setting up your dashboard...
+        </ThemedText>
+      )}
+    </ThemedView>
+  );
 }
 
 const styles = StyleSheet.create({
-    headerImage: {
-        bottom: -90,
-        left: -35,
-        position: 'absolute',
-    },
-    titleContainer: {
-        flexDirection: 'row',
-        gap: 8,
-        marginBottom: 16,
-        paddingHorizontal: 16,
-    },
-    patientList: {
-        flex: 1,
-        padding: 16,
-        gap: 8,
-    },
-    listHeader: {
-        marginBottom: 8,
-    },
-    patientCard: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'rgba(255, 255, 255, 0.1)',
-        padding: 16,
-        borderRadius: 8,
-    },
-    statusIndicator: {
-        width: 60,
-        height: 20,
-        borderRadius: 4,
-        marginHorizontal: 12,
-    },
-    patientId: {
-        flex: 1,
-    },
+  container: {
+    flex: 1,
+    padding: 16,
+    justifyContent: 'center',
+  },
+  header: {
+    alignItems: 'center',
+    marginBottom: 36,
+  },
+  title: {
+    fontSize: 36,
+    fontWeight: 'bold',
+    marginBottom: 8,
+    lineHeight: 40,
+  },
+  subtitle: {
+    fontSize: 24,
+    marginBottom: 24,
+  },
+  buttonContainer: {
+    width: '100%',
+    maxWidth: 600,
+    alignSelf: 'center',
+  },
+  roleButton: {
+    backgroundColor: '#f0f0f0',
+    borderRadius: 12,
+    padding: 24,
+    marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  selectedButton: {
+    backgroundColor: '#e0f7fa',
+    borderColor: '#00b8d4',
+    borderWidth: 2,
+  },
+  loadingButton: {
+    opacity: 0.7,
+  },
+  buttonContent: {
+    flexDirection: 'column',
+  },
+  buttonText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 8,
+  },
+  description: {
+    fontSize: 16,
+    opacity: 0.8,
+  },
+  loadingText: {
+    textAlign: 'center',
+    marginTop: 24,
+    fontSize: 18,
+  }
 });
