@@ -2,6 +2,7 @@ import { api } from "../../convex/_generated/api";
 import { useAction, useMutation } from "convex/react";
 import { Id } from "convex/_generated/dataModel";
 import * as FileSystem from "expo-file-system";
+import { patientFormSchema } from "../patient-notes/patient-form-config";
 
 export function useMutationFiles() {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -9,7 +10,8 @@ export function useMutationFiles() {
   const updateFileText = useMutation(api.files.updateAudioTranscription);
   const updateFileStatus = useMutation(api.files.updateAudioStatus);
   const transcribeAudio = useAction(api.actions.deepgram.transcribeFile);
-  const formatTranscription = useAction(api.actions.)
+  const formatTranscription = useAction(api.actions.mistral.formatTranscription);
+  const updatePatient = useMutation(api.patients.update);
 
   // Helper function that takes in a local uri and a postURL - which in theory uploads the file to 
   // the remote URL so its easier to send to convex file storage
@@ -58,22 +60,42 @@ export function useMutationFiles() {
       });
 
       // TRANSCRIPTION VOICE TO TEXT BEGINS HERE !!!!
-    //   // Set status to pending for current audio upload
-    //   await updateFileStatus({ fileId: audioId, status: "pending" });
+      // Set status to pending for current audio upload
+      await updateFileStatus({ fileId: audioId, status: "pending" });
       
-    //   // Pass the public URL into the transcribeAudio action.
-    //   const transcriptionResult = await transcribeAudio({
-    //     fileData: url,
-    //   });
+      // Pass the public URL into the transcribeAudio action.
+      const transcriptionResult = await transcribeAudio({
+        fileData: url,
+      });
       
-    //   // saves the transcription in the db associated with audio
-    //   await updateFileText({
-    //     fileId: audioId,
-    //     transcription: transcriptionResult || "NOTHING SAVED",
-    //   });
-    //   await updateFileStatus({ fileId: audioId, status: "processed" });
+      // saves the transcription in the db associated with audio
+      await updateFileText({
+        fileId: audioId,
+        transcription: transcriptionResult || "NOTHING SAVED",
+      });
+      await updateFileStatus({ fileId: audioId, status: "processed" });
 
     // calls mistral to format the transcription accordingly
+      const patientUpdateSchema = patientFormSchema.partial();
+      const parsedRaw = await formatTranscription({transcription: transcriptionResult});
+      const result = patientUpdateSchema.safeParse(parsedRaw);
+      if (!result.success) {
+        console.error(result.error);
+        throw new Error("Transcription data did not conform to the expected schema.");
+      }
+      const finalTranscription = result.data;
+
+      //update the patient accordingly
+      // updatePatient({
+      //   barcodeID,
+      //   ...finalTranscription
+      // })
+      //NOTE: TODO: FIX THE PIPELINE OF GETTING THE SPECIFIC PATIENT SINCE ITS HARDCODED
+      updatePatient({
+        barcodeID: "2128",
+        ...finalTranscription
+      })
+
 
 
     return "testing current file storage";

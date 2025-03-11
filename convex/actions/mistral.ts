@@ -61,16 +61,25 @@ Return only a valid JSON object with these exact field names and no additional t
     model: mistral('mistral-large-latest'),
     temperature: 0.1,
   });
+  let contentStr = result.text.trim();
+
+    // Remove starting code fence if present
+    if (contentStr.startsWith("```json")) {
+    contentStr = contentStr.slice("```json".length).trim();
+    }
+
+    // Remove ending code fence if present
+    if (contentStr.endsWith("```")) {
+    contentStr = contentStr.slice(0, -3).trim();
+    }
 
   // Mistral's response is expected to be a stringified JSON in result. Parse it.
   let parsedContent;
   try {
-    parsedContent = JSON.stringify(result.response.messages);
-    console.log(parsedContent)
+    parsedContent = JSON.parse(contentStr);
   } catch (error) {
     throw new Error("Failed to parse Mistral AI response JSON");
   }
-
 
   return parsedContent;
   }

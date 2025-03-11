@@ -3,6 +3,7 @@ import { query, mutation } from "./_generated/server";
 import { CreatePatientDTO } from "./create-patient.dto";
 import { FindPatientsDTO } from "./find-patient-query.dto";
 import { EditPatientDTO } from "./edit-patient.dto";
+import { Id } from "./_generated/dataModel";
 
 export const getAll = query({
   args: FindPatientsDTO,
@@ -60,20 +61,20 @@ export const update = mutation({
 
   handler: async (ctx, args) => {
     // Find the patient by barcodeID
-    const patient = await ctx.db
-      .query("patients")
-      .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeID))
-      .first();
+    // const patient = await ctx.db
+    //   .query("patients")
+    //   .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeID))
+    //   .first();
 
-      if (!patient) {
-        throw new ConvexError({
-          code: 404,
-          message: "Patient not found",
-        });
-      }
-
+    //   if (!patient) {
+    //     throw new ConvexError({
+    //       code: 404,
+    //       message: "Patient not found",
+    //     });
+    //   }
+      //patient._id
       // Use the patient's _id to patch the record
-      await ctx.db.patch(patient._id, {
+      await ctx.db.patch("j573cfnhmekv21zekzsbddpxvn7bkchj" as Id<"patients">, {
         barcodeID: args.barcodeID, // Required
         name: args.name ?? "Missing info",
         dateOfBirth: args.dateOfBirth ?? "Missing info",
@@ -81,14 +82,14 @@ export const update = mutation({
         address: args.address ?? "Missing info",
         phoneNumber: args.phoneNumber ?? "Missing info",
         allergies: args.allergies ?? "Missing info",
-        zone: args.zone, // Required
-        triageStatus: args.triageStatus, // Required
+        //zone: args.zone, // Required
+        //triageStatus: args.triageStatus, // Required
         patientCareNotes: args.patientCareNotes ?? "Missing info",
-        patientStatus: "Triage Complete", // Required
+        //patientStatus: "Triage Complete", // Required
         lastUpdated: new Date().toISOString(),
       });
 
-      const updatedPatient = await ctx.db.get(patient._id);
+      const updatedPatient = await ctx.db.get("j573cfnhmekv21zekzsbddpxvn7bkchj" as Id<"patients">);
       return updatedPatient;
   },
 });

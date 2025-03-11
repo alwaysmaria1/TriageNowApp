@@ -1,26 +1,32 @@
 import { z } from "zod";
 
 export const patientFormSchema = z.object({
-  barcodeID: z.string(),
-  address: z.string().optional(),
-  allergies: z.string().optional(),
-  dateOfBirth: z.string().optional(),
-  lastUpdated: z.string(),
-  name: z.string().optional(),
-  patientCareNotes: z.string().optional(),
-  patientStatus: z.union([
-    z.literal("Triage In-Progress"),
-    z.literal("Triage Complete"),
-    z.literal("Treatment In-Progress"),
-    z.literal("Treatment Complete"),
-    z.literal("Transport In-Progress"),
-    z.literal("Transport Complete"),
-  ]),
-  phoneNumber: z.string().optional(),
-  sex: z.string().optional(),
-});
-
-export type PatientFormSchemaType = z.infer<typeof patientFormSchema>;
+    address: z.string().optional(),
+    allergies: z.string().optional(),
+    dateOfBirth: z.string().optional(),
+    name: z.string().optional(),
+    patientCareNotes: z.string().optional(),
+    patientStatus: z.union([
+      z.literal("Triage In-Progress"),
+      z.literal("Triage Complete"),
+      z.literal("Treatment In-Progress"),
+      z.literal("Treatment Complete"),
+      z.literal("Transport In-Progress"),
+      z.literal("Transport Complete"),
+    ]).optional(),
+    phoneNumber: z.string().optional(),
+    sex: z.string().optional(),
+    triageStatus: z.union([
+      z.literal("Minor"),
+      z.literal("Delayed"),
+      z.literal("Immediate"),
+      z.literal("Expectant"),
+    ]).optional(),
+    zone: z.string().optional(),
+  });
+  
+  export type PatientFormSchemaType = z.infer<typeof patientFormSchema>;
+  
 
 export type FormField = {
   name: keyof PatientFormSchemaType;
@@ -31,12 +37,6 @@ export type FormField = {
 };
 
 export const patientFormFields: FormField[] = [
-  {
-    name: "barcodeID",
-    label: "Barcode ID",
-    placeholder: "Enter Barcode ID",
-    type: "text",
-  },
   {
     name: "name",
     label: "Name",
@@ -85,24 +85,18 @@ export const patientFormFields: FormField[] = [
     placeholder: "Select patient status",
     type: "select",
   },
-  {
-    name: "lastUpdated",
-    label: "Last Updated",
-    placeholder: "Auto-generated timestamp",
-    type: "text",
-  },
 ];
 
 export const patientDefaultValues: PatientFormSchemaType = {
-  barcodeID: "",
-  name: "",
-  dateOfBirth: "",
-  sex: "",
-  address: "",
-  phoneNumber: "",
-  allergies: "",
-  patientCareNotes: "",
-  // Default to one of the union values.
-  patientStatus: "Triage In-Progress",
-  lastUpdated: new Date().toISOString(),
-};
+    name: "",
+    dateOfBirth: "",
+    sex: "",
+    address: "",
+    phoneNumber: "",
+    allergies: "",
+    patientCareNotes: "",
+    patientStatus: "Triage In-Progress",
+    triageStatus: "Minor", // Default value for triageStatus
+    zone: "", // Default value for zone
+  };
+  
