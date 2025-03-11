@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { CreateUserDTO } from '@/components/lib/types';
+import { useStore } from '@/components/lib/store';
 
 export default function IcLogin() {
   const router = useRouter();
@@ -15,6 +16,9 @@ export default function IcLogin() {
   const [name, setName] = useState('');
 
   const handleIcCreation = async () => {
+
+    const { currentUser, setCurrentUser } = useStore();
+
     if (!name.trim()) {
         Alert.alert('Error', 'Please enter your name.');
         return;
@@ -35,6 +39,11 @@ export default function IcLogin() {
 
         // add user into table
         const createdUser = await useCreateUser(createUserDto);
+
+        //set current user to global state
+        if (createdUser){
+          setCurrentUser(createdUser);
+        }
     
         router.push('/incident_command');
 

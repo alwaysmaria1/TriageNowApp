@@ -7,6 +7,7 @@ import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { CreateUserDTO } from '@/components/lib/types';
+import { useStore } from '@/components/lib/store';
 
 export default function TriageLogin() {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function TriageLogin() {
   const [zone, setZone] = useState('1');
 
   const handleTriageMemberCreation = async () => {
+    const { currentUser, setCurrentUser } = useStore();
     if (!name.trim()) {
         Alert.alert('Error', 'Please enter your name.');
         return;
@@ -38,6 +40,11 @@ export default function TriageLogin() {
         // add user into table
         const createdUser = await useCreateUser(createUserDto);
     
+        //set current user to global state
+        if (createdUser){
+          setCurrentUser(createdUser);
+        }
+
         router.push('/triage-home');
 
       } catch (error) {
