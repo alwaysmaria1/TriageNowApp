@@ -1,10 +1,12 @@
-import { Patient } from "./types";
+import { Patient, User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type State = {
     patients: Patient[];
+    currentTriageMember: User | null;
     setPatients: (patients: Patient[]) => void;
+    setCurrentTriageMember: (user: User | null) => void;
 }
 
 type Action = {
@@ -13,7 +15,9 @@ type Action = {
 
 const initialState: State = {
     patients: [],
+    currentTriageMember: null,
     setPatients: () => {},
+    setCurrentTriageMember: () => {},
 }
 
 export const useStore = create<State & Action>()(
@@ -25,6 +29,8 @@ export const useStore = create<State & Action>()(
         },
 
         setPatients: (patients) => set({ patients }),
+
+        setCurrentTriageMember: (user) => set({ currentTriageMember: user }),
 
     }))
 );

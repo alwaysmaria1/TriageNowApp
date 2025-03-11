@@ -3,6 +3,7 @@ import { Infer, v } from "convex/values";
 
 const patientSchema = {
   barcodeID: v.string(),
+  triageMemberID: v.string(),
   address: v.optional(v.string()),
   allergies: v.optional(v.string()),
   dateOfBirth: v.optional(v.string()),
@@ -28,6 +29,13 @@ const patientSchema = {
   zone: v.string(),
 };
 
+const userSchema = {
+  userID: v.string(),
+  name: v.string(),
+  role: v.string(),
+  userZone: v.optional(v.string()),
+}
+
 // const patientSchemaObject = v.object(patientSchema);
 // export type PatientType = Infer<typeof patientSchemaObject>;
 
@@ -36,9 +44,6 @@ export default defineSchema({
   patients: defineTable(patientSchema).index("by_barcodeID", ["barcodeID"]),
 
   // inserting new users table:
-  users: defineTable({
-    role: v.string(),
-    zone: v.optional(v.string()),
-  }),
+  users: defineTable(userSchema).index("by_userID", ["userID"]),
 });
 
