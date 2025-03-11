@@ -20,13 +20,13 @@ export default function LoginPage() {
     
     try {
       // TODO: fix dummy data
-      const createUserDto: CreateUserDTO = {
-        userID: "dummyID",
-        name: "goosegoosecaboose",
-        role: role === 'Incident Commander' ? 'Incident Commander' : 'Triage Team',
-        userZone: "1",
-      }
-      const createdUser = await useCreateUser(createUserDto);
+    //   const createUserDto: CreateUserDTO = {
+    //     userID: "dummyID",
+    //     name: "goosegoosecaboose",
+    //     role: role === 'Incident Commander' ? 'Incident Commander' : 'Triage Team',
+    //     userZone: "1",
+    //   }
+    //   const createdUser = await useCreateUser(createUserDto);
       
       // Navigate to the appropriate screen based on role
       if (role === 'Incident Commander') {

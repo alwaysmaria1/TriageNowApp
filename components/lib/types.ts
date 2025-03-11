@@ -38,6 +38,7 @@ export type Patient = {
 // Type for creating a patient record
 export interface CreatePatientDTO {
   barcodeID: string;
+  triageMemberID: string;
   // Optional fields: If not provided, the server may fill in default values.
   address?: string;
   allergies?: string;

@@ -21,7 +21,7 @@ export default function HomeScreen() {
     const { patients: allPatients } = useQueryPatients();
     
     // Get the current user from your store
-    const currentTriageMember = useStore(state => state.currentTriageMember);
+    const currentTriageMember = useStore(state => state.currentUser);
     
     // Get the current user's triageMemberID
     const triageMemberID = currentTriageMember?.userID;

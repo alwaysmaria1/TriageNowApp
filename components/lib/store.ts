@@ -1,23 +1,28 @@
+import { current } from "immer";
 import { Patient, User } from "./types";
 import { create } from "zustand";
 import { immer } from "zustand/middleware/immer";
 
 type State = {
     patients: Patient[];
-    currentTriageMember: User | null;
-    setPatients: (patients: Patient[]) => void;
-    setCurrentTriageMember: (user: User | null) => void;
+    users: User[];
+    currentUser: User | null;
 }
 
 type Action = {
     addPatient: (patient: Patient) => void;
+    setPatients: (patients: Patient[]) => void;
+    addUser: (user: User) => void;
+    setUsers: (users: User[]) => void;
+    setCurrentUser: (user: User) => void; // Function to update user
+
 }
 
 const initialState: State = {
     patients: [],
-    currentTriageMember: null,
-    setPatients: () => {},
-    setCurrentTriageMember: () => {},
+    users: [],
+    currentUser: null,
+    // setPatients: () => {},
 }
 
 export const useStore = create<State & Action>()(
@@ -30,7 +35,17 @@ export const useStore = create<State & Action>()(
 
         setPatients: (patients) => set({ patients }),
 
-        setCurrentTriageMember: (user) => set({ currentTriageMember: user }),
 
+        // TODO: double check this
+        addUser: (user: User) => {
+            set({ users: [user, ...get().users] });
+        },
+
+        setUsers: (users) => {set({ users })
+        },
+        
+        setCurrentUser: (user: User) => {
+            set({currentUser: user});
+        },
     }))
 );
