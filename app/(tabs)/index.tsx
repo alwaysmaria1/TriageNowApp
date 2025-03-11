@@ -145,11 +145,10 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonContent: {
-    // backgroundColor:"#f0f0f0", // TODO: make transparent
+    backgroundColor: 'transparent', 
     flexDirection: 'column',
   },
   buttonText: {
-    // backgroundColor:"#f0f0f0", // TODO: make transparent
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,
