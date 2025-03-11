@@ -26,7 +26,7 @@ export default function TriageLogin() {
     // setIsLoading(true);
     
       try {
-        // TODO: fix dummy data
+        // TODO: fix dummyID
         // Create user
         const createUserDto: CreateUserDTO = {
           userID: "dummyID",
@@ -34,6 +34,8 @@ export default function TriageLogin() {
           role: 'Triage', 
           userZone: zone,
         }
+
+        // add user into table
         const createdUser = await useCreateUser(createUserDto);
     
         router.push('/triage-home');
@@ -49,7 +51,7 @@ export default function TriageLogin() {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.header}>
         <ThemedText style={styles.title}>Triage Team</ThemedText>
-        <ThemedText style={styles.subtitle}>Please input your name and zone</ThemedText>
+        <ThemedText style={styles.subtitle}>Please enter your information.</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.buttonContainer}>

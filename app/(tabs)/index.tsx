@@ -24,19 +24,19 @@ export default function LoginPage() {
     }
     else {
       try {
-        // TODO: fix dummy data
-        // Create user
-        const createUserDto: CreateUserDTO = {
-          userID: "dummyID",
-          name: "commandgoose",
-          role: 'Incident Commander', // ? 'Incident Commander' : 'Triage',
-          userZone: "Command",
-        }
-        const createdUser = await useCreateUser(createUserDto);
+        // // TODO: fix dummy data
+        // // Create user
+        // const createUserDto: CreateUserDTO = {
+        //   userID: "dummyID",
+        //   name: "commandgoose",
+        //   role: 'Incident Commander', // ? 'Incident Commander' : 'Triage',
+        //   userZone: "Command",
+        // }
+        // const createdUser = await useCreateUser(createUserDto);
         
-        // Navigate to the appropriate screen based on role
-        // if (role === 'Incident Commander') {
-        router.push('/incident_command');
+        // // Navigate to the appropriate screen based on role
+        // // if (role === 'Incident Commander') {
+        router.push('/ic-login');
         // } else {
         //   // Navigate directly to triage-3 page
         //   router.push('/triage-home');

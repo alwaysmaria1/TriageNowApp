@@ -11,10 +11,8 @@ import { CreateUserDTO } from '@/components/lib/types';
 export default function IcLogin() {
   const router = useRouter();
   const { useCreateUser } = useMutationUser();
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
-  const [zone, setZone] = useState('Command');
 
   const handleIcCreation = async () => {
     if (!name.trim()) {
@@ -26,17 +24,19 @@ export default function IcLogin() {
     // setIsLoading(true);
     
       try {
-        // TODO: fix dummy data
+        // TODO: fix dummyID
         // Create user
         const createUserDto: CreateUserDTO = {
           userID: "dummyID",
           name: name,
-          role: 'Command', 
-          userZone: zone,
+          role: 'Incident Commander', 
+          userZone: 'Command',
         }
+
+        // add user into table
         const createdUser = await useCreateUser(createUserDto);
     
-        router.push('/triage-home');
+        router.push('/incident_command');
 
       } catch (error) {
         console.error('Error creating user:', error);
@@ -49,7 +49,7 @@ export default function IcLogin() {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.header}>
         <ThemedText style={styles.title}>Triage Team</ThemedText>
-        <ThemedText style={styles.subtitle}>Please input your name and zone</ThemedText>
+        <ThemedText style={styles.subtitle}>Please enter your information.</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.buttonContainer}>
@@ -61,7 +61,6 @@ export default function IcLogin() {
             value={name}
             onChangeText={setName}
         />
-        <Text style={styles.label}>Select your zone:</Text>
         
         <Button title="Submit" onPress={handleIcCreation} />
       </ThemedView>

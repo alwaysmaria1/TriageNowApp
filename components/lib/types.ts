@@ -104,10 +104,8 @@ export  interface ColorScheme {
     _id: Id<"users">;
     _creationTime: number;
     // TODO create fields
-    //  -- name
-    //  -- role
     name: string,
-    role: string,
+    role: 'Incident Commander' | 'Triage',
     userID?: string;
     userZone: string;
   }
