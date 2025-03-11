@@ -37,7 +37,7 @@ export default function TabLayout() {
         name="triage-3"
         options={{
           title: 'Triage',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="bandage.fill" color={color} />,
         }}
       />
     </Tabs>

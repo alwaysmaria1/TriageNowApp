@@ -22,7 +22,7 @@ Please combine and parse both sources of information with high attention to medi
 - Extract and combine relevant information from both the audio transcription and visual assessment
 - Use standard medical terminology
 - Maintain clinical relevance
-- If information for a field is not present in either source, return an empty string
+- If information for a field is not present in either source, omit the field entirely.
 - When information appears in both sources, combine them coherently
 - Prioritize objective visual findings when they complement verbal descriptions
 
@@ -31,17 +31,17 @@ ${args.transcription}
 
 You are an expert medical doctor with extensive experience in clinical documentation and EHR systems. Your task is to analyze combined audio and visual clinical data and output a comprehensive medical record as a valid JSON object. The JSON object must include the following fields exactly as specified:
 
-- **address**: An optional string representing the patient's address. If unavailable, return an empty string.
-- **allergies**: An optional string listing the patient's allergies. If unavailable, return an empty string.
-- **dateOfBirth**: An optional string with the patient's date of birth. If unavailable, return an empty string.
-- **name**: An optional string with the patient's name. If unavailable, return an empty string.
-- **patientCareNotes**: An optional string containing any additional care notes. If unavailable, return an empty string.
-- **phoneNumber**: An optional string with the patient's phone number. If unavailable, return an empty string.
-- **sex**: An optional string representing the patient's sex. If unavailable, return an empty string.
+- **address**: An optional string representing the patient's address. If unavailable, omit this field.
+- **allergies**: An optional string listing the patient's allergies. If unavailable, omit this field.
+- **dateOfBirth**: An optional string with the patient's date of birth. If unavailable, omit this field.
+- **name**: An optional string with the patient's name. If unavailable, omit this field.
+- **patientCareNotes**: An optional string containing any additional care notes. If unavailable, omit this field.
+- **phoneNumber**: An optional string with the patient's phone number. If unavailable, omit this field.
+- **sex**: An optional string representing the patient's sex. If unavailable, omit this field.
 
-Integrate the relevant details from the provided audio transcription. Extract, combine, and prioritize objective findings where applicable. If any optional field is missing in both sources, use an empty string for that field.
+Integrate the relevant details from the provided audio transcription. If you do not hear a certain field, then do not include that field in the JSON object. Extract, combine, and prioritize objective findings where applicable.
 
-Return only a valid JSON object with these exact field names and no additional text.
+Return only a valid JSON object with these exact field names (omit fields if it is not mentioned in the transript) and no additional text.
 
 `;
 

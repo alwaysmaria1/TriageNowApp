@@ -1,13 +1,14 @@
 import { Patient } from '@/components/lib/types';
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
 import { getStatusColor } from '../lib/utils';
 import { ThemedText } from '../ThemedText';
+import { useRouter } from 'expo-router';
 
 
 
 export default function TriageHeader({ patient }: { patient: Patient }) {
-
+  const router = useRouter();
   const formatDate = (isoString: any) => {
     const date = new Date(isoString);
     return date.toLocaleString("en-US", {
@@ -46,6 +47,13 @@ export default function TriageHeader({ patient }: { patient: Patient }) {
         </TouchableOpacity>
         <Text style={styles.lastUpdateText}>{formatDate(patient.lastUpdated)}</Text>
       </View>
+      <TouchableOpacity
+              style={styles.audioButton}
+              key={patient.barcodeID}
+              onPress={() =>
+                router.push(`/audio-record?barcodeID=${patient.barcodeID}`)
+              }
+            ><Text style={styles.patientStatusText}>RECORD AUDIO</Text></TouchableOpacity>
     </View>
   );
 }
@@ -79,6 +87,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#8deaff',
     alignSelf: 'flex-start' // if you want it to size itself, or 'stretch' to fill
   },
+  audioButton: {
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    borderRadius: 4,
+    marginBottom: 4,
+    maxWidth: '100%',  
+    backgroundColor: '#ffffff',
+    alignSelf: 'flex-start' // if you want it to size itself, or 'stretch' to fill
+  },
   triageStatusText: {
     color: '#fff',
     fontWeight: 'bold',
@@ -97,3 +114,5 @@ const styles = StyleSheet.create({
     paddingTop: 6
   },
 });
+
+

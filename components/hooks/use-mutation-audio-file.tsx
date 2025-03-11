@@ -3,6 +3,8 @@ import { useAction, useMutation } from "convex/react";
 import { Id } from "convex/_generated/dataModel";
 import * as FileSystem from "expo-file-system";
 import { patientFormSchema } from "../patient-notes/patient-form-config";
+import { formatTranscriptionAsString } from '../lib/formatTranscript';
+
 
 export function useMutationFiles() {
   const generateUploadUrl = useMutation(api.files.generateUploadUrl);
@@ -32,10 +34,10 @@ export function useMutationFiles() {
       throw error;
     }
   };
-
+// TODO: REMOVE ANY FROM THE TYPE
   const createFile = async (
     fileMeta: { fileUri: string; barcodeID: string }
-  ): Promise<string | null> => {
+  ): Promise<any | null> => {
     try {
     
         // STORAGE OF FILE URL TO CONVEX BEGINS HERE !!!
@@ -86,19 +88,15 @@ export function useMutationFiles() {
       const finalTranscription = result.data;
 
       //update the patient accordingly
-      // updatePatient({
-      //   barcodeID,
-      //   ...finalTranscription
-      // })
-      //NOTE: TODO: FIX THE PIPELINE OF GETTING THE SPECIFIC PATIENT SINCE ITS HARDCODED
       updatePatient({
-        barcodeID: "2128",
+        barcodeID,
         ...finalTranscription
       })
 
 
-
-    return "testing current file storage";
+      //optional: formats the string so you can see the transcription on audio file
+      const formattedString = formatTranscriptionAsString(finalTranscription);
+      return formattedString;
     } catch (error) {
       alert((error as Error).message || "Please try again later");
       return null;

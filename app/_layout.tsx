@@ -41,6 +41,9 @@ export default function RootLayout() {
         <Stack.Screen 
           name="patient-notes"
         />
+        <Stack.Screen 
+          name="audio-record"
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>

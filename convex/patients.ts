@@ -61,36 +61,32 @@ export const update = mutation({
 
   handler: async (ctx, args) => {
     // Find the patient by barcodeID
-    // const patient = await ctx.db
-    //   .query("patients")
-    //   .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeID))
-    //   .first();
+    const patient = await ctx.db
+      .query("patients")
+      .withIndex("by_barcodeID", (q) => q.eq("barcodeID", args.barcodeID))
+      .first();
 
-    //   if (!patient) {
-    //     throw new ConvexError({
-    //       code: 404,
-    //       message: "Patient not found",
-    //     });
-    //   }
-      //patient._id
-      // Use the patient's _id to patch the record
-      await ctx.db.patch("j573cfnhmekv21zekzsbddpxvn7bkchj" as Id<"patients">, {
-        barcodeID: args.barcodeID, // Required
-        name: args.name ?? "Missing info",
-        dateOfBirth: args.dateOfBirth ?? "Missing info",
-        sex: args.sex ?? "Missing info",
-        address: args.address ?? "Missing info",
-        phoneNumber: args.phoneNumber ?? "Missing info",
-        allergies: args.allergies ?? "Missing info",
-        //zone: args.zone, // Required
-        //triageStatus: args.triageStatus, // Required
-        patientCareNotes: args.patientCareNotes ?? "Missing info",
-        //patientStatus: "Triage Complete", // Required
-        lastUpdated: new Date().toISOString(),
-      });
+      if (!patient) {
+        throw new ConvexError({
+          code: 404,
+          message: "Patient not found",
+        });
+      }
 
-      const updatedPatient = await ctx.db.get("j573cfnhmekv21zekzsbddpxvn7bkchj" as Id<"patients">);
-      return updatedPatient;
+      // Construct update object dynamically, excluding undefined values
+      const updates: Partial<typeof patient> = Object.fromEntries(
+        Object.entries(args).filter(([_, value]) => value !== undefined)
+      );
+
+      // Ensure barcodeID is always updated since it's required
+      updates.barcodeID = args.barcodeID;
+      updates.lastUpdated = new Date().toISOString();
+
+      // Patch only the provided fields
+      await ctx.db.patch(patient._id, updates);
+
+      // Fetch and return updated patient record
+      return await ctx.db.get(patient._id);
   },
 });
 
