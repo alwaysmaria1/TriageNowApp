@@ -24,7 +24,7 @@ export default function HomeScreen() {
     const currentTriageMember = useStore(state => state.currentUser);
     
     // Get the current user's triageMemberID
-    const triageMemberID = currentTriageMember?.userID;
+    const triageMemberID = currentTriageMember?._id;
     
     // Filter patients to only show those triaged by the current user
     const filteredPatients = useMemo(() => {
