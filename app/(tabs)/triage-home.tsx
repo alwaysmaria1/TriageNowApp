@@ -7,10 +7,14 @@ import { StyleSheet } from 'react-native';
 import Patients from '@/components/home/patients';
 import PatientStatusCount from '@/components/home/patientStatusCount';
 import SearchBar from '@/components/home/searchbar';
+import { useStore } from '@/components/lib/store';
 
 export default function HomeScreen() {
 
     const { patients } = useQueryPatients();
+    const { currentUser, setCurrentUser } = useStore();
+
+    
 
     return (
         <ParallaxScrollView

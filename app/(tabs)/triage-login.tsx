@@ -16,9 +16,10 @@ export default function TriageLogin() {
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
   const [zone, setZone] = useState('1');
+  const { currentUser, setCurrentUser } = useStore();
 
   const handleTriageMemberCreation = async () => {
-    const { currentUser, setCurrentUser } = useStore();
+
     if (!name.trim()) {
         Alert.alert('Error', 'Please enter your name.');
         return;
@@ -26,7 +27,8 @@ export default function TriageLogin() {
   
     // setSelectedRole('Triage');
     // setIsLoading(true);
-    
+    let createdUser = null; 
+
       try {
         // TODO: fix dummyID
         // Create user
@@ -38,19 +40,19 @@ export default function TriageLogin() {
         }
 
         // add user into table
-        const createdUser = await useCreateUser(createUserDto);
+        createdUser = await useCreateUser(createUserDto);
     
-        //set current user to global state
-        if (createdUser){
-          setCurrentUser(createdUser);
-        }
-
-        router.push('/triage-home');
 
       } catch (error) {
         console.error('Error creating user:', error);
         setIsLoading(false);
       }
+      
+      //set current user to global state
+      if (createdUser){
+        setCurrentUser(createdUser);
+      }
+      router.push('/triage-home');
     
   };
 

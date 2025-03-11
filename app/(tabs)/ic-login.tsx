@@ -14,10 +14,11 @@ export default function IcLogin() {
   const { useCreateUser } = useMutationUser();
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
+  const { currentUser, setCurrentUser } = useStore();
+
 
   const handleIcCreation = async () => {
 
-    const { currentUser, setCurrentUser } = useStore();
 
     if (!name.trim()) {
         Alert.alert('Error', 'Please enter your name.');
@@ -26,7 +27,7 @@ export default function IcLogin() {
   
     // setSelectedRole('Triage');
     // setIsLoading(true);
-    
+    let createdUser = null; 
       try {
         // TODO: fix dummyID
         // Create user
@@ -38,12 +39,9 @@ export default function IcLogin() {
         }
 
         // add user into table
-        const createdUser = await useCreateUser(createUserDto);
+        createdUser = await useCreateUser(createUserDto);
 
-        //set current user to global state
-        if (createdUser){
-          setCurrentUser(createdUser);
-        }
+        
     
         router.push('/incident_command');
 
@@ -52,6 +50,10 @@ export default function IcLogin() {
         setIsLoading(false);
       }
     
+      //set current user to global state
+      if (createdUser){
+        setCurrentUser(createdUser);
+      }
   };
 
   return (
