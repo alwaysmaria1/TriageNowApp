@@ -18,26 +18,33 @@ export default function LoginPage() {
     setSelectedRole(role);
     setIsLoading(true);
     
-    try {
-      // TODO: fix dummy data
-      const createUserDto: CreateUserDTO = {
-        userID: "dummyID",
-        name: "goosegoosecaboose",
-        role: role === 'Incident Commander' ? 'Incident Commander' : 'Triage',
-        userZone: "1",
-      }
-      const createdUser = await useCreateUser(createUserDto);
-      
-      // Navigate to the appropriate screen based on role
-      if (role === 'Incident Commander') {
+    if (role === "Triage") {
+      // do routing
+      router.push('/triage-login');
+    }
+    else {
+      try {
+        // TODO: fix dummy data
+        // Create user
+        const createUserDto: CreateUserDTO = {
+          userID: "dummyID",
+          name: "commandgoose",
+          role: 'Incident Commander', // ? 'Incident Commander' : 'Triage',
+          userZone: "Command",
+        }
+        const createdUser = await useCreateUser(createUserDto);
+        
+        // Navigate to the appropriate screen based on role
+        // if (role === 'Incident Commander') {
         router.push('/incident_command');
-      } else {
-        // Navigate directly to triage-3 page
-        router.push('/triage-home');
+        // } else {
+        //   // Navigate directly to triage-3 page
+        //   router.push('/triage-home');
+        // }
+      } catch (error) {
+        console.error('Error creating user:', error);
+        setIsLoading(false);
       }
-    } catch (error) {
-      console.error('Error creating user:', error);
-      setIsLoading(false);
     }
   };
 
@@ -72,7 +79,7 @@ export default function LoginPage() {
             selectedRole === 'Triage Team' && styles.selectedButton,
             isLoading && selectedRole === 'Triage Team' && styles.loadingButton
           ]}
-          onPress={() => handleRoleSelection('Triage Team')}
+          onPress={() => handleRoleSelection('Triage')}
           disabled={isLoading}
         >
           <ThemedView style={styles.buttonContent}>
@@ -119,7 +126,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   roleButton: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor:"#f0f0f0",
     borderRadius: 12,
     padding: 24,
     marginBottom: 24,
@@ -130,7 +137,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   selectedButton: {
-    backgroundColor: '#e0f7fa',
+    backgroundColor:"#e0f7fa",
     borderColor: '#00b8d4',
     borderWidth: 2,
   },
@@ -138,9 +145,11 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonContent: {
+    // backgroundColor:"#f0f0f0", // TODO: make transparent
     flexDirection: 'column',
   },
   buttonText: {
+    // backgroundColor:"#f0f0f0", // TODO: make transparent
     fontSize: 20,
     fontWeight: 'bold',
     marginBottom: 8,

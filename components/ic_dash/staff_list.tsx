@@ -67,7 +67,7 @@ const StaffList: React.FC<Props> = ({zoneStaff}) => {
     // </ThemedView>    
     <ThemedView>
       <Text style= {styles.header}>Current Staff</Text>
-      <ThemedView>
+      <ThemedView style = {styles.filterHeader}>
         {zones.map(zone => (
           <TouchableOpacity 
             key={zone.substring(zone.indexOf(" ") + 1)} 
@@ -82,7 +82,7 @@ const StaffList: React.FC<Props> = ({zoneStaff}) => {
       <FlatList
         data={filteredStaff}
         keyExtractor={(item) => item._id}
-        renderItem={({ item }) => <Text style={styles.staffText}>{item._id}</Text>}
+        renderItem={({ item }) => <Text style={styles.staffText}>{item.name}</Text>}
       />
     </ThemedView>
     );
@@ -107,13 +107,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5 
   },
-  container: { flex: 1, padding: 20, backgroundColor: "#f0f0f0" },
-  header: { fontSize: 24, fontWeight: "bold", marginBottom: 10 },
-  filterContainer: { flexDirection: "row", marginBottom: 10 },
-  filterButton: { padding: 8, marginRight: 5, backgroundColor: "#ddd", borderRadius: 5 },
-  selectedButton: { backgroundColor: "#333" },
-  filterText: { fontSize: 16, color: "#000" },
 
+  container: { 
+    flex: 1, 
+    padding: 20, 
+    backgroundColor: "#f0f0f0" 
+  },
+
+  header: { 
+    fontSize: 24, 
+    fontWeight: "bold", 
+    marginBottom: 10 },
+
+  filterContainer: { 
+    flexDirection: "row", 
+    marginBottom: 10 
+  },
+
+  filterButton: { 
+    padding: 8, 
+    marginRight: 5, 
+    backgroundColor: "#ddd", 
+    borderRadius: 5 
+  },
+
+  selectedButton: { 
+    backgroundColor: "#a3ddf7" 
+  },
+  filterText: { 
+    fontSize: 16, 
+    color: "#000" 
+  },
+  filterHeader: {
+    flexDirection: 'row',
+  },
 
 });
 
