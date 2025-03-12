@@ -12,6 +12,8 @@ import { useTriageLogic } from "@/components/hooks/use-triage-logic";
 import Questions from "@/components/triage/questions";
 import { useRouter } from "expo-router";
 import { IconSymbol } from "@/components/ui/IconSymbol";
+import { useStore } from "@/components/lib/store";
+import { current } from "immer";
 
 export default function TabThreeScreen() {
   // router needed to link to patient notes page  
@@ -37,6 +39,8 @@ export default function TabThreeScreen() {
     const [image, setImage] = useState("");
     const randomBarcodeID = Math.floor(Math.random() * 9000) + 1000;
     const { create: createPatient } = useMutationPatient();
+    const { currentUser, setCurrentUser } = useStore();
+    
 
     // Hook contains useEffects required to generate decision tree
     useTriageLogic(
@@ -80,28 +84,34 @@ export default function TabThreeScreen() {
     
       // Confirm submission function – sends the patient data.
       const confirmTriage = async () => {
-        if (!pendingTriage) return;
-        setIsCreatingPatient(true);
-        const newPatientData: CreatePatientDTO = {
-          barcodeID: randomBarcodeID.toString(),
-          lastUpdated: new Date().toISOString(),
-          patientStatus: "Triage Complete",
-          triageStatus: pendingTriage,
-          zone: "Zone 3",
-        };
-    
-        const result = await createPatient(newPatientData);
-        setIsCreatingPatient(false);
-        if (result) {
-          console.log("Patient created with ID:", result);
-          resetTriage();
-          // Optionally, reset all states after successful submission.
-          setPendingTriage(null);
-          router.push(`/patient-notes?barcodeID=${result.barcodeID}`)
+        //TODO: is there a better way to do this bc currentUser has to be initialized to null but htere shouldn't be a way to get here without first initializing currentUser
+        if (currentUser) {
+          if (!pendingTriage) return;
+          setIsCreatingPatient(true);
 
-        } else {
-          console.log("Patient creation failed.");
-        }
+          const newPatientData: CreatePatientDTO = {
+            barcodeID: randomBarcodeID.toString(),
+            triageMemberID: currentUser._id,
+            lastUpdated: new Date().toISOString(),
+            patientStatus: "Triage Complete",
+            triageStatus: pendingTriage,
+            zone: currentUser.userZone,
+          };
+          console.log("userzone is", currentUser.userZone);
+      
+          const result = await createPatient(newPatientData);
+          setIsCreatingPatient(false);
+          if (result) {
+            console.log("Patient created with ID:", result);
+            resetTriage();
+            // Optionally, reset all states after successful submission.
+            setPendingTriage(null);
+            router.push(`/patient-notes?barcodeID=${result.barcodeID}`)
+
+          } else {
+            console.log("Patient creation failed.");
+          }
+      }
       };
     
       // Reset function to clear all answers and states.

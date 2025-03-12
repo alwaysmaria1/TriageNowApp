@@ -17,6 +17,7 @@ import type * as actions_deepgram from "../actions/deepgram.js";
 import type * as actions_mistral from "../actions/mistral.js";
 import type * as files from "../files.js";
 import type * as patients from "../patients.js";
+import type * as users from "../users.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -31,6 +32,7 @@ declare const fullApi: ApiFromModules<{
   "actions/mistral": typeof actions_mistral;
   files: typeof files;
   patients: typeof patients;
+  users: typeof users;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

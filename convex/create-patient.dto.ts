@@ -2,6 +2,7 @@ import { v } from "convex/values";
 
 export const CreatePatientDTO = {
     barcodeID: v.string(),
+    triageMemberID: v.string(),
     address: v.optional(v.string()),
     allergies: v.optional(v.string()),
     dateOfBirth: v.optional(v.string()),
@@ -22,7 +23,7 @@ export const CreatePatientDTO = {
       v.literal("Minor"),
       v.literal("Delayed"),
       v.literal("Immediate"),
-      v.literal("Expectant")
+      v.literal("Expectant"),
     ),
     zone: v.string(),
 };

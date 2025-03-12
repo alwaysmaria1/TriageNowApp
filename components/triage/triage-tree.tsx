@@ -1,6 +1,6 @@
 // triageHelper.ts
 
-export type TriageColor = "green" | "yellow" | "red" | "black";
+export type triageStatus = "green" | "yellow" | "red" | "black";
 
 export interface DecisionTreeState {
   ableToWalk: boolean | null;
@@ -14,7 +14,7 @@ export interface DecisionTreeState {
 /**
  * Determines the triage color based on the decision tree state.
  */
-export function getTriageColor(state: DecisionTreeState): TriageColor {
+export function gettriageStatus(state: DecisionTreeState): triageStatus {
   if (state.ableToWalk) {
     return "green";
   }
@@ -70,12 +70,12 @@ export async function completeTriage(
   barcodeID: string,
   zone: string
 ) {
-  const triageColor = getTriageColor(decision);
+  const triageStatus = gettriageStatus(decision);
   const newPatientData = {
     barcodeID,
     lastUpdated: new Date().toISOString(),
     patientStatus: "Triage Complete",
-    triageStatus: triageColor,
+    triageStatus: triageStatus,
     zone,
     // Include any other patient data as needed.
   };
