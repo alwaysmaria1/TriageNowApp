@@ -30,10 +30,10 @@ export default function TriageLogin() {
     let createdUser = null; 
 
       try {
-        // TODO: fix dummyID
+        // TODO: fix dummyID FIXED TO MAKE A RANDOM ID
         // Create user
         const createUserDto: CreateUserDTO = {
-          userID: "dummyID",
+          userID: (Math.floor(Math.random() * 9000) + 1000).toString(),
           name: name,
           role: 'Triage', 
           userZone: zone,
@@ -41,6 +41,7 @@ export default function TriageLogin() {
 
         // add user into table
         createdUser = await useCreateUser(createUserDto);
+        console.log("createdUser when adding to table is", createdUser);
     
 
       } catch (error) {
@@ -52,6 +53,7 @@ export default function TriageLogin() {
       if (createdUser){
         setCurrentUser(createdUser);
       }
+      console.log("createdUser when setting to global state", createdUser);
       router.push('/triage-home');
     
   };

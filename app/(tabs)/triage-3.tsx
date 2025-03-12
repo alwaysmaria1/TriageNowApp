@@ -94,8 +94,9 @@ export default function TabThreeScreen() {
             lastUpdated: new Date().toISOString(),
             patientStatus: "Triage Complete",
             triageStatus: pendingTriage,
-            zone: "Zone 3",
+            zone: currentUser.userZone,
           };
+          console.log("userzone is", currentUser.userZone);
       
           const result = await createPatient(newPatientData);
           setIsCreatingPatient(false);

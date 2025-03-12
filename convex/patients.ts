@@ -105,6 +105,7 @@ export const create = mutation({
   handler: async (ctx, args) => {
     const patientId = await ctx.db.insert("patients", {
       barcodeID: args.barcodeID, // Required
+      triageMemberID: args.triageMemberID,
       name: args.name ?? "Missing info",
       dateOfBirth: args.dateOfBirth ?? "Missing info",
       sex: args.sex ?? "Missing info",
@@ -143,6 +144,7 @@ export const update = mutation({
       // Use the patient's _id to patch the record
       await ctx.db.patch(patient._id, {
         barcodeID: args.barcodeID, // Required
+        triageMemberID: args.triageMemberID,
         name: args.name ?? "Missing info",
         dateOfBirth: args.dateOfBirth ?? "Missing info",
         sex: args.sex ?? "Missing info",

@@ -3,6 +3,7 @@ import { Infer, v } from "convex/values";
 
 const patientSchema = {
   barcodeID: v.string(),
+  triageMemberID: v.string(),
   address: v.optional(v.string()),
   allergies: v.optional(v.string()),
   dateOfBirth: v.optional(v.string()),

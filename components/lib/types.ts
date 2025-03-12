@@ -70,6 +70,7 @@ export interface CreatePatientDTO {
 // This mirrors the create type, so you can reuse or extend as needed.
 export interface EditPatientDTO {
   barcodeID: string;
+  triageMemberID: string;
   address?: string;
   allergies?: string;
   dateOfBirth?: string;
