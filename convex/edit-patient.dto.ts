@@ -2,7 +2,7 @@ import { v } from "convex/values";
 
 export const EditPatientDTO = {
     barcodeID: v.string(),
-    triageMemberID: v.string(),
+    triageMemberID: v.optional(v.string()),
     address: v.optional(v.string()),
     allergies: v.optional(v.string()),
     dateOfBirth: v.optional(v.string()),
