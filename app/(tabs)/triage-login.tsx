@@ -65,7 +65,7 @@ export default function TriageLogin() {
         <ThemedText style={styles.subtitle}>Please enter your information.</ThemedText>
       </ThemedView>
 
-      <ThemedView style={styles.buttonContainer}>
+      <ThemedView style={styles.inputContainer}>
 
         <Text style={styles.label}>Enter your name:</Text>
         <TextInput
@@ -85,8 +85,10 @@ export default function TriageLogin() {
             <Picker.Item label="Zone 3" value="3" />
             <Picker.Item label="Zone 4" value="4" />
         </Picker>
+      </ThemedView>
 
-        <Button title="Submit" onPress={handleTriageMemberCreation} />
+      <ThemedView style={styles.inputContainer}>
+          <Button title="Submit" onPress={handleTriageMemberCreation} />
       </ThemedView>
 
       {isLoading && (
@@ -102,7 +104,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
   },
   header: {
     alignItems: 'center',
@@ -117,6 +119,10 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 24,
     marginBottom: 24,
+  },
+  inputContainer: {
+    flex: 1, // Pushes the submit button to the bottom
+    alignItems: 'center',
   },
   buttonContainer: {
     width: '100%',
@@ -181,5 +187,9 @@ const styles = StyleSheet.create({
     width: '80%',
     height: 50,
     marginBottom: 10,
+  },
+  submitContainer: {
+    alignSelf: 'stretch', // Makes button stretch full width
+    marginBottom: 20,
   },
 });
