@@ -34,11 +34,12 @@ export default function TabLayout() {
       {/* default: select role screen has no tabs */}
       <Tabs.Screen
         name="index"
-        options={{
-          title: 'Home',
-          tabBarButton: () => null,
-          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
+        // options={{
+        //   title: 'Home',
+        //   tabBarButton: () => null,
+        //   // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+        // }}
+        options={{ tabBarStyle: { display: "none" } }}
       />
       <Tabs.Screen
         name="ic-login"
@@ -79,12 +80,13 @@ export default function TabLayout() {
       /> */}
       <Tabs.Screen
         name="triage-login"
-        options={{
-          title: 'IC',
-          tabBarButton: () => null,
+        // options={{
+        //   title: 'IC',
+        //   tabBarButton: () => null,
 
-          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
+        //   // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+        // }}
+        options={{ tabBarStyle: { display: "none" } }}
       />
 
       {currentUser && (  
