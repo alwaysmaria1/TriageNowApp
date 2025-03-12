@@ -59,7 +59,7 @@ export default function IcLogin() {
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.header}>
-        <ThemedText style={styles.title}>Triage Team</ThemedText>
+        <ThemedText style={styles.title}>Incident Commander</ThemedText>
         <ThemedText style={styles.subtitle}>Please enter your information.</ThemedText>
       </ThemedView>
 
