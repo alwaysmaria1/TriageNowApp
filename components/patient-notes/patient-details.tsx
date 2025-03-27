@@ -14,6 +14,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
 import { PatientFormSchemaType, patientFormSchema } from './patient-form-config';
+import { useEffect } from 'react';
 
 interface PatientFormProps {
   onSubmit: (values: PatientFormSchemaType) => void;
@@ -53,6 +54,10 @@ const PatientDetails: React.FC<PatientFormProps> = ({
     resolver: zodResolver(patientFormSchema),
     defaultValues: patient,
   });
+
+  useEffect(() => {
+    reset(patient); // Ensure form updates when patient changes
+  }, [patient, reset]);
 
   const handleFormSubmit = (values: PatientFormSchemaType) => {
     onSubmit(values);

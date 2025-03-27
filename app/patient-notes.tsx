@@ -1,24 +1,20 @@
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, TextInput, Pressable, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import TriageHeader from '../components/patient-notes/patient-header';
 import { usePatientByBarcode } from '@/components/hooks/use-query-patient';
 import { useLocalSearchParams } from 'expo-router';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
-import { ChevronDown, ChevronUp } from 'lucide-react-native';
-import PatientForm from '@/components/patient-notes/patient-form';
 import { z } from 'zod';
-import { patientFormSchema, PatientFormSchemaType } from '@/components/patient-notes/patient-form-config';
+import { patientFormSchema } from '@/components/patient-notes/patient-form-config';
 import PatientDetails from '@/components/patient-notes/patient-details';
-
 
 export default function TriageNowScreen () {
   const { barcodeID } = useLocalSearchParams<{ barcodeID: string }>();
-  const { patient } = usePatientByBarcode(barcodeID);
-  // const [isDemographicsExpanded, setIsDemographicsExpanded] = useState(false);
-  // const [isContactInfoExpanded, setIsContactInfoExpanded] = useState(false);
-  // const [isPatientNotesExpanded, setIsPatientNotesExpanded] = useState(false);
+  const { patient: fetchedPatient } = usePatientByBarcode(barcodeID);
+  const [patient, setPatient] = useState(fetchedPatient);
 
+  useEffect(() => {
+    setPatient(fetchedPatient);
+  }, [fetchedPatient]);
 
   //TODO: CLEAN UP FORM CODE
   const handleSubmit = async (values: z.infer<typeof patientFormSchema>) => {
