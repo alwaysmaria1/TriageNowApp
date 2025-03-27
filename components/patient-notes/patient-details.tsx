@@ -15,9 +15,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Picker } from '@react-native-picker/picker';
 import { PatientFormSchemaType, patientFormSchema } from './patient-form-config';
 import { useEffect } from 'react';
+import { useMutation } from 'convex/react';
+import { api } from '@/convex/_generated/api';
 
 interface PatientFormProps {
-  onSubmit: (values: PatientFormSchemaType) => void;
+  patientBarcode: string;
   onCancel: () => void;
   patient: PatientFormSchemaType;
   submitLabel?: string;
@@ -39,8 +41,9 @@ const CollapsibleSection: React.FC<{ title: string; children: React.ReactNode }>
   );
 };
 
+
 const PatientDetails: React.FC<PatientFormProps> = ({
-  onSubmit,
+  patientBarcode,
   onCancel,
   patient,
   submitLabel = 'Submit',
@@ -55,12 +58,19 @@ const PatientDetails: React.FC<PatientFormProps> = ({
     defaultValues: patient,
   });
 
+  const updatePatient = useMutation(api.patients.update);
+
   useEffect(() => {
     reset(patient); // Ensure form updates when patient changes
   }, [patient, reset]);
 
   const handleFormSubmit = (values: PatientFormSchemaType) => {
-    onSubmit(values);
+
+    updatePatient({
+      barcodeID: patientBarcode,
+      ...values
+    })
+
     reset(patient);
   };
 

@@ -16,16 +16,6 @@ export default function TriageNowScreen () {
     setPatient(fetchedPatient);
   }, [fetchedPatient]);
 
-  //TODO: CLEAN UP FORM CODE
-  const handleSubmit = async (values: z.infer<typeof patientFormSchema>) => {
-    console.log("PagePage: handleSubmit called with values:", values);
-    try {
-      console.log(values);
-      console.log("PagePage: File created successfully");
-    } catch (error) {
-      console.error("PagePage: Error creating file:", error);
-    }
-  };
 
   const handleCancel = () => {
     // do nothing!
@@ -36,25 +26,16 @@ export default function TriageNowScreen () {
   }
 
   return (
-
     <ScrollView contentContainerStyle={styles.scrollContainer}>
-
-    <View style={styles.container}>
-
-      <TriageHeader patient={patient}></TriageHeader>
-      {/* <PatientForm
-        onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        submitLabel="Patient Notes Update"
-      /> */}
-      <PatientDetails onSubmit={handleSubmit}
-        onCancel={handleCancel}
-        submitLabel="Patient Notes Update"
-        patient={patient} />
+      <View style={styles.container}>
+        <TriageHeader patient={patient}></TriageHeader>
+        <PatientDetails 
+          patientBarcode = {barcodeID}
+          onCancel={handleCancel}
+          submitLabel="Patient Notes Update"
+          patient={patient} />
       </View>
     </ScrollView>
-      
-    
   );
 };
 
