@@ -149,7 +149,7 @@ export default function RecordAudioScreen() {
         (only say the information you do know)
       </Text>
       <View style={styles.instructionsList}>
-        <Text style={styles.instructionItem}>• Patient Name and Age</Text>
+        <Text style={styles.instructionItem}>• Patient Name</Text>
         <Text style={styles.instructionItem}>• Date of Birth</Text>
         <Text style={styles.instructionItem}>• Sex</Text>
         <Text style={styles.instructionItem}>• Address</Text>
