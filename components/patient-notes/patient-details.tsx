@@ -9,6 +9,7 @@ import {
   Button,
   TouchableOpacity,
   StyleSheet,
+  Alert,
 } from 'react-native';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,6 +18,7 @@ import { PatientFormSchemaType, patientFormSchema } from './patient-form-config'
 import { useEffect } from 'react';
 import { useMutation } from 'convex/react';
 import { api } from '@/convex/_generated/api';
+import { useNavigation, usePreventRemove } from '@react-navigation/native';
 
 interface PatientFormProps {
   patientBarcode: string;
@@ -58,6 +60,8 @@ const PatientDetails: React.FC<PatientFormProps> = ({
     defaultValues: patient,
   });
 
+  const navigation = useNavigation();
+
   const updatePatient = useMutation(api.patients.update);
 
   useEffect(() => {
@@ -78,6 +82,19 @@ const PatientDetails: React.FC<PatientFormProps> = ({
     onCancel();
     reset(patient);
   };
+
+  // Prevent the user from leaving the page with unsaved changes
+  usePreventRemove(isDirty, () => {
+    if (isDirty) {
+      Alert.alert(
+        "You have unsaved changes",
+        "Are you sure you want to leave without saving your changes?",
+        [
+          { text: "Cancel", style: "cancel" },
+        ]
+      );
+    }
+  });
 
   // Field definitions for the Demographics section
   const demographicsFields = [
@@ -172,7 +189,7 @@ const PatientDetails: React.FC<PatientFormProps> = ({
           <Button
             title={isDirty ? 'Submit Changes' : 'No Changes'}
             onPress={handleSubmit(handleFormSubmit)}
-            disabled={!isDirty}
+            disabled={false}
           />
           <Button title="Cancel" onPress={handleCancel} color="gray" />
         </View>
