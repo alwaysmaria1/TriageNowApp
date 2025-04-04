@@ -8,6 +8,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import { Patient, ColorScheme } from '@/components/lib/types';
 import  { triageStatusColors }  from '@/components/ic_dash/constants'
 import { useQueryPatients } from '../hooks/use-query-patients';
+import { router } from 'expo-router';
 
       
 
@@ -105,8 +106,9 @@ export default function PatientTable() {
             <Text>     {pt.zone}</Text>
           </View>
           <View style={styles.actionsCell}>
-            <TouchableOpacity style={styles.actionButton}>
+            <TouchableOpacity style={styles.actionButton} onPress={() => router.push(`/patient-notes?barcodeID=${pt.barcodeID}`)}>
               <Text>•••</Text>
+              
             </TouchableOpacity>
           </View>
         </View>
