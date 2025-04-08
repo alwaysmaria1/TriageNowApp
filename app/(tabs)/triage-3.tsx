@@ -270,6 +270,7 @@ export default function TabThreeScreen() {
                 showRespiratoryRateQuestion={showRespiratoryRateQuestion}
                 showPerfusionQuestion={showPerfusionQuestion}
                 showMentalStatusQuestion={showMentalStatusQuestion}
+                setTriageOverridden={setTriageOverridden}
             />
 
             {/* CONFIRMATION & RESET SECTION */}
