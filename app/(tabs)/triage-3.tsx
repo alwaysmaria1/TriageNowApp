@@ -19,6 +19,7 @@ export default function TabThreeScreen() {
   // router needed to link to patient notes page  
   const router = useRouter();
     // States to capture user input
+    const [triageOverridden, setTriageOverridden] = useState<string | null>(null);
     const [ableToWalk, setAbleToWalk] = useState<string | null>(null);
     const [firstSpontaneousBreathing, setFirstSpontaneousBreathing] = useState<string | null>(null);
     const [secondSpontaneousBreathing, setSecondSpontaneousBreathing] = useState<string | null>(null);
@@ -133,6 +134,23 @@ export default function TabThreeScreen() {
         setPendingTriage(null);
       };
 
+      // Reset function to clear all answers and states.
+      const overrideTriage = () => {
+        setAbleToWalk(null);
+        setFirstSpontaneousBreathing(null);
+        setSecondSpontaneousBreathing(null);
+        setRespiratoryRate(null);
+        setPerfusion(null);
+        setMentalStatus(null);
+    
+        setShowFirstBreathingQuestion(false);
+        setShowSecondBreathingQuestion(false);
+        setShowRespiratoryRateQuestion(false);
+        setShowPerfusionQuestion(false);
+        setShowMentalStatusQuestion(false);
+
+      };
+
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
@@ -176,14 +194,22 @@ export default function TabThreeScreen() {
                 <Button
                     title="Immediate"
                     variant="immediate"
-                    onPress={() => handleTriage("Immediate")}
+                    onPress={() => {
+                      overrideTriage()
+                      handleTriage("Immediate")
+                    }
+                    }
                 />
                 </View>
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Delayed"
                     variant="delayed"
-                    onPress={() => handleTriage("Delayed")}
+                    onPress={() => {
+                      overrideTriage()
+                      handleTriage("Delayed")
+                    }
+                    }
                 />
                 </View>
             </View>
@@ -193,14 +219,22 @@ export default function TabThreeScreen() {
                 <Button
                     title="Minor"
                     variant="minor"
-                    onPress={() => handleTriage("Minor")}
+                    onPress={() => {
+                      overrideTriage()
+                      handleTriage("Minor")
+                    }
+                    }
                 />
                 </View>
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Expectant"
                     variant="expectant"
-                    onPress={() => handleTriage("Expectant")}
+                    onPress={() => {
+                      overrideTriage()
+                      handleTriage("Expectant")
+                    }
+                    }
                 />
                 </View>
             </View>
