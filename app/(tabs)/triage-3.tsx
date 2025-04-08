@@ -134,7 +134,7 @@ export default function TabThreeScreen() {
         setPendingTriage(null);
       };
 
-      // Reset function to clear all answers and states.
+      // Reset function to hide questions when overriding
       const overrideTriage = () => {
         setAbleToWalk(null);
         setFirstSpontaneousBreathing(null);
