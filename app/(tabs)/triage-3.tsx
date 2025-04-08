@@ -193,23 +193,27 @@ export default function TabThreeScreen() {
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Immediate"
-                    variant="immediate"
+                    // variant="immediate"
                     onPress={() => {
                       overrideTriage()
+                      setTriageOverridden("Immediate")
                       handleTriage("Immediate")
                     }
                     }
+                    variant={triageOverridden === "Immediate" ? 'default' : 'immediate'}
                 />
                 </View>
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Delayed"
-                    variant="delayed"
+                    // variant="delayed"
                     onPress={() => {
                       overrideTriage()
                       handleTriage("Delayed")
+                      setTriageOverridden("Delayed")
                     }
                     }
+                    variant={triageOverridden === "Delayed" ? 'default' : 'delayed'}
                 />
                 </View>
             </View>
@@ -218,23 +222,29 @@ export default function TabThreeScreen() {
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Minor"
-                    variant="minor"
+                    // variant="minor"
                     onPress={() => {
                       overrideTriage()
+                      setTriageOverridden("Minor")
                       handleTriage("Minor")
                     }
                     }
+                    variant={triageOverridden === "Minor" ? 'default' : 'minor'}
+
                 />
                 </View>
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Expectant"
-                    variant="expectant"
+                    // variant="expectant"
                     onPress={() => {
                       overrideTriage()
+                      setTriageOverridden("Expectant")
                       handleTriage("Expectant")
                     }
                     }
+                    variant={triageOverridden === "Expectant" ? 'default' : 'expectant'}
+
                 />
                 </View>
             </View>
