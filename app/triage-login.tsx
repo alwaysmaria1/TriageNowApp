@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Alert} from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useMutationUser } from '@/components/hooks/use-mutation-user';
 import { useRouter } from 'expo-router';
@@ -18,44 +18,36 @@ export default function TriageLogin() {
   const [zone, setZone] = useState('1');
   const { currentUser, setCurrentUser } = useStore();
 
+  //Action to create new Triage Member User
   const handleTriageMemberCreation = async () => {
-
     if (!name.trim()) {
-        Alert.alert('Error', 'Please enter your name.');
-        return;
-      }
-  
+      Alert.alert('Error', 'Please enter your name.');
+      return;
+    }
     // setSelectedRole('Triage');
     // setIsLoading(true);
-    let createdUser = null; 
-
-      try {
-        // TODO: fix dummyID FIXED TO MAKE A RANDOM ID
-        // Create user
-        const createUserDto: CreateUserDTO = {
-          userID: (Math.floor(Math.random() * 9000) + 1000).toString(),
-          name: name,
-          role: 'Triage', 
-          userZone: zone,
-        }
-
-        // add user into table
-        createdUser = await useCreateUser(createUserDto);
-        console.log("createdUser when adding to table is", createdUser);
-    
-
-      } catch (error) {
-        console.error('Error creating user:', error);
-        setIsLoading(false);
+    let createdUser = null;
+    try {
+      const createUserDto: CreateUserDTO = {
+        userID: (Math.floor(Math.random() * 9000) + 1000).toString(),
+        name: name,
+        role: 'Triage',
+        userZone: zone,
       }
-      
-      //set current user to global state
-      if (createdUser){
-        setCurrentUser(createdUser);
-      }
-      console.log("createdUser when setting to global state", createdUser);
-      router.push('/triage-home');
-    
+
+      // add user into table
+      createdUser = await useCreateUser(createUserDto);
+      console.log("createdUser when adding to table is", createdUser);
+    } catch (error) {
+      console.error('Error creating user:', error);
+      setIsLoading(false);
+    }
+    //set current user to global state
+    if (createdUser) {
+      setCurrentUser(createdUser);
+    }
+    console.log("createdUser when setting to global state", createdUser);
+    router.push('/triage-home');
   };
 
   return (
@@ -69,26 +61,26 @@ export default function TriageLogin() {
 
         <Text style={styles.label}>Enter your name:</Text>
         <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
+          style={styles.input}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
         />
         <Text style={styles.label}>Select your zone:</Text>
         <Picker
-            selectedValue={zone}
-            onValueChange={(itemValue: string) => setZone(itemValue)}
-            style={styles.picker}
+          selectedValue={zone}
+          onValueChange={(itemValue: string) => setZone(itemValue)}
+          style={styles.picker}
         >
-            <Picker.Item label="Zone 1" value="1" />
-            <Picker.Item label="Zone 2" value="2" />
-            <Picker.Item label="Zone 3" value="3" />
-            <Picker.Item label="Zone 4" value="4" />
+          <Picker.Item label="Zone 1" value="1" />
+          <Picker.Item label="Zone 2" value="2" />
+          <Picker.Item label="Zone 3" value="3" />
+          <Picker.Item label="Zone 4" value="4" />
         </Picker>
       </ThemedView>
 
       <ThemedView style={styles.inputContainer}>
-          <Button title="Submit" onPress={handleTriageMemberCreation} />
+        <Button title="Submit" onPress={handleTriageMemberCreation} />
       </ThemedView>
 
       {isLoading && (

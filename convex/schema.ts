@@ -1,5 +1,6 @@
 import { defineSchema, defineTable } from "convex/server";
-import { Infer, v } from "convex/values";
+import { authTables } from "@convex-dev/auth/server";
+import { v } from "convex/values";
 
 const patientSchema = {
   barcodeID: v.string(),
@@ -49,8 +50,8 @@ const audioFile = {
 };
 
 export default defineSchema({
+  ...authTables,
   patients: defineTable(patientSchema).index("by_barcodeID", ["barcodeID"]),
-
   // inserting new users table:
   users: defineTable(userSchema).index("by_userID", ["userID"]),
   audioFiles: defineTable(audioFile).index("by_barcodeID", ["barcodeID"]),

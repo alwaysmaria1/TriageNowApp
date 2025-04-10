@@ -14,6 +14,7 @@ export default function LoginPage() {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  //Action to push user to a specific login page
   const handleRoleSelection = async (role: string) => {
     setSelectedRole(role);
     setIsLoading(true);
@@ -38,7 +39,7 @@ export default function LoginPage() {
         <ThemedText style={styles.title}>TriageNow</ThemedText>
         <ThemedText style={styles.subtitle}>Select Your Role</ThemedText>
       </ThemedView>
-
+      {/* IC PAGE */}
       <ThemedView style={styles.buttonContainer}>
         <TouchableOpacity
           style={[
@@ -56,7 +57,7 @@ export default function LoginPage() {
             </ThemedText>
           </ThemedView>
         </TouchableOpacity>
-
+        {/* Triage PAGE */}
         <TouchableOpacity
           style={[
             styles.roleButton,
