@@ -1,6 +1,8 @@
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { ConvexProvider, ConvexReactClient } from "convex/react";
+import { ConvexReactClient } from "convex/react";
+import { ClerkProvider, useAuth } from "@clerk/clerk-react";
+import { ConvexProviderWithClerk } from "convex/react-clerk";
 import { Stack } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -33,20 +35,22 @@ export default function RootLayout() {
   }
 
   return (
-    <ConvexProvider client={convex}>
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="home" options={{ headerShown: false }} />
-        <Stack.Screen name="+not-found" />
-        <Stack.Screen 
-          name="patient-notes"
-        />
-        <Stack.Screen 
-          name="audio-record"
-        />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
-    </ConvexProvider>
+    <ClerkProvider publishableKey="pk_test_bmV4dC1jYWxmLTg5LmNsZXJrLmFjY291bnRzLmRldiQ">
+      <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Stack>
+            <Stack.Screen name="home" options={{ headerShown: false }} />
+            <Stack.Screen name="+not-found" />
+            <Stack.Screen
+              name="patient-notes"
+            />
+            <Stack.Screen
+              name="audio-record"
+            />
+          </Stack>
+          <StatusBar style="auto" />
+        </ThemeProvider>
+      </ConvexProviderWithClerk>
+    </ClerkProvider>
   );
 }

@@ -17,37 +17,21 @@ export default function LoginPage() {
   const handleRoleSelection = async (role: string) => {
     setSelectedRole(role);
     setIsLoading(true);
-    
-    if (role === "Triage") {
-      // do routing
-      router.push('/triage-login');
-    }
-    else {
-      try {
-        // // TODO: fix dummy data
-        // // Create user
-        // const createUserDto: CreateUserDTO = {
-        //   userID: "dummyID",
-        //   name: "commandgoose",
-        //   role: 'Incident Commander', // ? 'Incident Commander' : 'Triage',
-        //   userZone: "Command",
-        // }
-        // const createdUser = await useCreateUser(createUserDto);
-        
-        // // Navigate to the appropriate screen based on role
-        // // if (role === 'Incident Commander') {
-        router.push('/ic-login');
-        // } else {
-        //   // Navigate directly to triage-3 page
-        //   router.push('/triage-home');
-        // }
-      } catch (error) {
-        console.error('Error creating user:', error);
-        setIsLoading(false);
-      }
-    }
-  };
 
+    try {
+      if (role === "Triage") {
+        router.push('/triage-login');
+      } else {
+        router.push('/ic-login');
+      };
+    } catch (error) {
+      console.error('Error creating user:', error);
+      setIsLoading(false);
+    }
+  }
+
+
+  //View below which allows users to choose a specific role - and see a respective signup page
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.header}>
@@ -126,7 +110,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   roleButton: {
-    backgroundColor:"#f0f0f0",
+    backgroundColor: "#f0f0f0",
     borderRadius: 12,
     padding: 24,
     marginBottom: 24,
@@ -137,7 +121,7 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   selectedButton: {
-    backgroundColor:"#e0f7fa",
+    backgroundColor: "#e0f7fa",
     borderColor: '#00b8d4',
     borderWidth: 2,
   },
@@ -145,7 +129,7 @@ const styles = StyleSheet.create({
     opacity: 0.7,
   },
   buttonContent: {
-    backgroundColor: 'transparent', 
+    backgroundColor: 'transparent',
     flexDirection: 'column',
   },
   buttonText: {
