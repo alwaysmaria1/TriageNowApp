@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Alert} from 'react-native';
+import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { useMutationUser } from '@/components/hooks/use-mutation-user';
 import { useRouter } from 'expo-router';
@@ -21,39 +21,39 @@ export default function IcLogin() {
 
 
     if (!name.trim()) {
-        Alert.alert('Error', 'Please enter your name.');
-        return;
-      }
-  
+      Alert.alert('Error', 'Please enter your name.');
+      return;
+    }
+
     // setSelectedRole('Triage');
     // setIsLoading(true);
-    let createdUser = null; 
-      try {
-        // TODO: fix dummyID
-        // Create user
-        const createUserDto: CreateUserDTO = {
-          userID: "dummyID",
-          name: name,
-          role: 'Incident Commander', 
-          userZone: 'Command',
-        }
-
-        // add user into table
-        createdUser = await useCreateUser(createUserDto);
-
-        
-    
-        router.push('/incident_command');
-
-      } catch (error) {
-        console.error('Error creating user:', error);
-        setIsLoading(false);
+    let createdUser = null;
+    try {
+      // TODO: fix dummyID
+      // Create user
+      const createUserDto: CreateUserDTO = {
+        userID: "dummyID",
+        name: name,
+        role: 'Incident Commander',
+        userZone: 'Command',
       }
-    
-      //set current user to global state
-      if (createdUser){
-        setCurrentUser(createdUser);
-      }
+
+      // add user into table
+      createdUser = await useCreateUser(createUserDto);
+
+
+
+      router.push('/incident_command');
+
+    } catch (error) {
+      console.error('Error creating user:', error);
+      setIsLoading(false);
+    }
+
+    //set current user to global state
+    if (createdUser) {
+      setCurrentUser(createdUser);
+    }
   };
 
   return (
@@ -67,12 +67,12 @@ export default function IcLogin() {
 
         <Text style={styles.label}>Enter your name:</Text>
         <TextInput
-            style={styles.input}
-            placeholder="Name"
-            value={name}
-            onChangeText={setName}
+          style={styles.input}
+          placeholder="Name"
+          value={name}
+          onChangeText={setName}
         />
-        
+
         <Button title="Submit" onPress={handleIcCreation} />
       </ThemedView>
 

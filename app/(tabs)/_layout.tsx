@@ -1,5 +1,5 @@
 import { Tabs } from 'expo-router';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { Platform } from 'react-native';
 
 import { HapticTab } from '@/components/HapticTab';
@@ -30,15 +30,9 @@ export default function TabLayout() {
           default: {},
         }),
       }}>
-
       {/* default: select role screen has no tabs */}
       <Tabs.Screen
         name="index"
-        // options={{
-        //   title: 'Home',
-        //   tabBarButton: () => null,
-        //   // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        // }}
         options={{ tabBarStyle: { display: "none" } }}
       />
       <Tabs.Screen
@@ -46,8 +40,6 @@ export default function TabLayout() {
         options={{
           title: 'IC',
           tabBarButton: () => null,
-
-          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
       />
       <Tabs.Screen
@@ -55,29 +47,8 @@ export default function TabLayout() {
         options={{
           title: 'IC',
           tabBarButton: () => null,
-
-          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
         }}
-      /> 
-      {/* <Tabs.Screen
-        name="triage-3"
-        options={{
-          title: 'Triage',
-          tabBarButton: () => null,
-
-          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      /> */}
-     
-      {/* <Tabs.Screen
-        name="triage-home"
-        options={{
-          title: 'IC',
-          tabBarButton: () => null,
-
-          // tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-        }}
-      /> */}
+      />
       <Tabs.Screen
         name="triage-login"
         // options={{
@@ -89,9 +60,8 @@ export default function TabLayout() {
         options={{ tabBarStyle: { display: "none" } }}
       />
 
-      {currentUser && (  
+      {currentUser && (
         <>
-
           {/* tabs available for triage team: triage-home, triage-3 */}
           {currentUser.role === 'Triage' && (
             <>
@@ -114,10 +84,7 @@ export default function TabLayout() {
                   ),
                 }}
               />
-
-                
             </>
-            
           )}
 
           {/* tabs available for IC: ic-dash */}

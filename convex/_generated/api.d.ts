@@ -15,6 +15,7 @@ import type {
 } from "convex/server";
 import type * as actions_deepgram from "../actions/deepgram.js";
 import type * as actions_mistral from "../actions/mistral.js";
+import type * as auth from "../auth.js";
 import type * as files from "../files.js";
 import type * as patients from "../patients.js";
 import type * as users from "../users.js";
@@ -30,6 +31,7 @@ import type * as users from "../users.js";
 declare const fullApi: ApiFromModules<{
   "actions/deepgram": typeof actions_deepgram;
   "actions/mistral": typeof actions_mistral;
+  auth: typeof auth;
   files: typeof files;
   patients: typeof patients;
   users: typeof users;

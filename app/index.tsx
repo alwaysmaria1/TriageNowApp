@@ -1,150 +1,180 @@
+import { useAuthActions } from "@convex-dev/auth/react";
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { useMutationUser } from '@/components/hooks/use-mutation-user';
-import { useRouter } from 'expo-router';
-
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-// import { api } from '@/convex/_generated/api';
-import { CreateUserDTO } from '@/components/lib/types';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-export default function LoginPage() {
-  const router = useRouter();
-  const { useCreateUser } = useMutationUser();
-  const [selectedRole, setSelectedRole] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+export default function SignInPage() {
+    const { signIn } = useAuthActions();
+    const [email, setEmail] = useState("");
+    const [emailError, setEmailError] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordError, setPasswordError] = useState("");
 
-  //Action to push user to a specific login page
-  const handleRoleSelection = async (role: string) => {
-    setSelectedRole(role);
-    setIsLoading(true);
+    // Function to validate email and password before submitting
+    const validateForm = () => {
+        let valid = true;
+        setEmailError("");
+        setPasswordError("");
 
-    try {
-      if (role === "Triage") {
-        router.push('/triage-login');
-      } else {
-        router.push('/ic-login');
-      };
-    } catch (error) {
-      console.error('Error creating user:', error);
-      setIsLoading(false);
-    }
-  }
+        if (!email.includes('@')) {
+            setEmailError("Please enter a valid email.");
+            valid = false;
+        }
 
+        if (password.length < 6) {
+            setPasswordError("Password must be at least 6 characters.");
+            valid = false;
+        }
 
-  //View below which allows users to choose a specific role - and see a respective signup page
-  return (
-    <ThemedView style={styles.container}>
-      <ThemedView style={styles.header}>
-        <ThemedText style={styles.title}>TriageNow</ThemedText>
-        <ThemedText style={styles.subtitle}>Select Your Role</ThemedText>
-      </ThemedView>
-      {/* IC PAGE */}
-      <ThemedView style={styles.buttonContainer}>
-        <TouchableOpacity
-          style={[
-            styles.roleButton,
-            selectedRole === 'Incident Commander' && styles.selectedButton,
-            isLoading && selectedRole === 'Incident Commander' && styles.loadingButton
-          ]}
-          onPress={() => handleRoleSelection('Incident Commander')}
-          disabled={isLoading}
-        >
-          <ThemedView style={styles.buttonContent}>
-            <ThemedText style={styles.buttonText}>Incident Commander</ThemedText>
-            <ThemedText style={styles.description}>
-              Oversee the entire incident response and coordinate resources
-            </ThemedText>
-          </ThemedView>
-        </TouchableOpacity>
-        {/* Triage PAGE */}
-        <TouchableOpacity
-          style={[
-            styles.roleButton,
-            selectedRole === 'Triage Team' && styles.selectedButton,
-            isLoading && selectedRole === 'Triage Team' && styles.loadingButton
-          ]}
-          onPress={() => handleRoleSelection('Triage')}
-          disabled={isLoading}
-        >
-          <ThemedView style={styles.buttonContent}>
-            <ThemedText style={styles.buttonText}>Triage Team</ThemedText>
-            <ThemedText style={styles.description}>
-              Assess patients and assign priority levels at the scene
-            </ThemedText>
-          </ThemedView>
-        </TouchableOpacity>
-      </ThemedView>
+        return valid;
+    };
 
-      {isLoading && (
-        <ThemedText style={styles.loadingText}>
-          Setting up your dashboard...
-        </ThemedText>
-      )}
-    </ThemedView>
-  );
+    const handleSubmit = () => {
+        if (validateForm()) {
+            void signIn("password", { email, password });
+        }
+    };
+    const switchToSignup = () => {
+        if (validateForm()) {
+            void signIn("password", { email, password });
+        }
+    };
+
+    return (
+        <ThemedView style={styles.container}>
+            {/* App Title Section */}
+            <ThemedView style={styles.appHeader}>
+                <MaterialCommunityIcons name="hospital-box" size={40} color="#00b8d4" />
+                <ThemedText style={styles.appTitle}>TriageNow</ThemedText>
+            </ThemedView>
+
+            {/* Screen Header */}
+            <ThemedView style={styles.header}>
+                <ThemedText style={styles.title}>
+                    {"Sign In"}
+                </ThemedText>
+            </ThemedView>
+
+            {/* Email Input */}
+            <ThemedText style={styles.label}>Email</ThemedText>
+            <TextInput
+                style={styles.input}
+                placeholder="Email"
+                onChangeText={(text) => {
+                    setEmail(text);
+                    if (emailError) setEmailError("");
+                }}
+                value={email}
+                inputMode="email"
+                autoCapitalize="none"
+            />
+            {emailError ? <ThemedText style={styles.errorText}>{emailError}</ThemedText> : null}
+
+            {/* Password Input */}
+            <ThemedText style={styles.label}>Password</ThemedText>
+            <TextInput
+                style={styles.input}
+                placeholder="Password"
+                onChangeText={(text) => {
+                    setPassword(text);
+                    if (passwordError) setPasswordError("");
+                }}
+                value={password}
+                secureTextEntry
+            />
+            {passwordError ? <ThemedText style={styles.errorText}>{passwordError}</ThemedText> : null}
+
+            {/* Main Action Button */}
+            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+                <ThemedText style={styles.buttonText}>
+                    {"Sign In"}
+                </ThemedText>
+            </TouchableOpacity>
+
+            {/* Toggle between Sign In and Sign Up */}
+            <TouchableOpacity
+                style={styles.toggleButton}
+            >
+                <ThemedText style={styles.toggleButtonText} onPress={switchToSignup}>
+                    Sign Up Instead
+                </ThemedText>
+            </TouchableOpacity>
+        </ThemedView>
+    );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    padding: 16,
-    justifyContent: 'center',
-  },
-  header: {
-    alignItems: 'center',
-    marginBottom: 36,
-  },
-  title: {
-    fontSize: 36,
-    fontWeight: 'bold',
-    marginBottom: 8,
-    lineHeight: 40,
-  },
-  subtitle: {
-    fontSize: 24,
-    marginBottom: 24,
-  },
-  buttonContainer: {
-    width: '100%',
-    maxWidth: 600,
-    alignSelf: 'center',
-  },
-  roleButton: {
-    backgroundColor: "#f0f0f0",
-    borderRadius: 12,
-    padding: 24,
-    marginBottom: 24,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
-  },
-  selectedButton: {
-    backgroundColor: "#e0f7fa",
-    borderColor: '#00b8d4',
-    borderWidth: 2,
-  },
-  loadingButton: {
-    opacity: 0.7,
-  },
-  buttonContent: {
-    backgroundColor: 'transparent',
-    flexDirection: 'column',
-  },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 16,
-    opacity: 0.8,
-  },
-  loadingText: {
-    textAlign: 'center',
-    marginTop: 24,
-    fontSize: 18,
-  }
+    container: {
+        flex: 1,
+        padding: 25,
+        justifyContent: "center",
+    },
+    appHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'center',
+        marginBottom: 25,
+    },
+    appTitle: {
+        fontSize: 28,
+        fontWeight: "bold",
+        marginLeft: 8,
+        color: "#00b8d4",
+    },
+    header: {
+        alignItems: "center",
+        marginBottom: 36,
+    },
+    title: {
+        fontSize: 36,
+        fontWeight: "bold",
+        marginBottom: 8,
+        lineHeight: 40,
+    },
+    label: {
+        fontSize: 16,
+        marginBottom: 8,
+        fontWeight: '500',
+    },
+    input: {
+        backgroundColor: "#f0f0f0",
+        paddingHorizontal: 16,
+        paddingVertical: 12,
+        borderRadius: 12,
+        fontSize: 16,
+        marginBottom: 8,
+    },
+    errorText: {
+        color: "red",
+        marginBottom: 8,
+        fontSize: 14,
+    },
+    button: {
+        backgroundColor: "#f0f0f0",
+        borderRadius: 12,
+        padding: 24,
+        marginTop: 16,
+        marginBottom: 24,
+        alignItems: "center",
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 3,
+    },
+    buttonText: {
+        fontSize: 20,
+        fontWeight: "bold",
+    },
+    toggleButton: {
+        alignItems: "center",
+    },
+    toggleButtonText: {
+        fontSize: 16,
+        opacity: 0.8,
+        textDecorationLine: "underline",
+    },
 });
+
