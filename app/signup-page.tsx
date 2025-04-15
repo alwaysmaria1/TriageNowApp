@@ -10,7 +10,6 @@ import { CreateUserDTO } from '@/components/lib/types';
 
 export default function SignupPage() {
   const router = useRouter();
-  const { useCreateUser } = useMutationUser();
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,10 +19,13 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
+      //navigate to new page without a back button
       if (role === "Triage") {
-        router.push('/triage-login');
+        router.replace('/ic-login');
+        //router.push('/triage-login');
       } else {
-        router.push('/ic-login');
+        router.replace('/ic-login');
+        //router.push('/ic-login');
       };
     } catch (error) {
       console.error('Error creating user:', error);

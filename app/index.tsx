@@ -4,8 +4,10 @@ import { StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useRouter } from "expo-router";
 
 export default function SignInPage() {
+    const router = useRouter();
     const { signIn } = useAuthActions();
     const [email, setEmail] = useState("");
     const [emailError, setEmailError] = useState("");
@@ -13,6 +15,8 @@ export default function SignInPage() {
     const [passwordError, setPasswordError] = useState("");
 
     // Function to validate email and password before submitting
+    //Note: due to how convex auth is designed, if there's not a user already,
+    //then a user will be created (allowed for sake of dev time)
     const validateForm = () => {
         let valid = true;
         setEmailError("");
@@ -37,9 +41,9 @@ export default function SignInPage() {
         }
     };
     const switchToSignup = () => {
-        if (validateForm()) {
-            void signIn("password", { email, password });
-        }
+        //push to the signup page
+        router.push('/signup-page');
+        //router.replace('/signup-page');
     };
 
     return (
