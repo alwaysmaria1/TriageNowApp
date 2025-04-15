@@ -145,8 +145,10 @@ export default function RecordAudioScreen() {
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>Voice-To-Text Patient Info</Text>
       <Text style={styles.instructions}>
-        Please record your patient information by describing the following details:
-        (only say the information you do know)
+        Please record patient information by describing the following details:
+      </Text>
+      <Text style={styles.instructions}>
+        (Only say the information you know)
       </Text>
       <View style={styles.instructionsList}>
         <Text style={styles.instructionItem}>• Patient Name</Text>
@@ -250,19 +252,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonRecord: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#8db096',
   },
   buttonStop: {
-    backgroundColor: '#F44336',
+    backgroundColor: '#cc5c54',
   },
   buttonPlay: {
-    backgroundColor: '#2196F3',
+    backgroundColor: '#5d98c9',
   },
   buttonTranscribe: {
     backgroundColor: '#9C27B0',
   },
   buttonUpload: {
-    backgroundColor: '#FF9800',
+    backgroundColor: '#edaf53',
   },
   buttonText: {
     color: '#fff',
