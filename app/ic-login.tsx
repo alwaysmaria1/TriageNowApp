@@ -1,59 +1,37 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
-import { useMutationUser } from '@/components/hooks/use-mutation-user';
+import { StyleSheet, Text, TextInput, Button, Alert } from 'react-native';
 import { useRouter } from 'expo-router';
 
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { CreateUserDTO } from '@/components/lib/types';
-import { useStore } from '@/components/lib/store';
+import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function IcLogin() {
   const router = useRouter();
-  const { useCreateUser } = useMutationUser();
-  const [isLoading, setIsLoading] = useState(false);
+  const { signIn } = useAuthActions();
   const [name, setName] = useState('');
-  const { currentUser, setCurrentUser } = useStore();
 
 
   const handleIcCreation = async () => {
-
-
     if (!name.trim()) {
       Alert.alert('Error', 'Please enter your name.');
       return;
     }
-
-    // setSelectedRole('Triage');
-    // setIsLoading(true);
-    let createdUser = null;
+    const email = "test@gmail.com"
+    const password = "123456789";
+    const name1 = "name";
+    const userZone = "0";
+    const userID = "1234";
+    console.log("trying to log in")
     try {
-      // TODO: fix dummyID
-      // Create user
-      const createUserDto: CreateUserDTO = {
-        userID: "dummyID",
-        name: name,
-        role: 'Incident Commander',
-        userZone: 'Command',
-      }
-
-      // add user into table
-      createdUser = await useCreateUser(createUserDto);
-
-
-
-      router.push('/incident_command');
-
+      await signIn("password", { email, name: name1, password, userZone, userID, flow: 'signUp' });
+      console.log("user created");
+      router.replace('/incident_command');
     } catch (error) {
-      console.error('Error creating user:', error);
-      setIsLoading(false);
+      console.log("unable to sign up IC user")
     }
+    router.push('/incident_command');
 
-    //set current user to global state
-    if (createdUser) {
-      setCurrentUser(createdUser);
-    }
   };
 
   return (
@@ -75,12 +53,6 @@ export default function IcLogin() {
 
         <Button title="Submit" onPress={handleIcCreation} />
       </ThemedView>
-
-      {isLoading && (
-        <ThemedText style={styles.loadingText}>
-          Setting up your dashboard...
-        </ThemedText>
-      )}
     </ThemedView>
   );
 }

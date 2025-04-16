@@ -6,7 +6,7 @@ import { useRouter } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 // import { api } from '@/convex/_generated/api';
-import { CreateUserDTO } from '@/components/lib/types';
+import { CreateUserDTO } from '@/components/lib/types'; //replaced with convex auth
 
 export default function SignupPage() {
   const router = useRouter();
@@ -19,9 +19,9 @@ export default function SignupPage() {
     setIsLoading(true);
 
     try {
-      //navigate to new page without a back button
+      //navigate to new page without a back button -- issues tho with prev pages
       if (role === "Triage") {
-        router.replace('/ic-login');
+        router.replace('/triage-login');
         //router.push('/triage-login');
       } else {
         router.replace('/ic-login');

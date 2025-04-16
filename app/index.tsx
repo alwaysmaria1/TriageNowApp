@@ -14,9 +14,14 @@ export default function SignInPage() {
     const [password, setPassword] = useState("");
     const [passwordError, setPasswordError] = useState("");
 
+    const reset = () => {
+        setEmail("");
+        setPassword("");
+        setEmailError("");
+        setPasswordError("");
+    }
+
     // Function to validate email and password before submitting
-    //Note: due to how convex auth is designed, if there's not a user already,
-    //then a user will be created (allowed for sake of dev time)
     const validateForm = () => {
         let valid = true;
         setEmailError("");
@@ -35,13 +40,19 @@ export default function SignInPage() {
         return valid;
     };
 
-    const handleSubmit = () => {
+    async function handleSignIn() {
         if (validateForm()) {
-            void signIn("password", { email, password });
+            try {
+                await signIn("password", { email, password, flow: 'signIn' });
+            } catch (error) {
+                setEmailError("That account doesn't exist. Please try again")
+            }
+            //reset();
         }
     };
     const switchToSignup = () => {
         //push to the signup page
+        reset();
         router.push('/signup-page');
         //router.replace('/signup-page');
     };
@@ -91,7 +102,7 @@ export default function SignInPage() {
             {passwordError ? <ThemedText style={styles.errorText}>{passwordError}</ThemedText> : null}
 
             {/* Main Action Button */}
-            <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+            <TouchableOpacity style={styles.button} onPress={handleSignIn}>
                 <ThemedText style={styles.buttonText}>
                     {"Sign In"}
                 </ThemedText>

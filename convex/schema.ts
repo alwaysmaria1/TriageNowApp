@@ -1,6 +1,7 @@
 import { defineSchema, defineTable } from "convex/server";
 import { authTables } from "@convex-dev/auth/server";
 import { v } from "convex/values";
+import { Password } from "@convex-dev/auth/providers/Password";
 
 const patientSchema = {
   barcodeID: v.string(),
@@ -31,10 +32,11 @@ const patientSchema = {
 };
 
 const userSchema = {
-  userID: v.string(),
-  name: v.string(),
-  role: v.string(),
-  userZone: v.string(),
+  userID: v.optional(v.string()),
+  name: v.optional(v.string()),
+  role: v.optional(v.string()),
+  userZone: v.optional(v.string()),
+  email: v.string(),
 }
 
 const audioFile = {

@@ -8,10 +8,12 @@ import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { CreateUserDTO } from '@/components/lib/types';
 import { useStore } from '@/components/lib/store';
+import { useAuthActions } from "@convex-dev/auth/react";
 
 export default function TriageLogin() {
   const router = useRouter();
-  const { useCreateUser } = useMutationUser();
+  const { signIn } = useAuthActions();
+  //const { useCreateUser } = useMutationUser(); replaced with convex auth
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [name, setName] = useState('');
@@ -28,16 +30,16 @@ export default function TriageLogin() {
     // setIsLoading(true);
     let createdUser = null;
     try {
-      const createUserDto: CreateUserDTO = {
-        userID: (Math.floor(Math.random() * 9000) + 1000).toString(),
-        name: name,
-        role: 'Triage',
-        userZone: zone,
-      }
+      // const createUserDto: CreateUserDTO = {
+      //   userID: (Math.floor(Math.random() * 9000) + 1000).toString(),
+      //   name: name,
+      //   role: 'Triage',
+      //   userZone: zone,
+      // }
 
-      // add user into table
-      createdUser = await useCreateUser(createUserDto);
-      console.log("createdUser when adding to table is", createdUser);
+      // // add user into table
+      // createdUser = await useCreateUser(createUserDto);
+      // console.log("createdUser when adding to table is", createdUser);
     } catch (error) {
       console.error('Error creating user:', error);
       setIsLoading(false);
