@@ -44,6 +44,8 @@ export default function SignInPage() {
         if (validateForm()) {
             try {
                 await signIn("password", { email, password, flow: 'signIn' });
+                router.replace('/triage-home');
+                console.log("user logged in")
             } catch (error) {
                 setEmailError("That account doesn't exist. Please try again")
             }

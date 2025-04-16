@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TextInput, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { useMutationUser } from '@/components/hooks/use-mutation-user';
 import { useRouter } from 'expo-router';
-
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { CreateUserDTO } from '@/components/lib/types';
 import { useStore } from '@/components/lib/store';
 import { useAuthActions } from "@convex-dev/auth/react";
 

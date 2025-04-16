@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
-import { useMutationUser } from '@/components/hooks/use-mutation-user';
 import { useRouter } from 'expo-router';
-
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 // import { api } from '@/convex/_generated/api';

@@ -7,36 +7,34 @@ import { StyleSheet } from 'react-native';
 import Patients from '@/components/home/patients';
 import PatientStatusCount from '@/components/home/patientStatusCount';
 import SearchBar from '@/components/home/searchbar';
-import { useStore } from '@/components/lib/store';
-import { current } from 'immer';
+import { getCurrentUser } from '@/components/hooks/use-query-user';
 
 export default function HomeScreen() {
 
-    const  allPatients  = useQueryPatients();
+    const allPatients = useQueryPatients();
+    const { user } = getCurrentUser();
 
-    const { currentUser, setCurrentUser } = useStore();
-    console.log("current user in triage-home", currentUser);
-    const  patients  = allPatients.patients.filter(patient => patient.triageMemberID === currentUser?._id)
-
-    const zone = currentUser?.userZone;
+    console.log("current user in triage-home", user);
+    const patients = allPatients.patients.filter(patient => patient.triageMemberID === user?._id)
+    const zone = user?.userZone;
 
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: '#F5F5F5', dark: '#353636' }}
             headerImage={
                 <IconSymbol
-                size={310}
-                color="#808080"
-                name="cross.case.fill"
-                style={styles.headerImage}
+                    size={310}
+                    color="#808080"
+                    name="cross.case.fill"
+                    style={styles.headerImage}
                 />
             }>
             <ThemedView style={styles.titleContainer}>
                 <ThemedText type="title">Zone {zone} Triage</ThemedText>
             </ThemedView>
-            <SearchBar patientList={patients}/>
-            <PatientStatusCount patientList={patients}/>
-            <Patients patientList={patients}/>
+            <SearchBar patientList={patients} />
+            <PatientStatusCount patientList={patients} />
+            <Patients patientList={patients} />
         </ParallaxScrollView>
     );
 }
