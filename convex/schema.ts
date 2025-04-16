@@ -36,7 +36,7 @@ const userSchema = {
   name: v.optional(v.string()),
   role: v.optional(v.string()),
   userZone: v.optional(v.string()),
-  email: v.string(),
+  email: v.optional(v.string()),
 }
 
 const audioFile = {

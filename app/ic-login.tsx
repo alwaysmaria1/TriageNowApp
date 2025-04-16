@@ -1,7 +1,15 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, TextInput, Button, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  TextInput,
+  Pressable,
+  Alert,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
+} from 'react-native';
 import { useRouter } from 'expo-router';
-
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { useAuthActions } from "@convex-dev/auth/react";
@@ -9,50 +17,135 @@ import { useAuthActions } from "@convex-dev/auth/react";
 export default function IcLogin() {
   const router = useRouter();
   const { signIn } = useAuthActions();
+
+  // State variables for the sign-up form fields
   const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [userZone, setUserZone] = useState('');
+  const [userID, setUserID] = useState('');
 
-
+  // Handler to validate and process sign up
   const handleIcCreation = async () => {
-    if (!name.trim()) {
-      Alert.alert('Error', 'Please enter your name.');
+    if (
+      !name.trim() ||
+      !email.trim() ||
+      !password.trim() ||
+      !userZone.trim() ||
+      !userID.trim()
+    ) {
+      Alert.alert('Error', 'Please fill in all fields.');
       return;
     }
-    const email = "test@gmail.com"
-    const password = "123456789";
-    const name1 = "name";
-    const userZone = "0";
-    const userID = "1234";
-    console.log("trying to log in")
     try {
-      await signIn("password", { email, name: name1, password, userZone, userID, flow: 'signUp' });
-      console.log("user created");
+      await signIn("password", {
+        email,
+        name,
+        password,
+        userZone,
+        userID,
+        role: "Incident Commander",
+        flow: 'signUp'
+      });
+      console.log("User signed up successfully");
       router.replace('/incident_command');
     } catch (error) {
-      console.log("unable to sign up IC user")
+      console.error("Unable to sign up IC user", error);
+      Alert.alert('Error', 'Unable to sign up. Please try again later.');
     }
-    router.push('/incident_command');
-
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedView style={styles.header}>
-        <ThemedText style={styles.title}>Incident Commander</ThemedText>
-        <ThemedText style={styles.subtitle}>Please enter your information.</ThemedText>
-      </ThemedView>
+      {/* Use a ScrollView so on smaller screens the form is scrollable.
+          KeyboardAvoidingView ensures fields move out of the way when keyboard appears. */}
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      >
+        <ScrollView
+          contentContainerStyle={styles.scrollContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          <ThemedView style={styles.header}>
+            <ThemedText style={styles.title}>Incident Commander</ThemedText>
+            <ThemedText style={styles.subtitle}>
+              Please enter your information to sign up.
+            </ThemedText>
+          </ThemedView>
 
-      <ThemedView style={styles.buttonContainer}>
+          {/* Form Container */}
+          <ThemedView style={styles.formContainer}>
+            {/* Name Field */}
+            <Text style={styles.label}>Name</Text>
+            <Text style={styles.helpText}>
+              Enter your full name as it should appear in your profile.
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Your Name"
+              value={name}
+              onChangeText={setName}
+            />
 
-        <Text style={styles.label}>Enter your name:</Text>
-        <TextInput
-          style={styles.input}
-          placeholder="Name"
-          value={name}
-          onChangeText={setName}
-        />
+            {/* Email Field */}
+            <Text style={styles.label}>Email</Text>
+            <Text style={styles.helpText}>
+              Enter your email address for account verification.
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="you@example.com"
+              keyboardType="email-address"
+              autoCapitalize="none"
+              value={email}
+              onChangeText={setEmail}
+            />
 
-        <Button title="Submit" onPress={handleIcCreation} />
-      </ThemedView>
+            {/* Password Field */}
+            <Text style={styles.label}>Password</Text>
+            <Text style={styles.helpText}>
+              Create a secure password (minimum 6 characters).
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry={true}
+              value={password}
+              onChangeText={setPassword}
+            />
+
+            {/* User Zone Field */}
+            <Text style={styles.label}>User Zone</Text>
+            <Text style={styles.helpText}>
+              Specify your user zone or team identifier.
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="User Zone"
+              value={userZone}
+              onChangeText={setUserZone}
+            />
+
+            {/* User ID Field */}
+            <Text style={styles.label}>User ID</Text>
+            <Text style={styles.helpText}>
+              Enter your user identification number or code.
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="User ID"
+              value={userID}
+              onChangeText={setUserID}
+            />
+
+            {/* Custom Pressable Button for a smoother look and feel */}
+            <Pressable style={styles.signUpButton} onPress={handleIcCreation}>
+              <Text style={styles.signUpButtonText}>SIGN UP</Text>
+            </Pressable>
+          </ThemedView>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </ThemedView>
   );
 }
@@ -60,85 +153,73 @@ export default function IcLogin() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
-    justifyContent: 'center',
+    backgroundColor: '#f5f5f5', // Light background to give a softer feel
+  },
+  scrollContainer: {
+    paddingHorizontal: 20,
+    paddingTop: 40,
+    paddingBottom: 60,
+    alignItems: 'center',
   },
   header: {
     alignItems: 'center',
-    marginBottom: 36,
+    marginBottom: 24,
+    backgroundColor: '#f5f5f5'
   },
   title: {
-    fontSize: 36,
+    fontSize: 32,
     fontWeight: 'bold',
-    marginBottom: 8,
-    lineHeight: 40,
+    color: '#333',
+    marginBottom: 6,
   },
   subtitle: {
-    fontSize: 24,
-    marginBottom: 24,
+    fontSize: 18,
+    color: '#666',
   },
-  buttonContainer: {
+  formContainer: {
     width: '100%',
     maxWidth: 600,
-    alignSelf: 'center',
-  },
-  roleButton: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#fff',
     borderRadius: 12,
-    padding: 24,
-    marginBottom: 24,
+    padding: 20,
+
+    // Subtle shadow on iOS; elevation on Android
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
     elevation: 3,
   },
-  selectedButton: {
-    backgroundColor: '#e0f7fa',
-    borderColor: '#00b8d4',
-    borderWidth: 2,
-  },
-  loadingButton: {
-    opacity: 0.7,
-  },
-  buttonContent: {
-    flexDirection: 'column',
-  },
-  buttonText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginBottom: 8,
-  },
-  description: {
-    fontSize: 16,
-    opacity: 0.8,
-  },
-  loadingText: {
-    textAlign: 'center',
-    marginTop: 24,
-    fontSize: 18,
-  },
   label: {
-    fontSize: 18,
-    marginBottom: 8,
+    fontSize: 16,
+    fontWeight: '600',
+    marginTop: 14,
+    color: '#333',
+  },
+  helpText: {
+    fontSize: 13,
+    color: '#777',
+    marginBottom: 6,
   },
   input: {
-    width: '80%',
+    backgroundColor: '#fafafa',
     borderWidth: 1,
     borderColor: '#ccc',
-    padding: 10,
-    borderRadius: 5,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 8,
     fontSize: 16,
-    marginBottom: 10,
   },
-  result: {
+  signUpButton: {
+    marginTop: 24,
+    backgroundColor: '#007AFF',
+    paddingVertical: 14,
+    borderRadius: 8,
+    alignItems: 'center',
+  },
+  signUpButtonText: {
+    color: '#fff',
     fontSize: 18,
-    marginTop: 10,
-    color: 'blue',
-  },
-  picker: {
-    width: '80%',
-    height: 50,
-    marginBottom: 10,
+    fontWeight: '600',
   },
 });
