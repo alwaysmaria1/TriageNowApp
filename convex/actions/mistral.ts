@@ -40,6 +40,7 @@ You are an expert medical doctor with extensive experience in clinical documenta
 - **sex**: An optional string representing the patient's sex. If unavailable, omit this field.
 
 Integrate the relevant details from the provided audio transcription. If you do not hear a certain field, then do not include that field in the JSON object. Extract, combine, and prioritize objective findings where applicable.
+Consider any information about injuries, pain, or the patient's health status mentioned in the audio transcription as part of the patient care notes.
 
 Return only a valid JSON object with these exact field names (omit fields if it is not mentioned in the transript) and no additional text.
 
