@@ -98,12 +98,12 @@ export default function TabThreeScreen() {
             triageStatus: pendingTriage,
             zone: currentUser.userZone,
           };
-          console.log("userzone is", currentUser.userZone);
+          // console.log("userzone is", currentUser.userZone);
       
           const result = await createPatient(newPatientData);
           setIsCreatingPatient(false);
           if (result) {
-            console.log("Patient created with ID:", result);
+            // console.log("Patient created with ID:", result);
             resetTriage();
             // Optionally, reset all states after successful submission.
             setPendingTriage(null);

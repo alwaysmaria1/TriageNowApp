@@ -15,7 +15,7 @@ export default function HomeScreen() {
     const  allPatients  = useQueryPatients();
 
     const { currentUser, setCurrentUser } = useStore();
-    console.log("current user in triage-home", currentUser);
+    // console.log("current user in triage-home", currentUser);
     const  patients  = allPatients.patients.filter(patient => patient.triageMemberID === currentUser?._id)
 
     const zone = currentUser?.userZone;

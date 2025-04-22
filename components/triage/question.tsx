@@ -31,7 +31,7 @@ export default function Question({
                 <View style={styles.buttonContainer} key={title}>
                 <Button
                     onPress={() => {
-                    console.log(`${questionText}: ${title}`);
+                    // console.log(`${questionText}: ${title}`);
                     setState(value);
                     if (onPress) onPress();
                     }}
