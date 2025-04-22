@@ -22,6 +22,7 @@ interface QuestionsProps {
     showRespiratoryRateQuestion: boolean;
     showPerfusionQuestion: boolean;
     showMentalStatusQuestion: boolean;
+    setTriageOverridden: React.Dispatch<React.SetStateAction<string | null>>;
 }
 
 export default function Questions({
@@ -43,14 +44,21 @@ export default function Questions({
     showRespiratoryRateQuestion,
     showPerfusionQuestion,
     showMentalStatusQuestion,
+    setTriageOverridden,
 }: QuestionsProps) {
     const questions = [
     {
         show: true,
         questionText: "Able to Walk?",
         options: [
-            { title: "Yes", value: "Yes", onPress: () => handleTriage("Minor") },
-            { title: "No", value: "No", onPress: () => handleTriage(null) },
+            { title: "Yes", value: "Yes", onPress: () => {
+                handleTriage("Minor")
+                setTriageOverridden(null)
+            } },
+            { title: "No", value: "No", onPress: () => {
+                handleTriage(null)
+                setTriageOverridden(null)
+            } },
         ],
         stateKey: ableToWalk,
         setState: setAbleToWalk,

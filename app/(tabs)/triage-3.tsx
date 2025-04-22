@@ -19,6 +19,7 @@ export default function TabThreeScreen() {
   // router needed to link to patient notes page  
   const router = useRouter();
     // States to capture user input
+    const [triageOverridden, setTriageOverridden] = useState<string | null>(null);
     const [ableToWalk, setAbleToWalk] = useState<string | null>(null);
     const [firstSpontaneousBreathing, setFirstSpontaneousBreathing] = useState<string | null>(null);
     const [secondSpontaneousBreathing, setSecondSpontaneousBreathing] = useState<string | null>(null);
@@ -133,6 +134,23 @@ export default function TabThreeScreen() {
         setPendingTriage(null);
       };
 
+      // Reset function to hide questions when overriding
+      const overrideTriage = () => {
+        setAbleToWalk(null);
+        setFirstSpontaneousBreathing(null);
+        setSecondSpontaneousBreathing(null);
+        setRespiratoryRate(null);
+        setPerfusion(null);
+        setMentalStatus(null);
+    
+        setShowFirstBreathingQuestion(false);
+        setShowSecondBreathingQuestion(false);
+        setShowRespiratoryRateQuestion(false);
+        setShowPerfusionQuestion(false);
+        setShowMentalStatusQuestion(false);
+
+      };
+
     return (
         <ParallaxScrollView
             headerBackgroundColor={{ light: "#D0D0D0", dark: "#353636" }}
@@ -175,15 +193,27 @@ export default function TabThreeScreen() {
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Immediate"
-                    variant="immediate"
-                    onPress={() => handleTriage("Immediate")}
+                    // variant="immediate"
+                    onPress={() => {
+                      overrideTriage()
+                      setTriageOverridden("Immediate")
+                      handleTriage("Immediate")
+                    }
+                    }
+                    variant={triageOverridden === "Immediate" ? 'default' : 'immediate'}
                 />
                 </View>
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Delayed"
-                    variant="delayed"
-                    onPress={() => handleTriage("Delayed")}
+                    // variant="delayed"
+                    onPress={() => {
+                      overrideTriage()
+                      handleTriage("Delayed")
+                      setTriageOverridden("Delayed")
+                    }
+                    }
+                    variant={triageOverridden === "Delayed" ? 'default' : 'delayed'}
                 />
                 </View>
             </View>
@@ -192,15 +222,29 @@ export default function TabThreeScreen() {
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Minor"
-                    variant="minor"
-                    onPress={() => handleTriage("Minor")}
+                    // variant="minor"
+                    onPress={() => {
+                      overrideTriage()
+                      setTriageOverridden("Minor")
+                      handleTriage("Minor")
+                    }
+                    }
+                    variant={triageOverridden === "Minor" ? 'default' : 'minor'}
+
                 />
                 </View>
                 <View style={styles.buttonContainer}>
                 <Button
                     title="Expectant"
-                    variant="expectant"
-                    onPress={() => handleTriage("Expectant")}
+                    // variant="expectant"
+                    onPress={() => {
+                      overrideTriage()
+                      setTriageOverridden("Expectant")
+                      handleTriage("Expectant")
+                    }
+                    }
+                    variant={triageOverridden === "Expectant" ? 'default' : 'expectant'}
+
                 />
                 </View>
             </View>
@@ -226,6 +270,7 @@ export default function TabThreeScreen() {
                 showRespiratoryRateQuestion={showRespiratoryRateQuestion}
                 showPerfusionQuestion={showPerfusionQuestion}
                 showMentalStatusQuestion={showMentalStatusQuestion}
+                setTriageOverridden={setTriageOverridden}
             />
 
             {/* CONFIRMATION & RESET SECTION */}
