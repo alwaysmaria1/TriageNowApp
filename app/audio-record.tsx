@@ -175,6 +175,7 @@ export default function RecordAudioScreen() {
         <Text style={styles.uriText}>Recorded file URI: {recordedURI}</Text>
       )} */}
 
+      {recordedURI && (
       <View style={styles.buttonGroup}>
         <TouchableOpacity
           style={[styles.button, isPlaying ? styles.buttonStop : styles.buttonPlay]}
@@ -186,6 +187,7 @@ export default function RecordAudioScreen() {
           </Text>
         </TouchableOpacity>
       </View>
+      )}
 
       {recordedURI && (
         <View style={styles.buttonGroup}>
