@@ -36,8 +36,14 @@ export default function RootLayout() {
     <ConvexProvider client={convex}>
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen name="home" options={{ headerShown: false }} />
         <Stack.Screen name="+not-found" />
+        <Stack.Screen 
+          name="patient-notes"
+        />
+        <Stack.Screen 
+          name="audio-record"
+        />
       </Stack>
       <StatusBar style="auto" />
     </ThemeProvider>
