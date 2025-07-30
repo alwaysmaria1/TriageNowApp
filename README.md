@@ -1,50 +1,25 @@
-# Welcome to your Expo app 👋
+# TriageNow  ![HopStart 2025 2nd Place Winner](https://img.shields.io/badge/HopStart-2nd%20Place-brightgreen)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Main Reason
+In a mass casualty incident (MCI), first responders face overwhelming patient loads, outdated paper triage tags, and congested radio channels—factors that lead to delays, lost information, and, ultimately, loss of life. TriageNow was built by first responders for first responders to close these gaps, enabling rapid, accurate decision‑making when every second counts.
 
-## Get started
+## Main Features
+1. **Scan Patient’s Barcode**  
+   Attach color‑coded wristbands with hospital‑grade barcodes to patients. A quick scan auto‑creates or updates their digital profile, freeing crews from tedious paperwork.  
+2. **Step‑by‑Step Guided Triage**  
+   Follow the START algorithm via an in‑app workflow, with an override option for seasoned professionals.  
+3. **One Comprehensive Patient Profile**  
+   All vital signs, status updates, and care notes consolidated into a single view, ensuring incident commanders see real‑time changes across the scene.  
+4. **AI‑Powered Documentation**  
+   Voice‑to‑text transcription powered by Deepgram AI captures vitals and narrative notes instantly— HIPAA‑compliant and hands‑free.
 
-1. Install dependencies
+## Main Tech Stack
+- **Mobile App**: React Native, Expo  
+- **Backend & Real‑Time Database**: Convex (BaaS)  
+- **Speech‑to‑Text**: Deepgram AI  
+- **Generative AI & OCR**: Mistral AI
 
-   ```bash
-   npm install
-   ```
+## Competition Recognition
+🏅 **HopStart 2025** – 2nd Place Winner in the New Venture Challenge
 
-2. Start the app
 
-   ```bash
-    npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
